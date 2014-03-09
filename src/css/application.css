@@ -1,11 +1,13 @@
-.navbar-nav > li > a {
-  padding-top: 3.5px;
-  padding-bottom: 3.5px;
+body {
+  overflow: hidden;
 }
 
-
+.navbar-nav > li > a {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
 
 .nopadding {
-   padding: 0 !important;
-   margin: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
