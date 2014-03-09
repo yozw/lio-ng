@@ -11,3 +11,33 @@ body {
   padding: 0 !important;
   margin: 0 !important;
 }
+
+.butter-bar-inner {
+  display: inline-block;
+  background: #ff8;
+  border: 1px solid #ed2;
+  border-radius: 4px;
+  padding: 4px 8px 1px 8px;
+  max-width: 60%;
+}
+
+.butter-bar-outer {
+  position: absolute;
+  top: -4px;
+  width: 100%;
+  text-align: center;
+  height: 0;
+  z-index: 1000;
+}
+
+.info-panel {
+  padding: 16px;
+}
+
+.info-panel h1 {
+  margin-top: 0px;
+}
+
+.nav a {
+  cursor: pointer;
+}

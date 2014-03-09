@@ -3,6 +3,7 @@
 <head>
   <title>Linear Optimization</title>
   <script type="text/javascript" src="lib/ace/ace.js"></script>
+  <script type="text/javascript" src="lib/glpk/glpk.js"></script>
   <script type="text/javascript" src="lib/angular/angular.js"></script>
   <script type="text/javascript" src="lib/ui-ace/ui-ace.js"></script>
   <script type="text/javascript" src="lib/ui-bootstrap/ui-bootstrap.js"></script>
@@ -11,14 +12,13 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/application.css">
 </head>
+
 <body ng-controller="AppCtrl">
 <div class="collapse navbar-collapse navbar-inverse">
   <ul class="nav navbar-nav">
     <li>
     <li class="dropdown">
-      <a class="dropdown-toggle">
-        File
-      </a>
+      <a class="dropdown-toggle">File</a>
       <ul class="dropdown-menu">
         <li><a>New</a></li>
         <li><a>Save</a></li>
@@ -26,24 +26,62 @@
         <li><a>Print</a></li>
       </ul>
     </li>
-    <li><a href="/">Model</a></li>
-    <li><a href="/">Help</a></li>
+    <li class="dropdown">
+      <a class="dropdown-toggle">Model</a>
+      <ul class="dropdown-menu">
+        <li><a>Solve</a></li>
+        <li><a>Language</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle">Examples</a>
+      <ul class="dropdown-menu">
+        <li><a>Dovetail</a></li>
+        <li><a>Dovetail*</a></li>
+        <li><a>Diet problem</a></li>
+        <li><a>Knapsack problem</a></li>
+        <li><a>Machine scheduling problem</a></li>
+        <li><a>Decentralization problem</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle">Help</a>
+      <ul class="dropdown-menu">
+        <li><a>GMPL Language reference</a></li>
+        <li><a>About...</a></li>
+      </ul>
+    </li>
   </ul>
 </div>
 
+<div class="butter-bar-outer">
+  <div class="butter-bar-inner" ng-controller="ButterBarCtrl" ng-hide="{{message.length == 0}}">
+    {{message}}
+  </div>
+</div>
+
 <tabs>
-  <tabpane name="Model" ng-class="{active: activeTab == 0}" id="model">
+  <tabpane name="Information">
+    <div class="info-panel">
+      <h1>Online solver</h1>
+
+      <p>This is the online solver for the book <a href="http://www.lio.yoriz.co.uk/">Linear and Integer Optimization:
+      Theory and Practice</a>.</p>
+
+      <p>Choose any of the examples in the top menu to start with an example from the book, or create a
+      <a>new model</a>.</p>
+    </div>
+  </tabpane>
+  <tabpane name="Model">
     <div id="editor"
          ui-ace="{mode: 'xml'}"
          ng-controller="EditorCtrl"
          resizable
          style="height: {{windowHeight - 26}}px; width: {{windowWidth - 124}}px;"></div>
   </tabpane>
-  <tabpane name="Result" ng-class="{active: activeTab == 1}">Tab 2</tabpane>
+  <tabpane name="Result">Tab 2</tabpane>
   <tabpane name="Messages">Tab 3</tabpane>
 </tabs>
 
-
 </body>
 </html>
-
