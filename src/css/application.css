@@ -1,0 +1,11 @@
+.navbar-nav > li > a {
+  padding-top: 3.5px;
+  padding-bottom: 3.5px;
+}
+
+
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
