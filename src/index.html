@@ -55,8 +55,8 @@
 </div>
 
 <div class="butter-bar-outer">
-  <div class="butter-bar-inner" ng-controller="ButterBarCtrl" ng-hide="{{message.length == 0}}">
-    {{message}}
+  <div class="butter-bar-inner" ng-controller="ButterBarCtrl" ng-hide="{{statusMessage.message.length == 0}}">
+    {{statusMessage.message}}
   </div>
 </div>
 
@@ -75,12 +75,12 @@
   <tabpane name="Model">
     <div id="editor"
          ui-ace="{mode: 'xml'}"
-         ng-controller="EditorCtrl"
+         ng-model="model.code"
          resizable
          style="height: {{windowHeight - 26}}px; width: {{windowWidth - 124}}px;"></div>
   </tabpane>
-  <tabpane name="Result">Tab 2</tabpane>
-  <tabpane name="Messages">Tab 3</tabpane>
+  <tabpane name="Result"><div ng-bind="model.code"></div></tabpane>
+  <tabpane name="Messages">Messages</tabpane>
 </tabs>
 
 </body>

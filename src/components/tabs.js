@@ -1,14 +1,5 @@
 var module = angular.module('ui.tabs', []);
 
-module.directive('bla', function () {
-  "use strict"
-  return {
-    restrict: 'E',
-    transclude: true, 
-    template: '<div ng-transclude></div>'
-  }}
-);
-
 module.directive('tabs', function () {
   "use strict"
   return {
@@ -16,7 +7,7 @@ module.directive('tabs', function () {
     scope: {},
     transclude: true, 
     templateUrl: 'components/tabs.html',
-    link: function (scope, element, attrs) {
+    link: function (scope, element) {
       scope.tabs = [];
       scope.activeTab = 0;
       
@@ -30,7 +21,7 @@ module.directive('tabs', function () {
       }
       scope.setActiveTab(0);
     },
-    controller: function ($scope, $http, $attrs) {
+    controller: function ($scope) {
       $scope.setActiveTab = function(index) {
         $scope.activeTab = index;
         for (var i = 0; i < $scope.tabs.length; i++) {
