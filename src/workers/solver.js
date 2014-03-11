@@ -1,6 +1,8 @@
-importScripts('../lib/glpk/glpk.js');
+importScripts('../../lib/glpk/glpk.js');
 
 self.addEventListener('message', function (e) {
+  "use strict"
+
   function log(value) {
     self.postMessage({action: 'log', message: value});
   }

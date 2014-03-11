@@ -2,7 +2,9 @@
  * Butter bar code
  */
 app.service('messageService', function ($rootScope, statusMessage) {
+  "use strict"
   var idCounter = 0;
+  console.log(statusMessage.message);
 
   function setMessage(message) {
     idCounter++;

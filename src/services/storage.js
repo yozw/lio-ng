@@ -1,4 +1,5 @@
 app.service('storageService', function ($http, messageService) {
+  "use strict"
   return {
     readModel: function (url, callback) {
       var msgId = messageService.set("Loading model");
@@ -9,6 +10,9 @@ app.service('storageService', function ($http, messageService) {
               messageService.dismiss(msgId);
               callback(data);
             }
+          })
+          .error(function() {
+            messageService.set("Could not load model");
           });
     }
   }

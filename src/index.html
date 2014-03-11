@@ -2,11 +2,11 @@
 <html ng-app="lio-ng">
 <head>
   <title>Linear Optimization</title>
-  <script type="text/javascript" src="lib/ace/ace.js"></script>
-  <script type="text/javascript" src="lib/glpk/glpk.js"></script>
-  <script type="text/javascript" src="lib/angular/angular.js"></script>
-  <script type="text/javascript" src="lib/ui-ace/ui-ace.js"></script>
-  <script type="text/javascript" src="lib/ui-bootstrap/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="../lib/ace/ace.js"></script>
+  <script type="text/javascript" src="../lib/glpk/glpk.js"></script>
+  <script type="text/javascript" src="../lib/angular/angular.js"></script>
+  <script type="text/javascript" src="../lib/ui-ace/ui-ace.js"></script>
+  <script type="text/javascript" src="../lib/ui-bootstrap/ui-bootstrap.js"></script>
   <script type="text/javascript" src="components/tabs.js"></script>
   <script type="text/javascript" src="application.js"></script>
   <script type="text/javascript" src="services/message.js"></script>
@@ -39,12 +39,9 @@
     <li class="dropdown">
       <a class="dropdown-toggle">Examples</a>
       <ul class="dropdown-menu">
-        <li><a>Dovetail</a></li>
-        <li><a>Dovetail*</a></li>
-        <li><a>Diet problem</a></li>
-        <li><a>Knapsack problem</a></li>
-        <li><a>Machine scheduling problem</a></li>
-        <li><a>Decentralization problem</a></li>
+        <li ng-repeat="example in examples">
+          <a ng-click="loadModel(example.url)">{{example.name}}</a>
+        </li>
       </ul>
     </li>
     <li class="dropdown">
@@ -58,7 +55,7 @@
 </div>
 
 <div class="butter-bar-outer">
-  <div class="butter-bar-inner" ng-controller="ButterBarCtrl" ng-hide="{{statusMessage.message.length == 0}}">
+  <div class="butter-bar-inner" ng-controller="ButterBarCtrl">
     {{statusMessage.message}}
   </div>
 </div>
