@@ -1,9 +1,33 @@
 var app = angular.module('lio-ng', ['ui.bootstrap', 'ui.ace', 'ui.tabs']);
 
-app.controller('AppCtrl', ['$scope', function ($scope) {
-  $scope.model = Object();
-  $scope.model.code = "Hello!";
-}]);
+app.controller('AppCtrl', function ($scope, model, solverService, storageService) {
+  $scope.model = model;
+  $scope.solveModel = function () {
+    model.log = "";
+
+    function logCallback(message) {
+      model.log += message + "\n";
+      $scope.$apply();
+    }
+
+    solverService.solve($scope.model, logCallback);
+  }
+
+  $scope.loadModel = function (url) {
+    function callback(code) {
+      $scope.model.code = code;
+      //$scope.$apply();
+    }
+
+    storageService.readModel(url, callback);
+  }
+
+  $scope.loadModel("/lio-ng/models/dovetail.mod");
+});
+
+app.factory('model', function () {
+  return {code: "Type your model code here", log: ""};
+});
 
 /**
  * Directive for components that may change their size depending on the window size.
@@ -24,28 +48,7 @@ app.directive('resizable', function ($window) {
   }
 });
 
-/**
- * Butter bar code
- */
-app.service('messageService', function (statusMessage) {
-  return {
-    get:function () {
-      return statusMessage.message;
-    },
-    set:function (message) {
-      statusMessage.message = message;
-    },
-    clear:function () {
-      statusMessage.message = '';
-    }
-  };
-})
-
-app.factory('statusMessage', function() {
-  return {message: ""};
-});
-
-app.controller('ButterBarCtrl', ['$scope', 'statusMessage', function ($scope, statusMessage) {
+app.controller('ButterBarCtrl', function ($scope, statusMessage) {
   $scope.statusMessage = statusMessage;
-}]);
+});
 

@@ -49,3 +49,13 @@ ul.nav a {
 button.btn {
   border-radius: 0;
 }
+
+.log {
+  font-family: "Courier New", monospace;
+  white-space: pre;
+}
+
+#model-log {
+  overflow: auto;
+  padding: 8px;
+}

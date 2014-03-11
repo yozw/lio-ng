@@ -9,6 +9,9 @@
   <script type="text/javascript" src="lib/ui-bootstrap/ui-bootstrap.js"></script>
   <script type="text/javascript" src="components/tabs.js"></script>
   <script type="text/javascript" src="application.js"></script>
+  <script type="text/javascript" src="services/message.js"></script>
+  <script type="text/javascript" src="services/solver.js"></script>
+  <script type="text/javascript" src="services/storage.js"></script>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/application.css">
 </head>
@@ -66,10 +69,10 @@
       <h1>Online solver</h1>
 
       <p>This is the online solver for the book <a href="http://www.lio.yoriz.co.uk/">Linear and Integer Optimization:
-      Theory and Practice</a>.</p>
+        Theory and Practice</a>.</p>
 
       <p>Choose any of the examples in the top menu to start with an example from the book, or create a
-      <a>new model</a>.</p>
+        <a>new model</a>.</p>
     </div>
   </tabpane>
   <tabpane name="Model">
@@ -79,12 +82,22 @@
          resizable
          style="height: {{windowHeight - 26}}px; width: {{windowWidth - 124}}px;"></div>
   </tabpane>
-  <tabpane name="Result"><div ng-bind="model.code"></div></tabpane>
-  <tabpane name="Messages">Messages</tabpane>
+  <tabpane name="Result">
+    <div ng-bind="model.code"></div>
+  </tabpane>
+  <tabpane name="Messages">
+    <div id="model-log"
+         class="log"
+         resizable
+         style="height: {{windowHeight - 26}}px;">{{model.log}}
+    </div>
+  </tabpane>
 </tabs>
 
 <button style="position: absolute; bottom: 0; left: 0; height: 48px; width: 133px;"
-        class="btn btn-success">Solve model</button>
+        ng-click="solveModel()"
+        class="btn btn-success">Solve model
+</button>
 
 </body>
 </html>
