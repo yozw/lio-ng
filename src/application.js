@@ -1,4 +1,4 @@
-var app = angular.module('lio-ng', ['ui.bootstrap', 'ui.ace', 'ui.tabs']);
+var app = angular.module('lio-ng', ['ui.bootstrap', 'ui.ace', 'ui.tabs', 'ui.resizable']);
 
 app.controller('AppCtrl', function ($scope, model, solverService, storageService) {
   "use strict"
@@ -39,26 +39,6 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
 
 app.factory('model', function () {
   return {code: "", log: ""};
-});
-
-/**
- * Directive for components that may change their size depending on the window size.
- */
-app.directive('resizable', function ($window) {
-  "use strict"
-  return function ($scope) {
-    $scope.updateWindowSize = function () {
-      $scope.windowHeight = $window.innerHeight;
-      $scope.windowWidth = $window.innerWidth;
-    };
-
-    angular.element($window).bind("resize", function () {
-      $scope.updateWindowSize();
-      $scope.$apply();
-    });
-
-    $scope.updateWindowSize();
-  }
 });
 
 app.controller('ButterBarCtrl', function ($scope, statusMessage) {
