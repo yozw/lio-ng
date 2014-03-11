@@ -1,0 +1,14 @@
+<div class="col-md-1 nopadding">
+  <ul class="nav nav-pills nav-stacked">
+    <li ng-repeat="tab in tabs" ng-class="{ active: activeTab == $index}">
+      <a href="#" ng-click="setActiveTab($index)">
+        {{ tab.name }}
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="col-md-11 nopadding">
+  <div class="tab-content" ng-transclude>
+  </div>
+</div>
