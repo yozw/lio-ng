@@ -59,3 +59,16 @@ button.btn {
   overflow: auto;
   padding: 8px;
 }
+
+.close-btn {
+  color: gray;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.close-btn:hover {
+  color: black;
+  text-decoration: none;
+}

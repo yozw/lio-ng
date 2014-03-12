@@ -1,40 +1,39 @@
 /**
  * Butter bar code
  */
-app.service('messageService', function ($rootScope, statusMessage) {
+app.service('messageService', function ($rootScope) {
   "use strict"
   var idCounter = 0;
-  console.log(statusMessage.message);
 
-  function setMessage(message) {
-    idCounter++;
-    statusMessage.message = message;
+  function apply() {
     if (!$rootScope.$$phase) {
       $rootScope.$apply();
     }
-    return idCounter;
   }
 
   return {
     get: function () {
-      return statusMessage.message;
+      return this.status.message;
     },
     set: function (message) {
-      return setMessage(message);
+      idCounter++;
+      this.status.message = message;
+      apply();
+      return idCounter;
     },
     clear: function () {
-      setMessage("");
+      this.status.message = "";
     },
     dismiss: function (msgid) {
       if (idCounter == msgid) {
-        setMessage("");
+        this.status.message = "";
       }
+    },
+    status: {
+      message: ""
     }
   };
-})
-
-app.factory('statusMessage', function () {
-  return {message: ""};
 });
+
 
 

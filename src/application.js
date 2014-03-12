@@ -15,12 +15,13 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
   $scope.solveModel = function () {
     model.log = "";
 
-    function logCallback(message) {
+    var callback = Object();
+    callback.log = function(message) {
       model.log += message + "\n";
       $scope.$apply();
     }
 
-    solverService.solve($scope.model, logCallback);
+    solverService.solve(model.code, callback);
   }
 
   $scope.loadModel = function (url) {
@@ -41,8 +42,13 @@ app.factory('model', function () {
   return {code: "", log: ""};
 });
 
-app.controller('ButterBarCtrl', function ($scope, statusMessage) {
+app.controller('ButterBarCtrl', function ($scope, messageService, $element) {
   "use strict"
-  $scope.statusMessage = statusMessage;
+  $scope.isVisible = false;
+  $scope.status = messageService.status;
+  $scope.clear = messageService.clear;
+  $scope.$watch('status.message', function(value) {
+    $scope.isVisible = value.length > 0;
+  });
 });
 

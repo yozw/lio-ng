@@ -20,21 +20,15 @@
 <body ng-controller="AppCtrl">
 <div class="collapse navbar-collapse navbar-inverse">
   <ul class="nav navbar-nav">
-    <li>
-    <li class="dropdown">
-      <a class="dropdown-toggle">File</a>
-      <ul class="dropdown-menu">
-        <li><a>New</a></li>
-        <li><a>Save</a></li>
-        <li><a>Download</a></li>
-        <li><a>Print</a></li>
-      </ul>
-    </li>
     <li class="dropdown">
       <a class="dropdown-toggle">Model</a>
       <ul class="dropdown-menu">
         <li><a>Solve</a></li>
         <li><a>Language</a></li>
+        <li><a>Clear model</a></li>
+        <li><a>Save</a></li>
+        <li><a>Download</a></li>
+        <li><a>Print</a></li>
       </ul>
     </li>
     <li class="dropdown">
@@ -56,8 +50,8 @@
 </div>
 
 <div class="butter-bar-outer">
-  <div class="butter-bar-inner" ng-controller="ButterBarCtrl">
-    {{statusMessage.message}}
+  <div class="butter-bar-inner" ng-controller="ButterBarCtrl" ng-show="isVisible">
+    {{status.message}} <div class="close-btn" ng-click="clear()">&#10006;</div>
   </div>
 </div>
 
