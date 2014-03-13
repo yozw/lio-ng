@@ -20,7 +20,10 @@ describe("solverService", function () {
 
   it('should solve a model',
       function () {
-        var callback = function() {};
+        var finished = false;
+        var callback = Object();
+        callback.log = function() {};
+        callback.finished = function() {finished = true;};
         solverService.solve(DOVETAIL, callback);
       });
 });

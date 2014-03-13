@@ -1,7 +1,7 @@
 /**
  * Solver service
  */
-app.service('solverService', function (messageService, model) {
+app.service('solverService', function (model) {
   "use strict";
   var worker;
 
@@ -9,7 +9,6 @@ app.service('solverService', function (messageService, model) {
     solve: function (code, callback) {
       var stopWatch = new Stopwatch();
 
-      messageService.set("Solving model");
       console.log("Solving model");
 
       worker = new Worker("workers/solver.js");
@@ -21,9 +20,8 @@ app.service('solverService', function (messageService, model) {
             break;
           case 'done':
             stop();
-            messageService.set("Done");
             console.log("Solver finished in " + stopWatch.getElapsed() + " msec");
-            callback.log("Done: " + JSON.stringify(obj.result));
+            callback.finished("Finished");
             break;
         }
       };
