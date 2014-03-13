@@ -26,7 +26,11 @@ var Stopwatch = function (clockFunction) {
 
   this.getElapsed = function () {
     if (!endTime) {
-      return Math.round(clockFunction() - startTime);
+      if (!startTime) {
+        return 0;
+      } else {
+        return Math.round(clockFunction() - startTime);
+      }
     } else {
       return Math.round(endTime - startTime);
     }

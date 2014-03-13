@@ -1,5 +1,20 @@
 'use strict';
 
+describe("Interval", function () {
+
+  it('should have correctly set properties', function () {
+    var interval = new Interval(5, 12);
+    expect(interval.start).toEqual(5);
+    expect(interval.end).toEqual(12);
+    expect(interval.length).toEqual(7);
+  });
+
+  it('should correctly be represented as a string', function () {
+    var interval = new Interval(5, 12);
+    expect(interval.toString()).toEqual("[5,12]");
+  });
+});
+
 describe("AFE", function () {
 
   it('should correctly create an interval', function () {

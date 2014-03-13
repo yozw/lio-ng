@@ -42,7 +42,7 @@ app.factory('model', function () {
   return {code: "", log: ""};
 });
 
-app.controller('ButterBarCtrl', function ($scope, messageService, $element) {
+app.controller('ButterBarCtrl', function ($scope, messageService) {
   "use strict"
   $scope.isVisible = false;
   $scope.status = messageService.status;
