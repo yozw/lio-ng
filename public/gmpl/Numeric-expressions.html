@@ -1,0 +1,425 @@
+<html lang="en">
+<head>
+<title>Numeric expressions - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Expressions.html#Expressions" title="Expressions">
+<link rel="next" href="Symbolic-expressions.html#Symbolic-expressions" title="Symbolic expressions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Numeric-expressions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Symbolic-expressions.html#Symbolic-expressions">Symbolic expressions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Expressions.html#Expressions">Expressions</a>
+<hr>
+</div>
+
+<h3 class="section">3.1 Numeric expressions</h3>
+
+<p><dfn>Numeric expression</dfn> is a rule for computing a single numeric value
+represented in the form of floating-point number.
+
+   <p>The primary numeric expression may be a numeric literal, dummy index,
+unsubscripted parameter, subscripted parameter, built-in function
+reference, iterated numeric expression, conditional numeric expression,
+or another numeric expression enclosed in parentheses.
+
+   <p><strong>Examples</strong>
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="60%"><tt>1.23</tt> </td><td valign="top" width="40%">(numeric literal)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>j</tt> </td><td valign="top" width="40%">(dummy index)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>time</tt> </td><td valign="top" width="40%">(unsubscripted parameter)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>a['May 2003',j+1]</tt> </td><td valign="top" width="40%">(subscripted parameter)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>abs(b[i,j])</tt> </td><td valign="top" width="40%">(function reference)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>sum{i in S diff T} alpha[i] * b[i,j]</tt> </td><td valign="top" width="40%">(iterated
+expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>if i in I then 2 * p else q[i+1]</tt> </td><td valign="top" width="40%">(conditional
+expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>(b[i,j] + .5 * c)</tt> </td><td valign="top" width="40%">(parenthesized expression)
+   <br></td></tr></table>
+</blockquote>
+
+   <p>More general numeric expressions containing two or more primary numeric
+expressions may be constructed by using certain arithmetic operators.
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     j+1
+     2 * a[i-1,j+1] - b[i,j]
+     sum{j in J} a[i,j] * x[j] + sum{k in K} b[i,k] * x[k]
+     (if i in I then 2 * p else q[i+1]) / (a[i,j] + 1.5)
+</pre>
+   <h4 class="subheading">Numeric literals</h4>
+
+<p>If the primary numeric expression is a numeric literal, the resultant
+value is obvious.
+
+<h4 class="subheading">Dummy indices</h4>
+
+<p>If the primary numeric expression is a dummy index, the resultant value
+is current value assigned to the dummy index.
+
+<h4 class="subheading">Unsubscripted parameters</h4>
+
+<p>If the primary numeric expression is an unsubscripted parameter (which
+must be 0-dimensional), the resultant value is the value of the
+parameter.
+
+<h4 class="subheading">Subscripted parameters</h4>
+
+<p>The primary numeric expression, which refers to a subscripted parameter,
+has the following syntactic form:
+
+   <blockquote>
+$name[i_1,i_2,\dots,i_n],$
+</blockquote>
+
+<p class="noindent">where $name$  is the symbolic name of the parameter, $i_1$ ,
+$i_2$ , $\dots$, $i_n$  are subscripts.
+
+   <p>Each subscript must be a numeric or symbolic expression. The number of
+subscripts in the subscript list must be the same as the dimension of
+the parameter with which the subscript list is associated.
+
+   <p>Actual values of subscript expressions are used to identify a particular
+member of the parameter that determines the resultant value of the
+primary expression.
+
+<h4 class="subheading">Function references</h4>
+
+<p>In MathProg there are the following built-in functions which may be used
+in numeric expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="25%"><tt>abs</tt>(<i>x</i>) </td><td valign="top" width="75%">absolute value
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>atan</tt>(<i>x</i>) </td><td valign="top" width="75%">trigonometric arctangent
+arctan&nbsp;<i>x</i> (in radians)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>atan</tt>(<i>y</i>,&nbsp;<i>x</i>) </td><td valign="top" width="75%">trigonometric arctangent
+arctan&nbsp;<i>y</i>/<i>x</i> (in radians)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>card</tt>(<i>x</i>) </td><td valign="top" width="75%">cardinality (the number of elements)
+of set <i>x</i>
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>ceil</tt>(<i>x</i>) </td><td valign="top" width="75%">smallest integer not less than <i>x</i>
+(&ldquo;ceiling of <i>x</i>&rdquo;)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>cos</tt>(<i>x</i>) </td><td valign="top" width="75%">trigonometric cosine cos&nbsp;<i>x</i>
+(in radians)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>exp</tt>(<i>x</i>) </td><td valign="top" width="75%">base-<i>e</i> exponential
+$e^x$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>floor</tt>(<i>x</i>) </td><td valign="top" width="75%">largest integer not greater than <i>x</i>
+(&ldquo;floor of <i>x</i>&rdquo;)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>gmtime</tt>() </td><td valign="top" width="75%">the number of seconds elapsed since
+00:00:00 Jan 1, 1970,
+<br></td></tr><tr align="left"><td valign="top" width="25%"></td><td valign="top" width="75%">Coordinated Universal Time<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>length</tt>(<i>x</i>) </td><td valign="top" width="75%">length of character string <i>x</i>
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>log</tt>(<i>x</i>) </td><td valign="top" width="75%">natural logarithm log&nbsp;<i>x</i>
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>log10</tt>(<i>x</i>) </td><td valign="top" width="75%">common (decimal) logarithm
+$\log_{10}x$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>max</tt>$(x_1,x_2,\dots,x_n)$  </td><td valign="top" width="75%">the largest of values
+$x_1$ , $x_2$ , $\dots$, $x_n$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>min</tt>$(x_1,x_2,\dots,x_n)$  </td><td valign="top" width="75%">the smallest of values
+$x_1$ , $x_2$ , $\dots$, $x_n$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>round</tt>(<i>x</i>) </td><td valign="top" width="75%">rounding <i>x</i> to nearest integer
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>round</tt>(<i>x</i>,&nbsp;<i>n</i>) </td><td valign="top" width="75%">rounding <i>x</i> to <i>n</i>
+fractional decimal digits
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>sin</tt>(<i>x</i>) </td><td valign="top" width="75%">trigonometric sine sin&nbsp;<i>x</i> (in
+radians)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>sqrt</tt>(<i>x</i>) </td><td valign="top" width="75%">square root
+$\sqrt{x}$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>str2time</tt>(<i>s</i>,&nbsp;<i>f</i>) </td><td valign="top" width="75%">converting character
+string <i>s</i> to calendar time<a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a>
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>trunc</tt>(<i>x</i>) </td><td valign="top" width="75%">truncating <i>x</i> to nearest integer
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>trunc</tt>(<i>x</i>,&nbsp;<i>n</i>) </td><td valign="top" width="75%">truncating <i>x</i> to <i>n</i>
+fractional decimal digits
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>Irand224</tt>() </td><td valign="top" width="75%">pseudo-random integer uniformly
+distributed in $[0,2^{24})$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>Uniform01</tt>() </td><td valign="top" width="75%">pseudo-random number uniformly
+distributed in $[0,1)$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>Uniform</tt>(<i>a</i>,&nbsp;<i>b</i>) </td><td valign="top" width="75%">pseudo-random number
+uniformly distributed in [<i>a</i>,&nbsp;<i>b</i>)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>Normal01</tt>$()$  </td><td valign="top" width="75%">Gaussian pseudo-random variate
+with
+$\mu=0$  and $\sigma=1$
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>Normal</tt>$(\mu,\sigma)$
+</td><td valign="top" width="75%">Gaussian pseudo-random
+variate with given
+$\mu$  and $\sigma$
+   <br></td></tr></table>
+</blockquote>
+
+   <p>Arguments of all built-in functions, except <code>card</code>, <code>length</code>,
+and <code>str2time</code>, must be numeric expressions. The argument of
+<code>card</code> must be a set expression. The argument of <code>length</code> and
+both arguments of <code>str2time</code> must be symbolic expressions.
+
+   <p>The resultant value of the numeric expression, which is a function
+reference, is the result of applying the function to its argument(s).
+
+   <p>Note that each pseudo-random generator function have a latent argument
+(i.e. some internal state), which is changed whenever the function has
+been applied. Thus, if the function is applied repeatedly even to
+identical arguments, due to the side effect different resultant values
+are always produced.
+
+<h4 class="subheading">Iterated expressions</h4>
+
+<p>Iterated numeric expression is a primary numeric expression, which has
+the following syntactic form:
+
+   <blockquote>
+<var>iterated-operator</var> <var>indexing-expression</var> <var>integrand</var>
+</blockquote>
+
+<p class="noindent">where <var>iterated-operator</var> is the symbolic name of the iterated
+operator to be performed (see below), <var>indexing expression</var> is an
+indexing expression which introduces dummy indices and controls
+iterating, <var>integrand</var> is a numeric expression that participates in
+the operation.
+
+   <p>In MathProg there are four iterated operators, which may be used in
+numeric expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="10%"><tt>sum</tt> </td><td valign="top" width="15%">summation </td><td valign="top" width="75%">
+$\displaystyle\sum_{(i_1,\dots,i_n)\in\Delta}x(i_1,\dots,i_n)$
+<br></td></tr><tr align="left"><td valign="top" width="10%"><tt>prod</tt> </td><td valign="top" width="15%">production </td><td valign="top" width="75%">
+$\displaystyle\prod_{(i_1,\dots,i_n)\in\Delta}x(i_1,\dots,i_n)$
+<br></td></tr><tr align="left"><td valign="top" width="10%"><tt>min</tt> </td><td valign="top" width="15%">minimum </td><td valign="top" width="75%">
+$\displaystyle\min_{(i_1,\dots,i_n)\in\Delta}x(i_1,\dots,i_n)$
+<br></td></tr><tr align="left"><td valign="top" width="10%"><tt>max</tt> </td><td valign="top" width="15%">maximum </td><td valign="top" width="75%">
+$\displaystyle\max_{(i_1,\dots,i_n)\in\Delta}x(i_1,\dots,i_n)$
+   <br></td></tr></table>
+</blockquote>
+
+<p class="noindent">where $i_1$ , $\dots$, $i_n$  are dummy indices introduced in the
+indexing expression, $\Delta$  is the domain, a set of
+$n$ -tuples specified by the indexing expression which defines
+particular values assigned to the dummy indices on performing the
+iterated operation, $x(i_1,\dots,i_n)$  is the integrand, a numeric
+expression whose resultant value depends on the dummy indices.
+
+   <p>The resultant value of an iterated numeric expression is the result of
+applying of the iterated operator to its integrand over all <i>n</i>-tuples
+contained in the domain.
+
+<h4 class="subheading">Conditional expressions</h4>
+
+<p>Conditional numeric expression is a primary numeric expression, which
+has one of the following two syntactic forms:
+
+   <blockquote>
+<tt>if</tt> <i>b</i> <tt>then</tt> <i>x</i> <tt>else</tt> <i>y</i>
+
+   <p><tt>if</tt> <i>b</i> <tt>then</tt> <i>x</i>
+</blockquote>
+
+<p class="noindent">where <i>b</i> is an logical expression, <i>x</i> and <i>y</i> are numeric
+expressions.
+
+   <p>The resultant value of the conditional expression depends on the value
+of the logical expression that follows the keyword <code>if</code>. If it
+takes on the value <i>true</i>, the value of the conditional expression is
+the value of the expression that follows the keyword <code>then</code>. 
+Otherwise, if the logical expression takes on the value <i>false</i>, the
+value of the conditional expression is the value of the expression that
+follows the keyword <code>else</code>. If the reduced form of the conditional
+expression is used and the logical expression takes on the value
+<i>false</i>, the resultant value of the conditional expression is zero.
+
+<h4 class="subheading">Parenthesized expressions</h4>
+
+<p>Any numeric expression may be enclosed in parentheses that syntactically
+makes it primary numeric expression.
+
+   <p>Parentheses may be used in numeric expressions, as in algebra, to
+specify the desired order in which operations are to be performed. Where
+parentheses are used, the expression within the parentheses is evaluated
+before the resultant value is used.
+
+   <p>The resultant value of the parenthesized expression is the same as the
+value of the expression enclosed within parentheses.
+
+<h4 class="subheading">Arithmetic operators</h4>
+
+<p>In MathProg there are the following arithmetic operators, which may be
+used in numeric expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="25%"><tt>+</tt> <i>x</i> </td><td valign="top" width="75%">unary plus
+<br></td></tr><tr align="left"><td valign="top" width="25%"><tt>-</tt> <i>x</i> </td><td valign="top" width="75%">unary minus
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>+</tt> <i>y</i> </td><td valign="top" width="75%">addition
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>-</tt> <i>y</i> </td><td valign="top" width="75%">subtraction
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>less</tt> <i>y</i> </td><td valign="top" width="75%">positive difference (if
+<i>x</i>&nbsp;&lt;&nbsp;<i>y</i> then 0 else <i>x</i>&nbsp;&minus;&nbsp;<i>y</i>)
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>*</tt> <i>y</i> </td><td valign="top" width="75%">multiplication
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>/</tt> <i>y</i> </td><td valign="top" width="75%">division
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>div</tt> <i>y</i> </td><td valign="top" width="75%">quotient of exact division
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>mod</tt> <i>y</i> </td><td valign="top" width="75%">remainder of exact division
+<br></td></tr><tr align="left"><td valign="top" width="25%"><i>x</i> <tt>**</tt> <i>y</i>, <i>x</i> <tt>^</tt> <i>y</i> </td><td valign="top" width="75%">
+exponentiation (raise to power)
+   <br></td></tr></table>
+</blockquote>
+
+<p class="noindent">where <i>x</i> and <i>y</i> are numeric expressions.
+
+   <p>If the expression includes more than one arithmetic operator, all
+operators are performed from left to right according to the hierarchy
+of operations (see below) with the only exception that the exponentiaion
+operators are performed from right to left.
+
+   <p>The resultant value of the expression, which contains arithmetic
+operators, is the result of applying the operators to their operands.
+
+<h4 class="subheading">Hierarchy of operations</h4>
+
+<p>The following list shows the hierarchy of operations in numeric
+expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="70%"><i>Operation</i> </td><td valign="top" width="30%"><i>Hierarchy</i>
+<br></td></tr><tr align="left"><td valign="top" width="70%">Evaluation of functions (<tt>abs</tt>, <tt>ceil</tt>, etc.) </td><td valign="top" width="30%">
+1st
+<br></td></tr><tr align="left"><td valign="top" width="70%">Exponentiation (<tt>**</tt>, <tt>^</tt>) </td><td valign="top" width="30%">2nd
+<br></td></tr><tr align="left"><td valign="top" width="70%">Unary plus and minus (<tt>+</tt>, <tt>-</tt>) </td><td valign="top" width="30%">3rd
+<br></td></tr><tr align="left"><td valign="top" width="70%">Multiplication and division (<tt>*</tt>, <tt>/</tt>, <tt>div</tt>,
+<tt>mod</tt>) </td><td valign="top" width="30%">4th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Iterated operations (<tt>sum</tt>, <tt>prod</tt>, <tt>min</tt>,
+<tt>max</tt>) </td><td valign="top" width="30%">5th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Addition and subtraction (<tt>+</tt>, <tt>-</tt>, <tt>less</tt>)
+</td><td valign="top" width="30%">6th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Conditional evaluation (<tt>if</tt> $\dots$ <tt>then</tt> $\dots$
+<tt>else</tt>) </td><td valign="top" width="30%">7th
+   <br></td></tr></table>
+</blockquote>
+
+   <p>This hierarchy is used to determine which of two consecutive operations
+is performed first. If the first operator is higher than or equal to the
+second, the first operation is performed. If it is not, the second
+operator is compared to the third, etc. When the end of the expression
+is reached, all of the remaining operations are performed in the reverse
+order.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> For details
+See <a href="Obtaining-current-calendar-time.html#Obtaining-current-calendar-time">Obtaining current calendar time</a>.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> For details See <a href="Converting-character-string-to-calendar-time.html#Converting-character-string-to-calendar-time">Converting character string to calendar time</a>.</p>
+
+   <hr></div>
+
+   </body></html>
+

@@ -1,0 +1,188 @@
+<html lang="en">
+<head>
+<title>Objective statement - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Statements.html#Statements" title="Statements">
+<link rel="prev" href="Constraint-statement.html#Constraint-statement" title="Constraint statement">
+<link rel="next" href="Solve-statement.html#Solve-statement" title="Solve statement">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Objective-statement"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Solve-statement.html#Solve-statement">Solve statement</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Constraint-statement.html#Constraint-statement">Constraint statement</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Statements.html#Statements">Statements</a>
+<hr>
+</div>
+
+<h3 class="section">4.5 Objective statement</h3>
+
+<p><table class="cartouche" summary="cartouche" border="1"><tr><td>
+<tt> minimize</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>:</tt>
+<var>expression</var> <tt>;</tt>
+
+<p class="noindent"><tt> maximize</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>:</tt>
+<var>expression</var> <tt>;</tt>
+</td></tr></table>
+
+     <dl>
+<dt>Where:<dd><var>name</var> is the symbolic name of the objective;
+<br><dt><dd><var>alias</var> is an optional string literal which specifies the alias of
+the objective;
+<br><dt><dd><var>domain</var> is an optional indexing expression which specifies the
+subscript domain of the objective;
+<br><dt><dd><var>expression</var> is an linear expression for computing the linear form
+of the objective
+</dl>
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     minimize obj: x + 1.5 * (y + z);
+     maximize total_profit: sum{p in prd} profit[p] * make[p];
+</pre>
+   <p>The objective statement declares an objective. If the subscript domain
+is not specified, the objective is a simple (scalar) objective. 
+Otherwise it is a <i>n</i>-dimensional array of elemental objectives.
+
+   <p>Elemental objective(s) associated with the model objective (if it is
+a simple objective) or its members (if it is an array) correspond to
+general linear constraints in the LP/MIP problem formulation (see
+Section &ldquo;Linear programming problem&rdquo;). However, unlike constraints
+the corresponding linear forms are free (unbounded).
+
+   <p>Constructing the actual linear constraint included in the problem
+instance, which (constraint) corresponds to a particular elemental
+objective, is performed as follows. The linear expression specified in
+the objective statement is evaluated that gives the resultant linear
+form:
+$$f=a_1x_1+a_2x_2+\dots+a_nx_n+a_0,$$
+where $x_1$ , $x_2$ , $\dots$, $x_n$  are elemental variables,
+$a_1$ , $a_2$ , $\dots$, $a_n$  are numeric coefficients,
+$a_0$  is the constant term. Then the linear form is used to
+construct the final elemental constraint in the standard form:
+$$-\infty&lt;a_1x_1+a_2x_2+\dots+a_nx_n+a_0&lt;+\infty.$$
+
+   <p>As a rule the model description contains only one objective statement
+that defines the objective function (1) used in the problem instance. 
+However, it is allowed to declare arbitrary number of objectives, in
+which case the actual objective function is the <em>first</em> objective
+encountered in the model description. Other objectives are also included
+in the problem instance, but they do not affect the objective function.
+
+   </body></html>
+

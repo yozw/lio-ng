@@ -1,0 +1,165 @@
+<html lang="en">
+<head>
+<title>Introduction - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="index.html#Top" title="Top">
+<link rel="next" href="Coding-model-description.html#Coding-model-description" title="Coding model description">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Introduction"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Coding-model-description.html#Coding-model-description">Coding model description</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="index.html#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">1 Introduction</h2>
+
+<ul class="menu">
+<li><a accesskey="1" href="Linear-programming-problem.html#Linear-programming-problem">Linear programming problem</a>
+<li><a accesskey="2" href="Model-objects.html#Model-objects">Model objects</a>
+<li><a accesskey="3" href="Structure-of-model-description.html#Structure-of-model-description">Structure of model description</a>
+</ul>
+
+<p><dfn>GNU MathProg</dfn> is a modeling language intended for describing linear
+mathematical programming models.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+   <p class="indent">Model descriptions written in the GNU MathProg language consist of a set
+of statements and data blocks constructed by the user from the language
+elements described in this document.
+
+   <p>In a process called translation, a program called the model translator
+analyzes the model description and translates it into internal data
+structures, which may be then used either for generating mathematical
+programming problem instance or directly by a program called the solver
+to obtain numeric solution of the problem.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> The GNU MathProg language is a
+subset of the AMPL language. Its GLPK implementation is mainly based on
+the paper: <em>Robert&nbsp;Fourer</em>, <em>David&nbsp;M.&nbsp;Gay</em>,
+and <em>Brian&nbsp;W.&nbsp;Kernighan</em>, &ldquo;A Modeling Language for
+Mathematical Programming.&rdquo; <em>Management Science</em> 36 (1990)
+pp.&nbsp;519-54.</p>
+
+   <hr></div>
+
+   </body></html>
+

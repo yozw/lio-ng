@@ -1,3 +1,6 @@
 #!/bin/bash
-OUT="../../public/gmpl.html"
-texi2html gmpl.texi --verbose --noheader --css-ref=../lib/ui-bootstrap/bootstrap.css --css-include=gmpl.css  --output $OUT
+TMPFILE=".gmpl.tmp"
+python pre-process.py > $TMPFILE
+#makeinfo --html --no-headers --no-split $TMPFILE --css-ref=bootstrap.css --css-include=custom.css -o gmpl.html
+makeinfo --html $TMPFILE --css-ref=../../lib/ui-bootstrap/bootstrap.css --css-include=custom.css -o ../../public/gmpl
+

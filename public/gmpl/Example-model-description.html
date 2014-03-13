@@ -1,0 +1,275 @@
+<html lang="en">
+<head>
+<title>Example model description - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Solving-models-with-glpsol.html#Solving-models-with-glpsol" title="Solving models with glpsol">
+<link rel="next" href="Acknowledgements.html#Acknowledgements" title="Acknowledgements">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Example-model-description"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Acknowledgements.html#Acknowledgements">Acknowledgements</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Solving-models-with-glpsol.html#Solving-models-with-glpsol">Solving models with glpsol</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="appendix">Appendix C Example model description</h2>
+
+<h4 class="subheading">Model description written in GNU MathProg</h4>
+
+<p>Below here is a complete example of the model description written in
+the GNU MathProg modeling language.
+
+<pre class="verbatim"># A TRANSPORTATION PROBLEM
+#
+# This problem finds a least cost shipping schedule that meets
+# requirements at markets and supplies at factories.
+#
+#  References:
+#              Dantzig G B, "Linear Programming and Extensions."
+#              Princeton University Press, Princeton, New Jersey, 1963,
+#              Chapter 3-3.
+
+set I;
+/* canning plants */
+
+set J;
+/* markets */
+
+param a{i in I};
+/* capacity of plant i in cases */
+
+param b{j in J};
+/* demand at market j in cases */
+
+param d{i in I, j in J};
+/* distance in thousands of miles */
+
+param f;
+/* freight in dollars per case per thousand miles */
+
+param c{i in I, j in J} := f * d[i,j] / 1000;
+/* transport cost in thousands of dollars per case */
+
+var x{i in I, j in J} >= 0;
+/* shipment quantities in cases */
+
+minimize cost: sum{i in I, j in J} c[i,j] * x[i,j];
+/* total transportation costs in thousands of dollars */
+
+s.t. supply{i in I}: sum{j in J} x[i,j] &lt;= a[i];
+/* observe supply limit at plant i */
+
+s.t. demand{j in J}: sum{i in I} x[i,j] >= b[j];
+/* satisfy demand at market j */
+
+data;
+
+set I := Seattle San-Diego;
+
+set J := New-York Chicago Topeka;
+
+param a := Seattle     350
+           San-Diego   600;
+
+param b := New-York    325
+           Chicago     300
+           Topeka      275;
+
+param d :              New-York   Chicago   Topeka :=
+           Seattle     2.5        1.7       1.8
+           San-Diego   2.5        1.8       1.4  ;
+
+param f := 90;
+
+end;
+</pre>
+
+<h4 class="subheading">Generated LP problem</h4>
+
+<p>Below here is the result of the translation of the example model
+produced by the solver <tt>glpsol</tt> and written in the CPLEX LP
+format with the option <tt>--wcpxlp</tt>.
+
+<pre class="verbatim">\* Problem: transp *\
+
+Minimize
+ cost: + 0.225 x(Seattle,New~York) + 0.153 x(Seattle,Chicago)
+ + 0.162 x(Seattle,Topeka) + 0.225 x(San~Diego,New~York)
+ + 0.162 x(San~Diego,Chicago) + 0.126 x(San~Diego,Topeka)
+
+Subject To
+ supply(Seattle): + x(Seattle,New~York) + x(Seattle,Chicago)
+ + x(Seattle,Topeka) &lt;= 350
+ supply(San~Diego): + x(San~Diego,New~York) + x(San~Diego,Chicago)
+ + x(San~Diego,Topeka) &lt;= 600
+ demand(New~York): + x(Seattle,New~York) + x(San~Diego,New~York) >= 325
+ demand(Chicago): + x(Seattle,Chicago) + x(San~Diego,Chicago) >= 300
+ demand(Topeka): + x(Seattle,Topeka) + x(San~Diego,Topeka) >= 275
+
+End
+</pre>
+
+<h4 class="subheading">Optimal LP solution</h4>
+
+<p>Below here is the optimal solution of the generated LP problem found by
+the solver <tt>glpsol</tt> and written in plain text format with the
+option <tt>--output</tt>.
+
+<pre class="smalldisplay"><pre class="verbatim">     Problem:    transp
+     Rows:       6
+     Columns:    6
+     Non-zeros:  18
+     Status:     OPTIMAL
+     Objective:  cost = 153.675 (MINimum)
+     
+        No.   Row name   St   Activity     Lower bound   Upper bound    Marginal
+     ------ ------------ -- ------------- ------------- ------------- -------------
+          1 cost         B        153.675
+          2 supply[Seattle]
+                         B            300                         350
+          3 supply[San-Diego]
+                         NU           600                         600         &lt; eps
+          4 demand[New-York]
+                         NL           325           325                       0.225
+          5 demand[Chicago]
+                         NL           300           300                       0.153
+          6 demand[Topeka]
+                         NL           275           275                       0.126
+     
+        No. Column name  St   Activity     Lower bound   Upper bound    Marginal
+     ------ ------------ -- ------------- ------------- ------------- -------------
+          1 x[Seattle,New-York]
+                         B              0             0               
+          2 x[Seattle,Chicago]
+                         B            300             0               
+          3 x[Seattle,Topeka]
+                         NL             0             0                       0.036
+          4 x[San-Diego,New-York]
+                         B            325             0               
+          5 x[San-Diego,Chicago]
+                         NL             0             0                       0.009
+          6 x[San-Diego,Topeka]
+                         B            275             0               
+     
+     End of output
+</pre>
+</pre>
+   </body></html>
+

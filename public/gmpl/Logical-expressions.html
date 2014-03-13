@@ -1,0 +1,338 @@
+<html lang="en">
+<head>
+<title>Logical expressions - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Expressions.html#Expressions" title="Expressions">
+<link rel="prev" href="Set-expressions.html#Set-expressions" title="Set expressions">
+<link rel="next" href="Linear-expressions.html#Linear-expressions" title="Linear expressions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Logical-expressions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Linear-expressions.html#Linear-expressions">Linear expressions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Set-expressions.html#Set-expressions">Set expressions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Expressions.html#Expressions">Expressions</a>
+<hr>
+</div>
+
+<h3 class="section">3.5 Logical expressions</h3>
+
+<p><dfn>Logical expression</dfn> is a rule for computing a single logical value,
+which can be either <i>true</i> or <i>false</i>.
+
+   <p>The primary logical expression may be a numeric expression, relational
+expression, iterated logical expression, or another logical expression
+enclosed in parentheses.
+
+   <p><strong>Examples</strong>
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="60%"><tt>i+1</tt> </td><td valign="top" width="40%">(numeric expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>a[i,j] &lt; 1.5</tt> </td><td valign="top" width="40%">(relational expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>s[i+1,j-1] &lt;> 'Mar' &amp; year</tt> </td><td valign="top" width="40%">(relational expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>(i+1,'Jan') not in I cross J</tt> </td><td valign="top" width="40%">(relational expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>S union T within A[i] inter B[j]</tt> </td><td valign="top" width="40%">(relational
+expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>forall{i in I, j in J} a[i,j] &lt; .5 * b</tt> </td><td valign="top" width="40%">(iterated
+expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>(a[i,j] &lt; 1.5 or b[i] >= a[i,j])</tt> </td><td valign="top" width="40%">(parenthesized
+expression)
+   <br></td></tr></table>
+</blockquote>
+
+   <p>More general logical expressions containing two or more primary logical
+expressions may be constructed by using certain logical operators.
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     not (a[i,j] &lt; 1.5 or b[i] &gt;= a[i,j]) and (i,j) in S
+     (i,j) in S or (i,j) not in T diff U
+</pre>
+   <h4 class="subheading">Numeric expressions</h4>
+
+<p>The resultant value of the primary logical expression, which is a
+numeric expression, is <i>true</i>, if the resultant value of the numeric
+expression is non-zero. Otherwise the resultant value of the logical
+expression is <i>false</i>.
+
+<h4 class="subheading">Relational expressions</h4>
+
+<p>In MathProg there are the following relational operators, which may be
+used in logical expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="50%"><i>x</i> <tt>&lt;</tt> <i>y</i> </td><td valign="top" width="50%">test on <i>x</i> &lt; <i>y</i>
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>x</i> <tt>&lt;=</tt> <i>y</i> </td><td valign="top" width="50%">test on
+$x\leq y$
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>x</i> <tt>=</tt> <i>y</i>, <i>x</i> <tt>==</tt> <i>y</i> </td><td valign="top" width="50%">test on
+<i>x</i> = <i>y</i>
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>x</i> <tt>>=</tt> <i>y</i> </td><td valign="top" width="50%">test on
+$x\geq y$
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>x</i> <tt>&lt;></tt> <i>y</i>, <i>x</i> <tt>!=</tt> <i>y</i> </td><td valign="top" width="50%">test on
+$x\neq y$
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>x</i> <tt>in</tt> <i>Y</i> </td><td valign="top" width="50%">test on
+$x\in Y$
+<br></td></tr><tr align="left"><td valign="top" width="50%">$(x_1,\dots,x_n)$  <tt>in</tt> $Y$  </td><td valign="top" width="50%">test on
+$(x_1,\dots,x_n)\in Y$
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>x</i> <tt>not in</tt> <i>Y</i>, <i>x</i> <tt>!in</tt> <i>Y</i> </td><td valign="top" width="50%">test on
+$x\not\in Y$
+<br></td></tr><tr align="left"><td valign="top" width="50%">$(x_1,\dots,x_n)$  <tt>not in</tt> $Y$ ,
+$(x_1,\dots,x_n)$  <tt>!in</tt> $Y$  </td><td valign="top" width="50%">test on
+$(x_1,\dots,x_n)\not\in Y$
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>X</i> <tt>within</tt> <i>Y</i> </td><td valign="top" width="50%">test on
+$X\subseteq Y$
+<br></td></tr><tr align="left"><td valign="top" width="50%"><i>X</i> <tt>not within</tt> <i>Y</i>, <i>X</i> <tt>!within</tt> <i>Y</i>
+</td><td valign="top" width="50%">test on
+$X\not\subseteq Y$
+   <br></td></tr></table>
+</blockquote>
+
+<p class="noindent">where <i>x</i>,
+$x_1$ , $\dots$, $x_n$ ,
+<i>y</i> are numeric or symbolic expressions, <i>X</i> and <i>Y</i> are set
+expression.
+
+   <p><i>Note:</i>
+
+   <blockquote>
+     <ol type=1 start=1>
+<li>In the operations <tt>in</tt>, <tt>not in</tt>, and <tt>!in</tt>
+the number of components in the first operands must be the same as the
+dimension of the second operand. 
+<li>In the operations <tt>within</tt>, <tt>not within</tt>, and
+<tt>!within</tt> both operands must have identical dimension.
+        </ol>
+</blockquote>
+
+   <p>All the relational operators listed above have their conventional
+mathematical meaning. The resultant value is <i>true</i>, if the
+corresponding relation is satisfied for its operands, otherwise
+<i>false</i>. (Note that symbolic values are ordered lexicographically,
+and any numeric value precedes any symbolic value.)
+
+<h4 class="subheading">Iterated expressions</h4>
+
+<p>Iterated logical expression is a primary logical expression, which has
+the following syntactic form:
+
+   <blockquote>
+<var>iterated-operator</var> <var>indexing-expression</var> <var>integrand</var>
+</blockquote>
+
+<p class="noindent">where <var>iterated-operator</var> is the symbolic name of the iterated
+operator to be performed (see below), <var>indexing expression</var> is an
+indexing expression which introduces dummy indices and controls
+iterating, <var>integrand</var> is a logical expression that participates in
+the operation.
+
+   <p>In MathProg there are two iterated operators, which may be used in
+logical expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="10%"><tt>forall</tt> </td><td valign="top" width="25%">$\forall$ -quantification </td><td valign="top" width="65%">
+$\forall(i_1,\dots,i_n)_{\in\Delta}[x(i_1,\dots,i_n)]$
+<br></td></tr><tr align="left"><td valign="top" width="10%"><tt>exists</tt> </td><td valign="top" width="25%">$\exists$ -quantification </td><td valign="top" width="65%">
+$\exists(i_1,\dots,i_n)_{\in\Delta}[x(i_1,\dots,i_n)]$
+   <br></td></tr></table>
+</blockquote>
+
+<p class="noindent">where
+$i_1$ , $\dots$, $i_n$
+are dummy indices introduced in the
+indexing expression,
+$\Delta$
+is the domain, a set of
+<i>n</i>-tuples specified by the indexing expression which defines
+particular values assigned to the dummy indices on performing the
+iterated operation,
+$x(i_1,\dots,i_n)$
+is the integrand, a logical expression whose resultant value depends on
+the dummy indices.
+
+   <p>For
+$\forall$ -quantification
+the resultant value of the iterated logical expression is <i>true</i>, if
+the value of the integrand is <i>true</i> for all <i>n</i>-tuples contained in
+the domain, otherwise <i>false</i>.
+
+   <p>For
+$\exists$ -quantification
+the resultant value of the iterated logical expression is <i>false</i>, if
+the value of the integrand is <i>false</i> for all <i>n</i>-tuples contained
+in the domain, otherwise <i>true</i>.
+
+<h4 class="subheading">Parenthesized expressions</h4>
+
+<p>Any logical expression may be enclosed in parentheses that syntactically
+makes it primary logical expression.
+
+   <p>Parentheses may be used in logical expressions, as in algebra, to
+specify the desired order in which operations are to be performed. Where
+parentheses are used, the expression within the parentheses is evaluated
+before the resultant value is used.
+
+   <p>The resultant value of the parenthesized expression is the same as the
+value of the expression enclosed within parentheses.
+
+<h4 class="subheading">Logical operators</h4>
+
+<p>In MathProg there are the following logical operators, which may be used
+in logical expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="30%"><tt>not</tt> <i>x</i>, <tt>!</tt> <i>x</i> </td><td valign="top" width="70%">negation
+<br></td></tr><tr align="left"><td valign="top" width="30%"><i>x</i> <tt>and</tt> <i>y</i>, <i>x</i> <tt>&amp;&amp;</tt> <i>y</i> </td><td valign="top" width="70%">
+conjunction (logical &ldquo;and&rdquo;)
+<br></td></tr><tr align="left"><td valign="top" width="30%"><i>x</i> <tt>or</tt> <i>y</i>, <i>x</i> <tt>||</tt> <i>y</i> </td><td valign="top" width="70%">
+disjunction (logical &ldquo;or&rdquo;)
+   <br></td></tr></table>
+</blockquote>
+
+<p class="noindent">where <i>x</i> and <i>y</i> are logical expressions.
+
+   <p>If the expression includes more than one logical operator, all
+operators are performed from left to right according to the hierarchy
+of operations (see below).
+
+   <p>The resultant value of the expression, which contains logical
+operators, is the result of applying the operators to their operands.
+
+<h4 class="subheading">Hierarchy of operations</h4>
+
+<p>The following list shows the hierarchy of operations in logical
+expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="70%"><i>Operation</i> </td><td valign="top" width="30%"><i>Hierarchy</i>
+<br></td></tr><tr align="left"><td valign="top" width="70%">Evaluation of numeric operations </td><td valign="top" width="30%">1st-7th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Evaluation of symbolic operations </td><td valign="top" width="30%">8th-9th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Evaluation of set operations </td><td valign="top" width="30%">10th-14th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Relational operations (<tt>&lt;</tt>, <tt>&lt;=</tt>, etc.) </td><td valign="top" width="30%">15th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Negation (<tt>not</tt>, <tt>!</tt>) </td><td valign="top" width="30%">16th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Conjunction (<tt>and</tt>, <tt>&amp;&amp;</tt>) </td><td valign="top" width="30%">17th
+<br></td></tr><tr align="left"><td valign="top" width="70%">$\forall$ - and $\exists$ -quantification
+(<tt>forall</tt>, <tt>exists</tt>) </td><td valign="top" width="30%">18th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Disjunction (<tt>or</tt>, <tt>||</tt>) </td><td valign="top" width="30%">19th
+   <br></td></tr></table>
+</blockquote>
+
+   <p>This hierarchy has the same meaning as explained in Section &ldquo;Numeric
+expressions&rdquo;.
+
+   </body></html>
+

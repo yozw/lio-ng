@@ -1,0 +1,392 @@
+<html lang="en">
+<head>
+<title>Indexing expressions and dummy indices - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Expressions.html#Expressions" title="Expressions">
+<link rel="prev" href="Symbolic-expressions.html#Symbolic-expressions" title="Symbolic expressions">
+<link rel="next" href="Set-expressions.html#Set-expressions" title="Set expressions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Indexing-expressions-and-dummy-indices"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Set-expressions.html#Set-expressions">Set expressions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Symbolic-expressions.html#Symbolic-expressions">Symbolic expressions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Expressions.html#Expressions">Expressions</a>
+<hr>
+</div>
+
+<h3 class="section">3.3 Indexing expressions and dummy indices</h3>
+
+<p><dfn>Indexing expression</dfn> is an auxiliary construction, which specifies
+a plain set of $n$ -tuples and introduces dummy indices. It has two
+syntactic forms:
+
+   <blockquote>
+<tt>{</tt> $entry_1,entry_2,\dots,entry_m$  <tt>}</tt>
+
+   <p><tt>{</tt> $entry_1,entry_2,\dots,entry_m$  : $predicate$
+<tt>}</tt>
+</blockquote>
+
+<p class="noindent">where $entry_1,entry_2,\dots,entry_m$  are indexing entries,
+$predicate$  is a logical expression which specifies an optional
+predicate.
+
+   <p>Each indexing entry in the indexing expression has one of the following
+three forms:
+
+   <blockquote>
+<i>t</i> <tt>in</tt> <i>S</i>
+
+   <p>$(t_1,t_2,\dots,t_k)$  <tt>in</tt> $S$
+
+   <p><i>S</i>
+</blockquote>
+
+<p class="noindent">where
+$t_1,t_2,\dots,t_k$
+are indices, <i>S</i> is a set expression (discussed in the next section),
+which specifies the basic set.
+
+   <p>The number of indices in the indexing entry must be the same as the
+dimension of the basic set <i>S</i>, i.e. if <i>S</i> consists of 1-tuples,
+the first form must be used, and if <i>S</i> consists of <i>n</i>-tuples,
+where <i>n</i>&nbsp;&gt;&nbsp;1, the second form must be used.
+
+   <p>If the first form of the indexing entry is used, the index <i>t</i> can
+be a dummy index only. If the second form is used, the indices
+$t_1,t_2,\dots,t_k$
+can be either dummy indices or some numeric or symbolic expressions,
+where at least one index must be a dummy index. The third, reduced form
+of the indexing entry has the same effect as if there were <i>t</i>
+(if <i>S</i> is 1-dimensional) or
+$t_1,t_2,\dots,t_k$
+(if $S$  is $n$ -dimensional) all specified as dummy indices.
+
+   <p><dfn>Dummy index</dfn> is an auxiliary model object, which acts like an
+individual variable. Values assigned to dummy indices are components
+of <i>n</i>-tuples from basic sets, i.e. some numeric and symbolic
+quantities.
+
+   <p>For referencing purposes dummy indices can be provided with symbolic
+names. However, unlike other model objects (sets, parameters, etc.) 
+dummy indices do not need to be explicitly declared. Each
+<em>undeclared</em> symbolic name being used in the indexing position of
+an indexing entry is recognized as the symbolic name of corresponding
+dummy index.
+
+   <p>Symbolic names of dummy indices are valid only within the scope of the
+indexing expression, where the dummy indices were introduced. Beyond
+the scope the dummy indices are completely inaccessible, so the same
+symbolic names may be used for other purposes, in particular, to
+represent dummy indices in other indexing expressions.
+
+   <p>The scope of indexing expression, where implicit declarations of dummy
+indices are valid, depends on the context, in which the indexing
+expression is used:
+
+     <ol type=1 start=1>
+<li>If the indexing expression is used in iterated operator, its
+scope extends until the end of the integrand. 
+<li>If the indexing expression is used as a primary set expression,
+its scope extends until the end of this indexing expression. 
+<li>If the indexing expression is used to define the subscript domain
+in declarations of some model objects, its scope extends until the end
+of the corresponding statement.
+        </ol>
+
+   <p>The indexing mechanism implemented by means of indexing expressions is
+best explained by some examples discussed below.
+
+   <p>Let there be three sets:
+
+   <blockquote>
+<i>A</i> = {4, 7, 9}
+
+   <p><i>B</i> = {(1,<i>Jan</i>), (1,<i>Feb</i>), (2,<i>Mar</i>), (2,<i>Apr</i>),
+(3,<i>May</i>), (3,<i>Jun</i>)}
+
+   <p><i>C</i> = {<i>a</i>, <i>b</i>, <i>c</i>}
+</blockquote>
+
+<p class="noindent">where <i>A</i> and <i>C</i> consist of 1-tuples (singles), <i>B</i> consists of
+2-tuples (doubles). And consider the following indexing expression:
+
+<pre class="example">     {i in A, (j,k) in B, l in C}
+</pre>
+   <p class="noindent">where <i>i</i>, <i>j</i>, <i>k</i>, and <i>l</i> are dummy indices.
+
+   <p>Although MathProg is not a procedural language, for any indexing
+expression an equivalent algorithmic description could be given. In
+particular, the algorithmic description of the indexing expression
+above is the following:
+
+   <blockquote>
+<b>for all</b> $i\in A$  <b>do</b>
+
+   <p><b>for all</b> $(j,k)\in B$  <b>do</b>
+
+   <p><b>for all</b> $l\in C$  <b>do</b>
+
+   <p><i>action</i>;
+</blockquote>
+
+<p class="noindent">where the dummy indices <i>i</i>, <i>j</i>, <i>k</i>, <i>l</i> are consecutively
+assigned corresponding components of <i>n</i>-tuples from the basic sets
+<i>A</i>, <i>B</i>, <i>C</i>, and <code>action</code> is some action that depends on
+the context, where the indexing expression is used. For example, if the
+<code>action</code> were printing current values of dummy indices, the output
+would look like follows:
+
+   <blockquote>
+$\matrix{
+i = 4 &amp; j = 1 &amp; k = Jan &amp; l = a \cr
+i = 4 &amp; j = 1 &amp; k = Jan &amp; l = b \cr
+i = 4 &amp; j = 1 &amp; k = Jan &amp; l = c \cr
+i = 4 &amp; j = 1 &amp; k = Feb &amp; l = a \cr
+i = 4 &amp; j = 1 &amp; k = Feb &amp; l = b \cr
+\dots &amp; \dots &amp; \dots   &amp; \dots \cr
+i = 9 &amp; j = 3 &amp; k = Jun &amp; l = b \cr
+i = 9 &amp; j = 3 &amp; k = Jun &amp; l = c \cr
+}$
+</blockquote>
+
+   <p>Let the example indexing expression be used in the following iterated
+operation:
+
+<pre class="example">     sum{i in A, (j,k) in B, l in C} p[i,j,k,l]
+</pre>
+   <p class="noindent">where <i>p</i>[<i>i</i>, <i>j</i>, <i>k</i>, <i>l</i>] may be a 4-dimensional numeric
+parameter or some numeric expression whose resultant value depends on
+<i>i</i>, <i>j</i>, <i>k</i>, and <i>l</i>. In this case the action is summation,
+so the resultant value of the primary numeric expression
+is:
+
+   <blockquote>
+$\displaystyle\sum_{i\in A,(j,k)\in B,l\in C}(p_{ijkl}).$
+</blockquote>
+
+   <p>Now let the example indexing expression be used as a primary set
+expression. In this case the action is gathering all 4-tuples
+(quadruples) of the form (<i>i</i>, <i>j</i>, <i>k</i>, <i>l</i>) in one set, so the
+resultant value of such operation is simply the Cartesian product of the
+basic sets:
+
+   <blockquote>
+$A\times B\times C=\{(i,j,k,l):i\in A,(j,k)\in B,l\in C\}.$
+</blockquote>
+
+<p class="noindent">Note that in this case the same indexing expression might be written
+in the reduced form:
+
+<pre class="example">     {A, B, C}
+</pre>
+   <p class="noindent">because the dummy indices <i>i</i>, <i>j</i>, <i>k</i>, and <i>l</i> are not
+referenced and therefore their symbolic names are not needed.
+
+   <p>Finally, let the example indexing expression be used as the subscript
+domain in the declaration of a 4-dimensional model object, say, a
+numeric parameter:
+
+<pre class="example">     par p{i in A, (j,k) in B, l in C} ... ;
+</pre>
+   <p class="noindent">In this case the action is generating the parameter members, where each
+member has the form <i>p</i>[<i>i</i>,&nbsp;<i>j</i>,&nbsp;<i>k</i>,&nbsp;<i>l</i>].
+
+   <p>As was said above, some indices in the second form of indexing entries
+may be numeric or symbolic expressions, not only dummy indices. In this
+case resultant values of such expressions play role of some logical
+conditions to select only that <i>n</i>-tuples from the Cartesian product
+of basic sets, which satisfy these conditions.
+
+   <p>Consider, for example, the following indexing expression:
+
+<pre class="example">     {i in A, (i-1,k) in B, l in C}
+</pre>
+   <p class="noindent">where <i>i</i>, <i>k</i>, <i>l</i> are dummy indices, and <i>i</i>&minus;1 is
+a numeric expression. The algorithmic decsription of this indexing
+expression is the following:
+
+   <blockquote>
+<b>for all</b> $i\in A$  <b>do</b>
+
+   <p><b>for all</b> $(j,k)\in B$  <b>and</b> $j=i-1$  <b>do</b>
+
+   <p><b>for all</b> $l\in C$  <b>do</b>
+
+   <p><i>action</i>;
+</blockquote>
+
+<p class="noindent">Thus, if this indexing expression were used as a primary set expression,
+the resultant set would be the following:
+
+   <blockquote>
+{(4,<i>May</i>,<i>a</i>), (4,<i>May</i>,<i>b</i>), (4,<i>May</i>,<i>c</i>),
+(4,<i>Jun</i>,<i>a</i>), (4,<i>Jun</i>,<i>b</i>), (4,<i>Jun</i>,<i>c</i>)}. 
+</blockquote>
+
+<p class="noindent">Should note that in this case the resultant set consists of 3-tuples,
+not of 4-tuples, because in the indexing expression there is no dummy
+index that corresponds to the first component of 2-tuples from the set
+<i>B</i>.
+
+   <p>The general rule is: the number of components of <i>n</i>-tuples defined
+by an indexing expression is the same as the number of dummy indices in
+that indexing expression, where the correspondence between dummy indices
+and components on $n$ -tuples in the resultant set is positional,
+i.e. the first dummy index corresponds to the first component, the
+second dummy index corresponds to the second component, etc.
+
+   <p>In many cases it is needed to select a subset from the Cartesian
+product of some sets. This may be attained by using an optional logical
+predicate, which is specified in indexing expression after the last or
+the only indexing entry.
+
+   <p>Consider, for another example, the following indexing expression:
+
+<pre class="example">     {i in A, (j,k) in B, l in C: i &lt;= 5 and k &lt;&gt; 'Mar'}
+</pre>
+   <p class="noindent">where the logical expression following the colon is a predicate. The
+algorithmic description of this indexing expression is the following:
+
+   <blockquote>
+<b>for all</b> $i\in A$  <b>do</b>
+
+   <p><b>for all</b> $(j,k)\in B$  <b>do</b>
+
+   <p><b>for all</b> $l\in C$  <b>do</b>
+
+   <p><b>if</b> $i\leq 5$  <b>and</b> $k\neq$  `<i>Mar</i>'
+<b>then</b>
+
+   <p><i>action</i>;
+</blockquote>
+
+<p class="noindent">Thus, if this indexing expression were used as a primary set expression,
+the resultant set would be the following:
+
+   <blockquote>
+{(4,1,<i>Jan</i>,<i>a</i>), (4,1,<i>Feb</i>,<i>a</i>), (4,2,<i>Apr</i>,<i>a</i>),
+$\dots$, (4,3,<i>Jun</i>,<i>c</i>)}. 
+</blockquote>
+
+   <p>If no predicate is specified in the indexing expression, the one, which
+takes on the value <i>true</i>, is assumed.
+
+   </body></html>
+

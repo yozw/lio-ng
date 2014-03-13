@@ -1,0 +1,197 @@
+<html lang="en">
+<head>
+<title>Printf statement - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Statements.html#Statements" title="Statements">
+<link rel="prev" href="Display-statement.html#Display-statement" title="Display statement">
+<link rel="next" href="For-statement.html#For-statement" title="For statement">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Printf-statement"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="For-statement.html#For-statement">For statement</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Display-statement.html#Display-statement">Display statement</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Statements.html#Statements">Statements</a>
+<hr>
+</div>
+
+<h3 class="section">4.9 Printf statement</h3>
+
+<p><table class="cartouche" summary="cartouche" border="1"><tr><td>
+<tt> printf</tt> <var>domain</var> <tt>:</tt> <var>format</var> <tt>,</tt>
+<var>expression</var> <tt>,</tt> $\dots$ <tt>,</tt> <var>expression</var>
+<tt>;</tt>
+
+<p class="noindent"><tt> printf</tt> <var>domain</var> <tt>:</tt> <var>format</var> <tt>,</tt>
+<var>expression</var> <tt>,</tt> $\dots$ <tt>,</tt> <var>expression</var>
+<tt>></tt> <var>filename</var> <tt>;</tt>
+
+<p class="noindent"><tt> printf</tt> <var>domain</var> <tt>:</tt> <var>format</var> <tt>,</tt>
+<var>expression</var> <tt>,</tt> $\dots$ <tt>,</tt> <var>expression</var>
+<tt>>></tt> <var>filename</var> <tt>;</tt>
+</td></tr></table>
+
+     <dl>
+<dt>Where:<dd><var>domain</var> is an optional indexing expression which specifies the
+subscript domain of the printf statement;
+<br><dt><dd><var>format</var> is a symbolic expression whose value specifies a format
+control string. (The colon preceding the format expression may be
+omitted.) 
+<br><dt><dd><var>expression</var>, $\dots$, <var>expression</var> are zero or more expressions
+whose values have to be formatted and printed. Each expression must be
+of numeric, symbolic, or logical type. 
+<br><dt><dd><var>filename</var> is a symbolic expression whose value specifies the name
+of a text file, to which the printf output should be redirected. The
+flag <code>&gt;</code> means creating a new empty file while the flag <code>&gt;&gt;</code>
+means appending the output to an existing file. If no file name is
+specified, the output is written to the terminal. 
+</dl>
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     printf 'Hello, world!\n';
+     printf: "x = %.3f; y = %.3f; z = %.3f\n", x, y, z &gt; "result.txt";
+     printf{i in I, j in J}: "flow from %s to %s is %d\n", i, j, x[i,j];
+     printf{i in I} 'total flow from %s is %g\n', i, sum{j in J} x[i,j];
+     printf{k in K} "x[%s] = " &amp; (if x[k] &lt; 0 then "?" else "%g"), k, x[k];
+</pre>
+   <p>The printf statement is similar to the display statement, however, it
+allows formatting the data to be written.
+
+   <p>If the subscript domain is not specified, the printf statement is
+executed only once. Specifying the subscript domain causes executing
+the printf statement for every <i>n</i>-tuple in the domain set. In the
+latter case <var>format</var> and <var>expressions</var> may include dummy indices
+introduced in the corresponding indexing expression.
+
+   <p>The format control string is a value of the symbolic expression
+<var>format</var> specified in the printf statement. It is composed of zero
+or more directives as follows: ordinary characters (not <code>%</code>), which
+are copied unchanged to the output stream, and conversion
+specifications, each of which causes evaluating corresponding
+<var>expression</var> specified in the printf statement, formatting it, and
+writing the resultant value to the output stream.
+
+   <p>Conversion specifications which may be used in the format control
+string are the following: <code>d</code>, <code>i</code>, <code>f</code>, <code>F</code>,
+<code>e</code>, <code>E</code>, <code>g</code>, <code>G</code>, and <code>s</code>. These
+specifications have the same syntax and semantics as in the C
+programming language.
+
+   </body></html>
+

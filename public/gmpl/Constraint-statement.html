@@ -1,0 +1,232 @@
+<html lang="en">
+<head>
+<title>Constraint statement - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Statements.html#Statements" title="Statements">
+<link rel="prev" href="Variable-statement.html#Variable-statement" title="Variable statement">
+<link rel="next" href="Objective-statement.html#Objective-statement" title="Objective statement">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Constraint-statement"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Objective-statement.html#Objective-statement">Objective statement</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Variable-statement.html#Variable-statement">Variable statement</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Statements.html#Statements">Statements</a>
+<hr>
+</div>
+
+<h3 class="section">4.4 Constraint statement</h3>
+
+<p><table class="cartouche" summary="cartouche" border="1"><tr><td>
+<tt> subject to</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>:</tt>
+<var>expression</var> <tt>,</tt> <tt>=</tt> <var>expression</var> <tt>;</tt>
+
+<p class="noindent"><tt> subject to</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>:</tt>
+<var>expression</var> <tt>,</tt> <tt>&lt;=</tt> <var>expression</var> <tt>;</tt>
+
+<p class="noindent"><tt> subject to</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>:</tt>
+<var>expression</var> <tt>,</tt> <tt>>=</tt> <var>expression</var> <tt>;</tt>
+
+<p class="noindent"><tt> subject to</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>:</tt>
+<var>expression</var> <tt>,</tt> <tt>&lt;=</tt> <var>expression</var> <tt>,</tt>
+<tt>&lt;=</tt> <var>expression</var> <tt>;</tt>
+
+<p class="noindent"><tt> subject to</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>:</tt>
+<var>expression</var> <tt>,</tt> <tt>>=</tt> <var>expression</var> <tt>,</tt>
+<tt>>=</tt> <var>expression</var> <tt>;</tt>
+</td></tr></table>
+
+     <dl>
+<dt>Where:<dd><var>name</var> is the symbolic name of the constraint;
+<br><dt><dd><var>alias</var> is an optional string literal which specifies the alias of
+the constraint;
+<br><dt><dd><var>domain</var> is an optional indexing expression which specifies the
+subscript domain of the constraint;
+<br><dt><dd><var>expressions</var> are linear expressions for computing components of the
+constraint. (Commae following expressions may be omitted.) 
+</dl>
+
+     <dl>
+<dt>Note:<dd>The keyword <code>subject to</code> may be reduced to <code>subj to</code>, or to
+<code>s.t.</code>, or be omitted at all. 
+</dl>
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     s.t. r: x + y + z, &gt;= 0, &lt;= 1;
+     limit{t in 1..T}: sum{j in prd} make[j,t] &lt;= max_prd;
+     subject to balance{i in raw, t in 1..T}:
+        store[i,t+1] - store[i,t] - sum{j in prd} units[i,j] * make[j,t];
+     subject to rlim 'regular-time limit' {t in time}:
+        sum{p in prd} pt[p] * rprd[p,t] &lt;= 1.3 * dpp[t] * crews[t];
+</pre>
+   <p>The constraint statement declares a constraint. If the subscript domain
+is not specified, the constraint is a simple (scalar) constraint,
+otherwise it is a <i>n</i>-dimensional array of elemental constraints.
+
+   <p>Elemental constraint(s) associated with the model constraint (if it is
+a simple constraint) or its members (if it is an array) correspond to
+the linear constraints in the LP/MIP problem formulation (see Section
+&ldquo;Linear programming problem&rdquo;).
+
+   <p>If the constraint has the form of equality or single inequality, i.e. 
+includes two expressions, one of which follows the colon and other
+follows the relation sign <code>=</code>, <code>&lt;=</code>, or <code>&gt;=</code>, both
+expressions in the statement can be linear expressions. If the
+constraint has the form of double inequality, i.e. includes three
+expressions, the middle expression can be a linear expression while the
+leftmost and rightmost ones can be only numeric expressions.
+
+   <p>Generating the model is, generally speaking, generating its constraints,
+which are always evaluated for the entire subscript domain. Evaluating
+constraints leads, in turn, to evaluating other model objects such as
+sets, parameters, and variables.
+
+   <p>Constructing the actual linear constraint included in the problem
+instantce, which (constraint) corresponds to a particular elemental
+constraint, is performed as follows.
+
+   <p>If the constraint has the form of equality or single inequality,
+evaluation of both linear expressions gives two resultant linear forms:
+$$\matrix{
+f=a_1x_1+a_2x_2+\dots+a_nx_n+a_0,\cr
+g=b_1x_1+b_2x_2+\dots+b_nx_n+b_0,\cr
+}$$
+where $x_1$ , $x_2$ , $\dots$, $x_n$  are elemental variables,
+$a_1$ , $a_2$ , $\dots$, $a_n$ , $b_1$ , $b_2$ ,
+$\dots$, $b_n$  are numeric coefficients, $a_0$  and $b_0$
+are constant terms. 
+Then all linear terms of <i>f</i> and <i>g</i> are carried to the left-hand
+side, and the constant terms are carried to the right-hand side that
+gives the final elemental constraint in the standard form:
+$$
+(a_1-b_1)x_1+(a_2-b_2)x_2+\dots+(a_n-b_n)x_n
+\left\{ \matrix{=\cr\leq\cr\geq\cr}\right\}b_0-a_0. 
+$$
+
+   <p>If the constraint has the form of double inequality, evaluation of the
+middle linear expression gives the resultant linear form:
+$$f=a_1x_1+a_2x_2+\dots+a_nx_n+a_0,$$
+and evaluation of the leftmost and rightmost numeric expressions gives
+two numeric values <i>l</i> and <i>u</i>. Then the constant term of the linear
+form is carried to both left-hand and right-hand sides that gives the
+final elemental constraint in the standard form:
+$$l-a_0\leq a_1x_1+a_2x_2+\dots+a_nx_n\leq u-a_0.$$
+
+   </body></html>
+

@@ -1,0 +1,346 @@
+<html lang="en">
+<head>
+<title>Set data block - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Model-data.html#Model-data" title="Model data">
+<link rel="prev" href="Coding-data-section.html#Coding-data-section" title="Coding data section">
+<link rel="next" href="Parameter-data-block.html#Parameter-data-block" title="Parameter data block">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Set-data-block"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Parameter-data-block.html#Parameter-data-block">Parameter data block</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Coding-data-section.html#Coding-data-section">Coding data section</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Model-data.html#Model-data">Model data</a>
+<hr>
+</div>
+
+<h3 class="section">5.2 Set data block</h3>
+
+<p><table class="cartouche" summary="cartouche" border="1"><tr><td>
+<tt> set</tt> <var>name</var> <tt>,</tt> <var>record</var> <tt>,</tt>
+$\dots$ <tt>,</tt> <var>record</var> <tt>;</tt>
+
+<p class="noindent"><tt> set</tt> <var>name</var> <tt>[</tt> <var>symbol</var> <tt>,</tt>
+$\dots$ <tt>,</tt> <var>symbol</var> <tt>]</tt> <tt>,</tt> <var>record</var>
+<tt>,</tt> $\dots$ <tt>,</tt> <var>record</var> <tt>;</tt>
+</td></tr></table>
+
+     <dl>
+<dt>Where:<dd><var>name</var> is a symbolic name of the set;
+<br><dt><dd><var>symbol</var>, $\dots$, <var>symbol</var> are subscripts which specify a
+particular member of the set (if the set is an array, i.e. a set of
+sets);
+<br><dt><dd><var>record</var>, $\dots$, <var>record</var> are data records. 
+</dl>
+
+     <dl>
+<dt>Note:<dd>Commae preceding data records may be omitted. 
+</dl>
+
+<p class="noindent">Data records:
+
+     <dl>
+<dt><tt>:=</tt><dd>is a non-significant data record which may be used freely to improve
+readability;
+<br><dt><tt>(</tt> <var>slice</var> <tt>)</tt><dd>specifies a slice;
+<br><dt><var>simple-data</var><dd>specifies set data in the simple format;
+<br><dt><tt>:</tt> <var>matrix-data</var><dd>specifies set data in the matrix format;
+<br><dt><tt>(tr) :</tt> <var>matrix-data</var><dd>specifies set data in the transposed matrix format. (In this case the
+colon following the keyword <tt>(tr)</tt> may be omitted.) 
+</dl>
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     set month := Jan Feb Mar Apr May Jun;
+     set month "Jan", "Feb", "Mar", "Apr", "May", "Jun";
+     set A[3,Mar] := (1,2) (2,3) (4,2) (3,1) (2,2) (4,4) (3,4);
+     set A[3,'Mar'] := 1 2 2 3 4 2 3 1 2 2 4 4 2 4;
+     set A[3,'Mar'] : 1 2 3 4 :=
+                    1 - + - -
+                    2 - + + -
+                    3 + - - +
+                    4 - + - + ;
+     set B := (1,2,3) (1,3,2) (2,3,1) (2,1,3) (1,2,2) (1,1,1) (2,1,1);
+     set B := (*,*,*) 1 2 3, 1 3 2, 2 3 1, 2 1 3, 1 2 2, 1 1 1, 2 1 1;
+     set B := (1,*,2) 3 2 (2,*,1) 3 1 (1,2,3) (2,1,3) (1,1,1);
+     set B := (1,*,*) : 1 2 3 :=
+                      1 + - -
+                      2 - + +
+                      3 - + -
+              (2,*,*) : 1 2 3 :=
+                      1 + - +
+                      2 - - -
+                      3 + - - ;
+</pre>
+   <p class="noindent">(In these examples the set <code>month</code> is a simple set of singles,
+<code>A</code> is a 2-dimensional array of doubles, and <code>B</code> is a simple
+set of triples. Data blocks for the same set are equivalent in the sense
+that they specify the same data in different formats.)
+
+   <p>The set data block is used to specify a complete elemental set, which
+is assigned to a set (if it is a simple set) or one of its members (if
+the set is an array of sets).<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+   <p>Data blocks can be specified only for non-computable sets, i.e. sets
+which have no assign attribute in the corresponding set statements.
+
+   <p>If the set is a simple set, only its symbolic name should be given in
+the header of the data block. Otherwise, if the set is a
+<i>n</i>-dimensional array, its symbolic name should be provided with a
+complete list of subscripts separated by commae and enclosed in square
+brackets to specify a particular member of the set array. The number of
+subscripts must be the same as the dimension of the set array, where
+each subscript must be a number or symbol.
+
+   <p>The elemental set defined in the set data block is coded as a sequence
+of data records described below.<a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a>
+
+<h4 class="subheading">Assign data record</h4>
+
+<p>The assign (<code>:=</code>) data record is a non-signficant element. It may
+be used for improving readability of data blocks.
+
+<h4 class="subheading">Slice data record</h4>
+
+<p>The slice data record is a control record which specifies a slice of
+the elemental set defined in the data block. It has the following
+syntactic form:
+
+   <blockquote>
+<tt>(</tt> $s_1$  <tt>,</tt> $s_2$  <tt>,</tt> $\dots$ <tt>,</tt>
+$s_n$  <tt>)</tt>
+</blockquote>
+
+<p class="noindent">where $s_1$ , $s_2$ , $\dots$, $s_n$  are components of the
+slice.
+
+   <p>Each component of the slice can be a number or symbol or the asterisk
+(<tt>*</tt>). The number of components in the slice must be the same as
+the dimension of <i>n</i>-tuples in the elemental set to be defined. For
+instance, if the elemental set contains 4-tuples (quadruples), the slice
+must have four components. The number of asterisks in the slice is
+called <dfn>slice dimension</dfn>.
+
+   <p>The effect of using slices is the following. If a <i>m</i>-dimensional
+slice (i.e. a slice which has $m$  asterisks) is specified in the
+data block, all subsequent data records must specifiy tuples of the
+dimension <i>m</i>. Whenever a $m$ -tuple is encountered, each
+asterisk in the slice is replaced by corresponding components of the
+$m$ -tuple that gives the resultant <i>n</i>-tuple, which is included
+in the elemental set to be defined. For example, if the slice
+<tt>(a,*,1,2,*)</tt> is in effect, and 2-tuple <tt>(3,b)</tt> is encountered
+in a subsequent data record, the resultant 5-tuple included in the
+elemental set is <tt>(a,3,1,2,b)</tt>.
+
+   <p>The slice that has no asterisks itself defines a complete <i>n</i>-tuple,
+which is included in the elemental set.
+
+   <p>Being once specified the slice effects until either a new slice or the
+end of data block has been encountered. Note that if there is no slice
+specified in the data block, a dummy one, components of which are all
+asterisks, is assumed.
+
+<h4 class="subheading">Simple data record</h4>
+
+<p>The simple data record defines one <i>n</i>-tuple in simple format and has
+the following syntactic form:
+
+   <blockquote>
+$t_1$  <tt>,</tt> $t_2$  <tt>,</tt> $\dots$ <tt>,</tt> $t_n$
+</blockquote>
+
+<p class="noindent">where $t_1$ , $t_2$ , $\dots$, $t_n$  are components of the
+<i>n</i>-tuple. Each component can be a number or symbol. Commae between
+components are optional and may be omitted.
+
+<h4 class="subheading">Matrix data record</h4>
+
+<p>The matrix data record defines several 2-tuples (doubles) in matrix
+format and has the following syntactic form:
+
+   <blockquote>
+$\matrix{
+{\tt :} &amp; c_1 &amp; c_2 &amp; \dots &amp; c_n &amp; {\tt :=} \cr
+r_1 &amp; a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} &amp; \cr
+r_2 &amp; a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} &amp; \cr
+\dots &amp; \dots &amp; \dots &amp; \dots &amp; \dots &amp; \cr
+r_m &amp; a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} &amp; \cr
+}$
+</blockquote>
+
+<p class="noindent">where $r_1$ , $r_2$ , $\dots$, $r_m$  are numbers and/or
+symbols which correspond to rows of the matrix, $c_1$ , $c_2$ ,
+$\dots$, $c_n$  are numbers and/or symbols which correspond to columns
+of the matrix, $a_{11}$ , $a_{12}$ , $\dots$, $a_{mn}$  are
+the matrix elements, which can be either the sign <code>+</code> or the sign
+<code>-</code>. (In this data record the delimiter <code>:</code> preceding the
+column list and the delimiter <code>:=</code> following the column list cannot
+be omitted.)
+
+   <p>Each element $a_{ij}$  of the matrix data block (where
+$1\leq i\leq m$ , $1\leq j\leq n$ ) corresponds to 2-tuple
+$(r_i, c_j)$ . If $a_{ij}$  is the plus sign (<code>+</code>), the
+corresponding 2-tuple (or a longer <i>n</i>-tuple, if a slice is used)
+is included in the elemental set. Otherwise, if $a_{ij}$  is the
+minus sign (<code>-</code>) sign, the corresponding 2-tuple is not included
+in the elemental set.
+
+   <p>Since the matrix data record defines 2-tuples, either the elemental
+set must consist of 2-tuples or the slice currently used must be
+2-dimensional.
+
+<h4 class="subheading">Transposed matrix data record</h4>
+
+<p>The transposed matrix data record has the following syntactic form:
+
+   <blockquote>
+$\matrix{
+{\tt (tr)\ :} &amp; c_1 &amp; c_2 &amp; \dots &amp; c_n &amp; {\tt :=} \cr
+r_1 &amp; a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} &amp; \cr
+r_2 &amp; a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} &amp; \cr
+\dots &amp; \dots &amp; \dots &amp; \dots &amp; \dots &amp; \cr
+r_m &amp; a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} &amp; \cr
+}$
+</blockquote>
+
+<p class="noindent">(In this case the delimiter <code>:</code> following the keyword <code>(tr)</code>
+is optional and may be omitted.)
+
+   <p>This data record is completely analogous to the matrix data record (see
+above) with the only exception that each element
+$a_{ij}$  of the matrix corresponds to 2-tuple $(c_j,r_i)$ .
+
+   <p>Being once specified the <code>(tr)</code> indicator effects on <em>all</em>
+subsequent data records until either a slice or the end of data block
+has been encountered.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> There is another way to specify
+data for a simple set along with data for parameters. This feature is
+discussed in the next section.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> <dfn>Data record</dfn> is simply a
+technical term. It <em>does not mean</em> that data records have any
+special formatting.</p>
+
+   <hr></div>
+
+   </body></html>
+

@@ -1,0 +1,395 @@
+<html lang="en">
+<head>
+<title>Parameter data block - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Model-data.html#Model-data" title="Model data">
+<link rel="prev" href="Set-data-block.html#Set-data-block" title="Set data block">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Parameter-data-block"></a>
+<p>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Set-data-block.html#Set-data-block">Set data block</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Model-data.html#Model-data">Model data</a>
+<hr>
+</div>
+
+<h3 class="section">5.3 Parameter data block</h3>
+
+<p><table class="cartouche" summary="cartouche" border="1"><tr><td>
+<tt> param</tt> <var>name</var> <tt>,</tt> <var>record</var> <tt>,</tt> $\dots$
+<tt>,</tt> <var>record</var> <tt>;</tt>
+
+<p class="noindent"><tt> param</tt> <var>name</var> <tt>default</tt> <var>value</var> <tt>,</tt>
+<var>record</var> <tt>,</tt> $\dots$ <tt>,</tt> <var>record</var> <tt>;</tt>
+
+<p class="noindent"><tt> param</tt> <tt>:</tt> <var>tabbing-data</var> <tt>;</tt>
+
+<p class="noindent"><tt> param</tt> <tt>default</tt> <var>value</var> <tt>:</tt>
+<var>tabbing-data</var> <tt>;</tt>
+</td></tr></table>
+
+     <dl>
+<dt>Where:<dd><var>name</var> is a symbolic name of the parameter;
+<br><dt><dd><var>value</var> is an optional default value of the parameter;
+<br><dt><dd><var>record</var>, $\dots$, <var>record</var> are data records. 
+<br><dt><dd><var>tabbing-data</var> specifies parameter data in the tabbing format. 
+</dl>
+
+     <dl>
+<dt>Note:<dd>Commae preceding data records may be omitted. 
+</dl>
+
+<p class="noindent">Data records:
+
+     <dl>
+<dt><tt>:=</tt><dd>is a non-significant data record which may be used freely to improve
+readability;
+<br><dt><tt>[</tt> <var>slice</var> <tt>]</tt><dd>specifies a slice;
+<br><dt><var>plain-data</var><dd>specifies parameter data in the plain format;
+<br><dt><tt>:</tt> <var>tabular-data</var><dd>specifies parameter data in the tabular format;
+<br><dt><tt>(tr) :</tt> <var>tabular-data</var><dd>specifies parameter data in the transposed tabular format. (In this case
+the colon following the keyword <tt>(tr)</tt> may be omitted.) 
+</dl>
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     param T := 4;
+     param month := 1 Jan 2 Feb 3 Mar 4 Apr 5 May;
+     param month := [1] 'Jan', [2] 'Feb', [3] 'Mar', [4] 'Apr', [5] 'May';
+     param init_stock := iron 7.32 nickel 35.8;
+     param init_stock [*] iron 7.32, nickel 35.8;
+     param cost [iron] .025 [nickel] .03;
+     param value := iron -.1, nickel .02;
+     param       : init_stock  cost  value :=
+           iron       7.32     .025   -.1
+           nickel    35.8      .03     .02 ;
+     param : raw : init stock  cost  value :=
+             iron     7.32     .025   -.1
+             nickel  35.8      .03     .02 ;
+     param demand default 0 (tr)
+            :  FRA  DET  LAN  WIN  STL  FRE  LAF :=
+        bands  300   .   100   75   .   225  250
+        coils  500  750  400  250   .   850  500
+        plate  100   .    .    50  200   .   250 ;
+     param trans_cost :=
+        [*,*,bands]:  FRA  DET  LAN  WIN  STL  FRE  LAF :=
+              GARY     30   10    8   10   11   71    6
+              CLEV     22    7   10    7   21   82   13
+              PITT     19   11   12   10   25   83   15
+        [*,*,coils]:  FRA  DET  LAN  WIN  STL  FRE  LAF :=
+              GARY     39   14   11   14   16   82    8
+              CLEV     27    9   12    9   26   95   17
+              PITT     24   14   17   13   28   99   20
+        [*,*,plate]:  FRA  DET  LAN  WIN  STL  FRE  LAF :=
+              GARY     41   15   12   16   17   86    8
+              CLEV     29    9   13    9   28   99   18
+              PITT     26   14   17   13   31  104   20 ;
+</pre>
+   <p>The parameter data block is used to specify complete data for a
+parameter (or parameters, if data are specified in the tabbing format)
+whose name is given in the block.
+
+   <p>Data blocks can be specified only for the parameters, which are
+non-computable, i.e. which have no assign attribute in the corresponding
+parameter statements.
+
+   <p>Data defined in the parameter data block are coded as a sequence of
+data records described below. Additionally the data block can be
+provided with the optional <code>default</code> attribute, which specifies
+a default numeric or symbolic value of the parameter (parameters). This
+default value is assigned to the parameter or its members, if
+no appropriate value is defined in the parameter data block. The
+<code>default</code> attribute cannot be used, if it is already specified in
+the corresponding parameter statement(s).
+
+<h4 class="subheading">Assign data record</h4>
+
+<p>The assign (<code>:=</code>) data record is a non-signficant element. It may
+be used for improving readability of data blocks.
+
+<h4 class="subheading">Slice data record</h4>
+
+<p>The slice data record is a control record which specifies a slice of
+the parameter array. It has the following syntactic form:
+
+   <blockquote>
+<tt>[</tt> $s_1$  <tt>,</tt> $s_2$  <tt>,</tt> $\dots$ <tt>,</tt>
+$s_n$  <tt>]</tt>
+</blockquote>
+
+<p class="noindent">where $s_1$ , $s_2$ , $\dots$, $s_n$  are components of the
+slice.
+
+   <p>Each component of the slice can be a number or symbol or the asterisk
+(<code>|*|</code>). The number of components in the slice must be the same as
+the dimension of the parameter. For instance, if the parameter is a
+4-dimensional array, the slice must have four components. The number of
+asterisks in the slice is called <dfn>slice dimension</dfn>.
+
+   <p>The effect of using slices is the following. If a <i>m</i>-dimensional
+slice (i.e. a slice which has <i>m</i> asterisks) is specified in the
+data block, all subsequent data records must specify subscripts of the
+parameter members as if the parameter were <i>m</i>-dimensional, not
+<i>n</i>-dimensional.
+
+   <p>Whenever <i>m</i> subscripts are encountered, each asterisk in the slice is
+replaced by corresponding subscript that gives <i>n</i> subscripts, which
+define the actual parameter member. For example, if the slice
+<tt>[a,*,1,2,*]</tt> is in effect, and the subscripts <tt>3</tt> and <tt>b</tt> are
+encountered in a subsequent data record, the complete subscript list
+used to choose a parameter member is <tt>[a,3,1,2,b]</tt>.
+
+   <p>It is allowed to specify a slice that has no asterisks. Such slice
+itself defines a complete subscript list, in which case the next data
+record can define only a single value of the corresponding parameter
+member.
+
+   <p>Being once specified the slice effects until either a new slice or the
+end of data block has been encountered. Note that if there is no slice
+specified in the data block, a dummy one, components of which are all
+asterisks, is assumed.
+
+<h4 class="subheading">Plain data record</h4>
+
+<p>The plain data record defines the subscript list and a single value in
+plain format. This record has the following syntactic form:
+
+   <blockquote>
+$t_1$  <tt>,</tt> $t_2$  <tt>,</tt> $\dots$ <tt>,</tt> $t_n$
+<tt>,</tt> $v$
+</blockquote>
+
+<p class="noindent">where $t_1$ , $t_2$ , $\dots$, $t_n$  are subscripts, $v$
+is a value. Each subscript as well as the value can be a number or
+symbol. Commae following subscripts are optional and may be omitted.
+
+   <p>In case of 0-dimensional parameter or slice the plain data record have
+no subscripts and consists of a single value only.
+
+<h4 class="subheading">Tabular data record</h4>
+
+<p>The tabular data record defines several values, where each value is
+provided with two subscripts. This record has the following syntactic
+form:
+
+   <blockquote>
+$\matrix{
+{\tt :} &amp; c_1 &amp; c_2 &amp; \dots &amp; c_n &amp; {\tt :=} \cr
+r_1 &amp; a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} &amp; \cr
+r_2 &amp; a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} &amp; \cr
+\dots &amp; \dots &amp; \dots &amp; \dots &amp; \dots &amp; \cr
+r_m &amp; a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} &amp; \cr
+}$
+</blockquote>
+
+<p class="noindent">where $r_1$ , $r_2$ , $\dots$, $r_m$  are numbers and/or
+symbols which correspond to rows of the table, $c_1$ , $c_2$ ,
+$\dots$, $c_n$  are numbers and/or symbols which correspond to columns
+of the table, $a_{11}$ , $a_{12}$ , $\dots$, $a_{mn}$  are the
+table elements. Each element can be a number or symbol or the single
+decimal point. (In this data record the delimiter <tt>:</tt> preceding
+the column list and the delimiter <tt>:=</tt> following the column list
+cannot be omitted.)
+
+   <p>Each element $a_{ij}$  of the tabular data block
+($1\leq i\leq m$ , $1\leq j\leq n$ ) defines two subscripts,
+where the first subscript is $r_i$ , and the second one is
+$c_j$ . These subscripts are used in conjunction with the current
+slice to form the complete subscript list which identifies a particular
+member of the parameter array. If $a_{ij}$  is a number or symbol,
+this value is assigned to the parameter member. However, if
+$a_{ij}$  is the single decimal point, the member is assigned
+a default value specified either in the parameter data block or in the
+parameter statement, or, if no default value is specified, the member
+remains undefined.
+
+   <p>Since the tabular data record provides two subscripts for each value,
+either the parameter or the slice currently used must be 2-dimensional.
+
+<h4 class="subheading">Transposed tabular data record</h4>
+
+<p>The transposed tabular data record has the following syntactic form:
+
+   <blockquote>
+$\matrix{
+{\tt (tr)\ :} &amp; c_1 &amp; c_2 &amp; \dots &amp; c_n &amp; {\tt :=} \cr
+r_1 &amp; a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} &amp; \cr
+r_2 &amp; a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} &amp; \cr
+\dots &amp; \dots &amp; \dots &amp; \dots &amp; \dots &amp; \cr
+r_m &amp; a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} &amp; \cr
+}$
+</blockquote>
+
+<p class="noindent">(In this case the delimiter <code>:</code> following the keyword <code>(tr)</code>
+is optional and may be omitted.)
+
+   <p>This data record is completely analogous to the tabular data record (see
+above) with the only exception that the first subscript defined by the
+element
+$a_{ij}$  is $c_j$  while the second one is $r_i$ .
+
+   <p>Being once specified the <code>(tr)</code> indicator effects on all subsequent
+data records until either a slice or the end of data block has been
+encountered.
+
+<h4 class="subheading">Tabbing data format</h4>
+
+<p>The parameter data block in the tabbing format has the following
+syntactic form:
+
+   <blockquote>
+$\matrix{
+{\tt param\ default}\ {\it value} : s :&amp;p_1\ ,&amp;p_2\ ,&amp;\dots\ ,&amp;p_k
+\ :=\cr
+\hfill t_{11}\ ,\ t_{12}\ ,\ \dots\ ,\ t_{1n}\ ,&amp;a_{11}\ ,&amp;a_{12}\ ,&amp;
+\dots\ ,&amp;a_{1k}\hfill\cr
+\hfill t_{21}\ ,\ t_{22}\ ,\ \dots\ ,\ t_{2n}\ ,&amp;a_{21}\ ,&amp;a_{22}\ ,&amp;
+\dots\ ,&amp;a_{2k}\hfill\cr
+\ \ \ \ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .&amp;
+\dots&amp;\dots&amp;\dots\ \ &amp;\dots\ \ \ \cr
+\hfill t_{m1}\ ,\ t_{m2}\ ,\ \dots\ ,\ t_{mn}\ ,&amp;a_{m1}\ ,&amp;a_{m2}\ ,&amp;
+\dots\ ,&amp;a_{mk}\ ;\hfill\cr
+}$
+</blockquote>
+
+     <dl>
+<dt>Note:<dd>The keyword <tt>default</tt> may be omitted along with a value
+following it. 
+<br><dt><dd>The symbolic name $s$  of a set may be omitted along with the
+colon following it. 
+<br><dt><dd>All comae are optional and may be omitted. 
+</dl>
+
+   <p>The data block in the tabbing format shown above is exactly equivalent
+to the following data blocks:
+
+   <blockquote>
+<tt>set</tt> $s:=(t_{11},t_{12},\dots,t_{1n})\ (t_{21},t_{22},
+\dots,t_{2n})\ \dots\ (t_{m1},t_{m2},\dots,t_{mn})$  ;
+
+   <p><tt>param</tt> $p_j$  <tt>default</tt> <i>value</i> :=
+
+   <p>$[t_{11},t_{12},\dots,t_{1n}]\ a_{1j}
+\ [t_{21},t_{22},\dots,t_{2n}]\ a_{2j}\ \dots\ [t_{m1},t_{m2},\dots,
+t_{mn}]\ a_{mj}$  ;
+</blockquote>
+
+<p class="noindent">where <i>j</i> = 1, 2, $\dots$, <i>k</i>.
+
+   </body></html>
+

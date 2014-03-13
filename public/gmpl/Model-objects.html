@@ -1,0 +1,182 @@
+<html lang="en">
+<head>
+<title>Model objects - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="Linear-programming-problem.html#Linear-programming-problem" title="Linear programming problem">
+<link rel="next" href="Structure-of-model-description.html#Structure-of-model-description" title="Structure of model description">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Model-objects"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Structure-of-model-description.html#Structure-of-model-description">Structure of model description</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Linear-programming-problem.html#Linear-programming-problem">Linear programming problem</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">1.2 Model objects</h3>
+
+<p>In MathProg the model is described in terms of sets, parameters,
+variables, constraints, and objectives, which are called <dfn>model
+objects</dfn>.
+
+   <p>The user introduces particular model objects using the language
+statements. Each model object is provided with a symbolic name that
+uniquely identifies the object and is intended for referencing purposes.
+
+   <p>Model objects, including sets, can be multidimensional arrays built
+over indexing sets. Formally, <i>n</i>-dimensional array <i>A</i> is the
+mapping:
+$$A:\Delta\rightarrow\Xi,\eqno(4)$$
+where $\Delta\subseteq S_1\times S_2\times\dots\times S_n$  is a
+subset of the Cartesian product of indexing sets, $\Xi$  is a set of
+the array members. In MathProg the set $\Delta$  is called
+<dfn>subscript domain</dfn>. Its members are $n$ -tuples
+$(i_1,i_2,\dots,i_n)$ , where $i_1\in S_1$ , $i_2\in S_2$ ,
+$\dots$, $i_n\in S_n$ .
+
+   <p>If <i>n</i> = 0, the Cartesian product above has exactly one element
+(namely, 0-tuple), so it is convenient to think scalar objects as
+0-dimensional arrays which have one member.
+
+   <p>The type of array members is determined by the type of corresponding
+model object as follows:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="20%"><i>Model object</i> </td><td valign="top" width="80%"><i>Array member</i>
+<br></td></tr><tr align="left"><td valign="top" width="20%">Set </td><td valign="top" width="80%">Elemental plain set
+<br></td></tr><tr align="left"><td valign="top" width="20%">Parameter </td><td valign="top" width="80%">Number or symbol
+<br></td></tr><tr align="left"><td valign="top" width="20%">Variable </td><td valign="top" width="80%">Elemental variable
+<br></td></tr><tr align="left"><td valign="top" width="20%">Constraint </td><td valign="top" width="80%">Elemental constraint
+<br></td></tr><tr align="left"><td valign="top" width="20%">Objective </td><td valign="top" width="80%">Elemental objective
+   <br></td></tr></table>
+</blockquote>
+
+   <p>In order to refer to a particular object member the object should be
+provided with subscripts. For example, if <i>a</i> is 2-dimensional
+parameter built over
+$I\times J$ ,
+a reference to its particular
+member can be written as <i>a</i>[<i>i</i>,&nbsp;<i>j</i>], where
+$i\in I$  and $j\in J$ . 
+It is understood that scalar objects being 0-dimensional need no
+subscripts.
+
+   </body></html>
+

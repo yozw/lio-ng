@@ -1,0 +1,205 @@
+<html lang="en">
+<head>
+<title>Set statement - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Statements.html#Statements" title="Statements">
+<link rel="next" href="Parameter-statement.html#Parameter-statement" title="Parameter statement">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Set-statement"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Parameter-statement.html#Parameter-statement">Parameter statement</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Statements.html#Statements">Statements</a>
+<hr>
+</div>
+
+<h3 class="section">4.1 Set statement</h3>
+
+<p><table class="cartouche" summary="cartouche" border="1"><tr><td>
+<tt> set</tt> <var>name</var> <var>alias</var> <var>domain</var> <tt>,</tt>
+<var>attrib</var> <tt>,</tt> $\dots$ <tt>,</tt> <var>attrib</var> <tt>;</tt>
+</td></tr></table>
+
+     <dl>
+<dt>Where:<dd><var>name</var> is the symbolic name of the set;
+<br><dt><dd><var>alias</var> is an optional string literal which specifies the alias of
+the set;
+<br><dt><dd><var>domain</var> is an optional indexing expression which specifies the
+subscript domain of the set;
+<br><dt><dd><var>attrib</var>, $\dots$, <var>attrib</var> are optional attributes of the set. 
+(Commae preceding attributes may be omitted.) 
+</dl>
+
+<p class="noindent">Optional attributes:
+
+     <dl>
+<dt><tt>dimen</tt> <i>n</i><dd>specifies dimension of <i>n</i>-tuples, which the set consists of;
+<br><dt><tt>within</tt> <i>expression</i><dd>specifies a superset which restricts the set or all its members
+(elemental sets) to be within this superset;
+<br><dt><tt>:=</tt> <i>expression</i><dd>specifies an elemental set assigned to the set or its members;
+<br><dt><tt>default</tt> <i>expression</i><dd>specifies an elemental set assigned to the set or its members whenever
+no appropriate data are available in the data section. 
+</dl>
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     set V;
+     set E within V cross V;
+     set step{s in 1..maxiter} dimen 2 := if s = 1 then E else step[s-1]
+        union setof{k in V, (i,k) in step[s-1], (k,j) in step[s-1]}(i,j);
+     set A{i in I, j in J}, within B[i+1] cross C[j-1], within D diff E,
+        default {('abc',123), (321,'cba')};
+</pre>
+   <p>The set statement declares a set. If the subscript domain is not
+specified, the set is a simple set, otherwise it is an array of
+elemental sets.
+
+   <p>The <code>dimen</code> attribute specifies dimension of <i>n</i>-tuples, which
+the set (if it is a simple set) or its members (if the set is an array
+of elemental sets) consist of, where <i>n</i> must be unsigned integer from
+1 to 20. At most one <code>dimen</code> attribute can be specified. If the
+<code>dimen</code> attribute is not specified, dimension of <i>n</i>-tuples is
+implicitly determined by other attributes (for example, if there is a
+set expression that follows <code>:=</code> or the keyword <code>default</code>, the
+dimension of <i>n</i>-tuples of the corresponding elemental set is used). 
+If no dimension information is available, <code>dimen 1</code> is assumed.
+
+   <p>The <code>within</code> attribute specifies a set expression whose resultant
+value is a superset used to restrict the set (if it is a simple set) or
+its members (if the set is an array of elemental sets) to be within this
+superset. Arbitrary number of <code>within</code> attributes may be specified
+in the same set statement.
+
+   <p>The assign (<code>:=</code>) attribute specifies a set expression used to
+evaluate elemental set(s) assigned to the set (if it is a simple set) or
+its members (if the set is an array of elemental sets). If the assign
+attribute is specified, the set is <em>computable</em> and therefore needs
+no data to be provided in the data section. If the assign attribute is
+not specified, the set must be provided with data in the data section. 
+At most one assign or <code>default</code> attribute can be specified for the
+same set.
+
+   <p>The <code>default</code> attribute specifies a set expression used to
+evaluate elemental set(s) assigned to the set (if it is a simple set) or
+its members (if the set is an array of elemental sets) whenever
+no appropriate data are available in the data section. If neither assign
+nor <code>default</code> attribute is specified, missing data will cause an
+error.
+
+   </body></html>
+

@@ -1,0 +1,196 @@
+<html lang="en">
+<head>
+<title>Model data - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Statements.html#Statements" title="Statements">
+<link rel="next" href="Date-and-time-functions.html#Date-and-time-functions" title="Date and time functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Model-data"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Date-and-time-functions.html#Date-and-time-functions">Date and time functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Statements.html#Statements">Statements</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">5 Model data</h2>
+
+<ul class="menu">
+<li><a accesskey="1" href="Coding-data-section.html#Coding-data-section">Coding data section</a>
+<li><a accesskey="2" href="Set-data-block.html#Set-data-block">Set data block</a>
+<li><a accesskey="3" href="Parameter-data-block.html#Parameter-data-block">Parameter data block</a>
+</ul>
+
+<p><dfn>Model data</dfn> include elemental sets, which are &ldquo;values&rdquo; of model
+sets, and numeric and symbolic values of model parameters.
+
+   <p>In MathProg there are two different ways to saturate model sets and
+parameters with data. One way is simply providing necessary data using
+the assign attribute. However, in many cases it is more practical to
+separate the model itself and particular data needed for the model. 
+For the latter reason in MathProg there is other way, when the model
+description is divided into two parts: model section and data section.
+
+   <p><i>Model section</i> is a main part of the model description that contains
+declarations of all model objects and is common for all problems based
+on that model.
+
+   <p><i>Data section</i> is an optional part of the model description that
+contains model data specific for a particular problem.
+
+   <p>In MathProg model and data sections can be placed either in one text
+file or in two separate text files.
+
+   <p>If both model and data sections are placed in one file, the file is
+composed as follows:
+
+<pre class="example">     +------------+
+     | statement  |
+     | statement  |
+     | . . .      |
+     | statement  |
+     | data;      |
+     | data block |
+     | data block |
+     | . . .      |
+     | data block |
+     | end;       |
+     +------------+
+</pre>
+   <p>If the model and data sections are placed in two separate files, the
+files are composed as follows:
+
+<pre class="example">     +------------+   +------------+
+     | statement  |   | data;      |
+     | statement  |   | data block |
+     | . . .      |   | data block |
+     | statement  |   | . . .      |
+     | end;       |   | data block |
+     |            |   | end;       |
+     +------------+   +------------+
+       Model file       Data file
+</pre>
+     <dl>
+<dt>Note:<dd>If the data section is placed in a separate file, the keyword
+<code>data</code> is optional and may be omitted along with the semicolon
+that follows it. 
+</dl>
+
+   </body></html>
+

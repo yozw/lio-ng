@@ -1,0 +1,208 @@
+<html lang="en">
+<head>
+<title>Linear programming problem - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="next" href="Model-objects.html#Model-objects" title="Model objects">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Linear-programming-problem"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Model-objects.html#Model-objects">Model objects</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">1.1 Linear programming problem</h3>
+
+<p>In MathProg it is assumed that the linear programming (LP) problem has
+the following statement:
+
+   <blockquote>
+<blockquote>
+<blockquote>
+minimize (or maximize)
+$$z=c_1x_1+c_2x_2+\dots+c_nx_n+c_0\eqno(1)$$
+subject to linear constraints
+$$\matrix{
+L_1\leq a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n\leq U_1\cr
+L_2\leq a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n\leq U_2\cr
+.\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\cr
+L_m\leq a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n\leq U_m\cr
+}\eqno(2)$$
+and bounds of variables
+$$\matrix{
+l_1\leq x_1\leq u_1\cr
+l_2\leq x_2\leq u_2\cr
+.\ \ .\ \ .\ \ .\cr
+l_n\leq x_n\leq u_n\cr
+}\eqno(3)$$
+</blockquote>
+</blockquote>
+</blockquote>
+
+<p class="noindent">where:
+   <p><table summary=""><tr align="left"><td valign="top" width="20%">$x_1$ , $x_2$ , $\dots$, $x_n$  </td><td valign="top" width="80%">are variables;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$z$  </td><td valign="top" width="80%">is the objective function;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$c_1$ , $c_2$ , $\dots$, $c_n$  </td><td valign="top" width="80%">are coefficients of
+the objective function;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$c_0$  </td><td valign="top" width="80%">is the constant term (&ldquo;shift&rdquo;) of the objective
+function;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$a_{11}$ , $a_{12}$ , $\dots$, $a_{mn}$  </td><td valign="top" width="80%">are
+constraint coefficients;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$L_1$ , $L_2$ , $\dots$, $L_m$  </td><td valign="top" width="80%">are lower
+constraint bounds;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$U_1$ , $U_2$ , $\dots$, $U_m$  </td><td valign="top" width="80%">are upper
+constraint bounds;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$l_1$ , $l_2$ , $\dots$, $l_n$  </td><td valign="top" width="80%">are lower bounds of
+variables;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$u_1$ , $u_2$ , $\dots$, $u_n$  </td><td valign="top" width="80%">are upper bounds of
+variables.
+   <br></td></tr></table>
+
+   <p>Bounds of variables and constraint bounds can be finite as well as
+infinite. Besides, lower bounds can be equal to corresponding upper
+bounds. Thus, the following types of variables and constraints are
+allowed:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="25%">$-\infty&lt;x&lt;+\infty$  </td><td valign="top" width="75%">Free (unbounded) variable
+<br></td></tr><tr align="left"><td valign="top" width="25%">$x\geq l$  </td><td valign="top" width="75%">Variable with lower bound
+<br></td></tr><tr align="left"><td valign="top" width="25%">$x\leq u$  </td><td valign="top" width="75%">Variable with upper bound
+<br></td></tr><tr align="left"><td valign="top" width="25%">$l\leq x\leq u$  </td><td valign="top" width="75%">Double-bounded variable
+<br></td></tr><tr align="left"><td valign="top" width="25%">$x=l\ (=u)$  </td><td valign="top" width="75%">Fixed variable
+   <br></td></tr></table>
+
+   <p><table summary=""><tr align="left"><td valign="top" width="25%">$-\infty&lt;\sum a_jx_j&lt;+\infty$  </td><td valign="top" width="75%">Free (unbounded) linear
+form
+<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j\geq L$  </td><td valign="top" width="75%">Inequality constraint &ldquo;greater than
+or equal to&rdquo;
+<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j\leq U$  </td><td valign="top" width="75%">Inequality constraint &ldquo;less than or
+equal to&rdquo;
+<br></td></tr><tr align="left"><td valign="top" width="25%">$L\leq\sum a_jx_j\leq U$  </td><td valign="top" width="75%">Double-bounded inequality
+constraint
+<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j=L\ (=U)$  </td><td valign="top" width="75%">Equality constraint
+   <br></td></tr></table>
+</blockquote>
+
+   <p>In addition to pure LP problems MathProg allows mixed integer linear
+programming (MIP) problems, where some (or all) structural variables are
+restricted to be integer.
+
+   </body></html>
+

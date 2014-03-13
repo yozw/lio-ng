@@ -1,0 +1,183 @@
+<html lang="en">
+<head>
+<title>Display statement - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Statements.html#Statements" title="Statements">
+<link rel="prev" href="Check-statement.html#Check-statement" title="Check statement">
+<link rel="next" href="Printf-statement.html#Printf-statement" title="Printf statement">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Display-statement"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Printf-statement.html#Printf-statement">Printf statement</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Check-statement.html#Check-statement">Check statement</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Statements.html#Statements">Statements</a>
+<hr>
+</div>
+
+<h3 class="section">4.8 Display statement</h3>
+
+<p><table class="cartouche" summary="cartouche" border="1"><tr><td>
+<tt> display</tt> <var>domain</var> <tt>:</tt> <var>item</var> <tt>,</tt>
+$\dots$ <tt>,</tt> <var>item</var> <tt>;</tt>
+</td></tr></table>
+
+     <dl>
+<dt>Where:<dd><var>domain</var> is an optional indexing expression which specifies the
+subscript domain of the display statement;
+<br><dt><dd><var>item</var>, $\dots$, <var>item</var> are items to be displayed. (The colon
+preceding the first item may be omitted.) 
+</dl>
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     display: 'x =', x, 'y =', y, 'z =', z;
+     display sqrt(x ** 2 + y ** 2 + z ** 2);
+     display{i in I, j in J}: i, j, a[i,j], b[i,j];
+</pre>
+   <p>The display statement evaluates all items specified in the statement
+and writes their values to the terminal in plain text format.
+
+   <p>If the subscript domain is not specified, items are evaluated and
+then displayed only once. Specifying the subscript domain causes
+evaluating and displaying items for every <i>n</i>-tuple in the domain
+set. In the latter case items may include dummy indices introduced in
+the corresponding indexing expression.
+
+   <p>Item to be displayed can be a model object (set, parameter, variable,
+constraint, objective) or an expression.
+
+   <p>If the item is a computable object (i.e. a set or parameter provided
+with the assign attribute), the object is evaluated over the entire
+domain and then its content (i.e. the content of the object array) is
+displayed. Otherwise, if the item is not a computable object, only its
+current content (i.e. the members actually generated during the model
+evaluation) is displayed. Note that if the display statement is used
+above the solve statement and the item is a variable, its displayed
+&ldquo;value&rdquo; means &ldquo;elemental variable&rdquo;, not a numeric value, which the
+variable could have in some solution obtained by the solver. To display
+a numeric value of a variable the display statement should be used
+below the solve statement. Analogously, if the item is a constraint or
+objective, its &ldquo;value&rdquo; means &ldquo;elemental constraint&rdquo; or &ldquo;elemental
+objective&rdquo;, not a numeric value.
+
+   <p>If the item is an expression, the expression is evaluated and its
+resultant value is displayed.
+
+   </body></html>
+

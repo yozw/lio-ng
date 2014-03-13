@@ -1,0 +1,206 @@
+<html lang="en">
+<head>
+<title>Converting character string to calendar time - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Date-and-time-functions.html#Date-and-time-functions" title="Date and time functions">
+<link rel="prev" href="Obtaining-current-calendar-time.html#Obtaining-current-calendar-time" title="Obtaining current calendar time">
+<link rel="next" href="Converting-calendar-time-to-character-string.html#Converting-calendar-time-to-character-string" title="Converting calendar time to character string">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Converting-character-string-to-calendar-time"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Converting-calendar-time-to-character-string.html#Converting-calendar-time-to-character-string">Converting calendar time to character string</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Obtaining-current-calendar-time.html#Obtaining-current-calendar-time">Obtaining current calendar time</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Date-and-time-functions.html#Date-and-time-functions">Date and time functions</a>
+<hr>
+</div>
+
+<h3 class="section">A.2 Converting character string to calendar time</h3>
+
+<p>The function <tt>str2time</tt>(<i>s</i>,&nbsp;<i>f</i>) converts a character
+string (timestamp) specified by its first argument <i>s</i>, which must be
+a symbolic expression, to the calendar time suitable for arithmetic
+calculations. The conversion is controlled by the specified format
+string <i>f</i> (the second argument), which also must be a symbolic
+expression.
+
+   <p>The result of conversion returned by <tt>str2time</tt> has the same
+meaning as the value returned by the function <tt>gmtime</tt>
+(See <a href="Obtaining-current-calendar-time.html#Obtaining-current-calendar-time">Obtaining current calendar time</a>). Note that <tt>str2time</tt>
+does <em>not</em> correct the calendar time returned for the local
+timezone, i.e. being applied to 00:00:00 on January 1, 1970 it always
+returns 0.
+
+   <p>For example, the model statements:
+
+<pre class="example">     param s, symbolic, := "07/14/98 13:47";
+     param t := str2time(s, "%m/%d/%y %H:%M");
+     display t;
+</pre>
+   <p class="noindent">produce the following printout:
+
+<pre class="example">     t = 900424020
+</pre>
+   <p class="noindent">where the calendar time printed corresponds to 13:47:00 on July 14,
+1998.
+
+   <p>The format string passed to the function <tt>str2time</tt> consists of
+conversion specifiers and ordinary characters. Each conversion specifier
+begins with a `<tt>%</tt>' character followed by a letter.
+
+   <p>The following conversion specifiers may be used in the format string:
+
+     <dl>
+<dt><tt>%b</tt><dd>The abbreviated month name (case insensitive). At least three first
+letters of the month name must appear in the input string. 
+<br><dt><tt>%d</tt><dd>The day of the month as a decimal number (range 1 to 31). Leading zero
+is permitted, but not required. 
+<br><dt><tt>%h</tt><dd>The same as <tt>%b</tt>. 
+<br><dt><tt>%H</tt><dd>The hour as a decimal number, using a 24-hour clock (range 0 to 23). 
+Leading zero is permitted, but not required. 
+<br><dt><tt>%m</tt><dd>The month as a decimal number (range 1 to 12). Leading zero is
+permitted, but not required. 
+<br><dt><tt>%M</tt><dd>The minute as a decimal number (range 0 to 59). Leading zero is
+permitted, but not required. 
+<br><dt><tt>%S</tt><dd>The second as a decimal number (range 0 to 60). Leading zero is
+permitted, but not required. 
+<br><dt><tt>%y</tt><dd>The year without a century as a decimal number (range 0 to 99). Leading
+zero is permitted, but not required. Input values in the range 0 to 68
+are considered as the years 2000 to 2068 while the values 69 to 99 as
+the years 1969 to 1999. 
+<br><dt><tt>%z</tt><dd>The offset from GMT in ISO 8601 format. 
+<br><dt><tt>%%</tt><dd>A literal `<tt>%</tt>' character. 
+</dl>
+
+   <p>All other (ordinary) characters in the format string must have
+a matching character in the input string to be converted. Exceptions
+are spaces in the input string which can match zero or more space
+characters in the format string.
+
+   <p>If some date and/or time component(s) are missing in the format and,
+therefore, in the input string, the function <tt>str2time</tt> uses
+their default values corresponding to 00:00:00 on January 1, 1970, that
+is, the default value of the year is 1970, the default value of the
+month is January, etc.
+
+   <p>The function <tt>str2time</tt> is applicable to all calendar times in
+the range 00:00:00 on January 1, 0001 to 23:59:59 on December 31, 4000
+of the Gregorian calendar.
+
+   </body></html>
+

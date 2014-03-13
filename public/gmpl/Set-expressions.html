@@ -1,0 +1,384 @@
+<html lang="en">
+<head>
+<title>Set expressions - Modeling Language GNU MathProg</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Modeling Language GNU MathProg">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Expressions.html#Expressions" title="Expressions">
+<link rel="prev" href="Indexing-expressions-and-dummy-indices.html#Indexing-expressions-and-dummy-indices" title="Indexing expressions and dummy indices">
+<link rel="next" href="Logical-expressions.html#Logical-expressions" title="Logical expressions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+The GLPK package is part of the GNU Project released under the aegis of
+GNU.
+
+Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007,
+2008, 2009 Andrew Makhorin, Department for Applied Informatics, Moscow
+Aviation Institute, Moscow, Russia. All rights reserved.
+
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+entire resulting derived work is distributed under the terms of
+a permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions.-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+table {
+  margin-bottom: 1em;
+  font: inherit;
+}
+
+body {
+  padding: 8em 3em 3em 3em;
+}
+
+div.node {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8f8;
+  padding: 2em 3em 1em 3em;
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1000;
+}
+
+div.node hr {
+  display: none;
+}
+
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+
+.footnote-anchor {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+.footnote-marker {
+  vertical-align: super;
+  font-size: 100%;
+}
+
+blockquote small {
+  display: inline !important;
+}
+
+blockquote small:before {
+  content: none !important;
+}
+
+blockquote p {
+  font: inherit !important;
+}
+
+.MathJax_Display {
+  text-align: left !important;
+}
+
+td {
+  vertical-align: text-top !important;
+}
+
+--></style>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript">
+MathJax.Hub.Config({
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+    displayAlign: "left"
+});
+</script>
+<style><--
+--></style>
+<link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
+</head>
+<body>
+<div class="node">
+<a name="Set-expressions"></a>
+<p>
+Next:&nbsp;<a rel="next" accesskey="n" href="Logical-expressions.html#Logical-expressions">Logical expressions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Indexing-expressions-and-dummy-indices.html#Indexing-expressions-and-dummy-indices">Indexing expressions and dummy indices</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Expressions.html#Expressions">Expressions</a>
+<hr>
+</div>
+
+<h3 class="section">3.4 Set expressions</h3>
+
+<p><dfn>Set expression</dfn> is a rule for computing an elemental set, i.e. 
+a collection of <i>n</i>-tuples, where components of <i>n</i>-tuples are
+numeric and symbolic quantities.
+
+   <p>The primary set expression may be a literal set, unsubscripted set,
+subscripted set, &ldquo;arithmetic&rdquo; set, indexing expression, iterated set
+expression, conditional set expression, or another set expression
+enclosed in parentheses.
+
+   <p><strong>Examples</strong>
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="60%"><tt>{(123,'aa'), (i,'bb'), (j-1,'cc')}</tt> </td><td valign="top" width="40%">(literal set)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>I</tt> </td><td valign="top" width="40%">(unsubscripted set)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>S[i-1,j+1]</tt> </td><td valign="top" width="40%">(subscripted set)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>1..t-1 by 2</tt> </td><td valign="top" width="40%">(&ldquo;arithmetic&rdquo; set)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>{t in 1..T, (t+1,j) in S: (t,j) in F}</tt> </td><td valign="top" width="40%">(indexing
+expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>setof{i in I, j in J}(i+1,j-1)</tt> </td><td valign="top" width="40%">(iterated expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>if i &lt; j then S[i] else F diff S[j]</tt> </td><td valign="top" width="40%">(conditional
+expression)
+<br></td></tr><tr align="left"><td valign="top" width="60%"><tt>(1..10 union 21..30)</tt> </td><td valign="top" width="40%">(parenthesized expression)
+   <br></td></tr></table>
+</blockquote>
+
+   <p>More general set expressions containing two or more primary set
+expressions may be constructed by using certain set operators.
+
+   <p><strong>Examples</strong>
+
+<pre class="example">     (A union B) inter (I cross J)
+     1..10 cross (if i &lt; j then {'a', 'b', 'c'} else {'d', 'e', 'f'})
+</pre>
+   <h4 class="subheading">Literal sets</h4>
+
+<p>Literal set is a primary set expression, which has the following two
+syntactic forms:
+
+   <blockquote>
+$\{e_1,e_2,\dots,e_m\}$
+
+   <p>$\{(e_{11},\dots,e_{1n}),(e_{21},\dots,e_{2n}),\dots,(e_{m1},\dots,
+e_{mn})\}$
+</blockquote>
+
+<p class="noindent">where $e_1$ , $\dots$, $e_m$ , $e_{11}$ , $\dots$, $e_{mn}$
+are numeric or symbolic expressions.
+
+   <p>If the first form is used, the resultant set consists of 1-tuples
+(singles) enumerated within the curly braces. It is allowed to specify
+an empty set, which has no 1-tuples.
+
+   <p>If the second form is used, the resultant set consists of <i>n</i>-tuples
+enumerated within the curly braces, where a particular <i>n</i>-tuple
+consists of corresponding components enumerated within the parentheses. 
+All <i>n</i>-tuples must have the same number of components.
+
+<h4 class="subheading">Unsubscripted sets</h4>
+
+<p>If the primary set expression is an unsubscripted set (which must be
+0-dimensional), the resultant set is an elemental set associated with
+the corresponding set object.
+
+<h4 class="subheading">Subscripted sets</h4>
+
+<p>The primary set expression, which refers to a subscripted set, has the
+following syntactic form:
+
+   <blockquote>
+$name[i_1,i_2,\dots,i_n],$
+</blockquote>
+
+<p class="noindent">where $name$  is the symbolic name of the set object, $i_1$ ,
+$i_2$ , $\dots$, $i_n$  are subscripts.
+
+   <p>Each subscript must be a numeric or symbolic expression. The number of
+subscripts in the subscript list must be the same as the dimension of
+the set object with which the subscript list is associated.
+
+   <p>Actual values of subscript expressions are used to identify a particular
+member of the set object that determines the resultant set.
+
+<h4 class="subheading">&ldquo;Arithmetic&rdquo; set</h4>
+
+<p>The primary set expression, which is an &ldquo;arithmetic&rdquo; set, has the
+following two syntactic forms:
+
+   <blockquote>
+$t_0$  <tt>..</tt> $t_f$  <tt>by</tt> $\delta t$
+
+   <p>$t_0$  <tt>..</tt> $t_f$
+</blockquote>
+
+<p class="noindent">where $t_0$ , $t_1$ , and $\delta t$  are numeric
+expressions (the value of $\delta t$  must not be zero). The second
+form is equivalent to the first form, where $\delta t=1$ .
+
+   <p>If $\delta t&gt;0$ , the resultant set is determined as follows:
+
+   <blockquote>
+$\{t:\exists k\in{\cal Z}(t=t_0+k\delta t,\ t_0\leq t\leq t_f)\}$
+</blockquote>
+
+<p class="noindent">Otherwise, if $\delta t&lt;0$ , the resultant set is determined as
+follows:
+
+   <blockquote>
+$\{t:\exists k\in{\cal Z}(t=t_0+k\delta t,\ t_f\leq t\leq t_0)\}$
+</blockquote>
+
+<h4 class="subheading">Indexing expressions</h4>
+
+<p>If the primary set expression is an indexing expression, the resultant
+set is determined as described in Section &ldquo;Indexing expressions and
+dummy indices&rdquo; (see above).
+
+<h4 class="subheading">Iterated expressions</h4>
+
+<p>Iterated set expression is a primary set expression, which has the
+following syntactic form:
+
+   <blockquote>
+<tt>setof</tt> <var>indexing-expression</var> <var>integrand</var>
+</blockquote>
+
+<p class="noindent">where <var>indexing-expression</var> is an indexing expression which
+introduces dummy indices and controls iterating, <var>integrand</var> is
+either a single numeric or symbolic expression or a list of numeric and
+symbolic expressions separated by commae and enclosed in parentheses.
+
+   <p>If the integrand is a single numeric or symbolic expression, the
+resultant set consists of 1-tuples and is determined as follows:
+
+   <blockquote>
+$\{x:(i_1,\dots,i_n)\in\Delta\},$
+</blockquote>
+
+<p class="noindent">where $x$  is a value of the integrand, $i_1$ , $\dots$,
+$i_n$  are dummy indices introduced in the indexing expression,
+$\Delta$
+is the domain, a set of <i>n</i>-tuples specified by the indexing
+expression which defines particular values assigned to the dummy indices
+on performing the iterated operation.
+
+   <p>If the integrand is a list containing <i>m</i> numeric and symbolic
+expressions, the resultant set consists of <i>m</i>-tuples and is
+determined as follows:
+
+   <blockquote>
+$\{(x_1,\dots,x_m):(i_1,\dots,i_n)\in\Delta\},$
+</blockquote>
+
+<p class="noindent">where $x_1$ , $\dots$, $x_m$  are values of the expressions in the
+integrand list, $i_1$ , $\dots$, $i_n$  and $\Delta$
+have the same meaning as above.
+
+<h4 class="subheading">Conditional expressions</h4>
+
+<p>Conditional set expression is a primary set expression that has the
+following syntactic form:
+
+   <blockquote>
+<tt>if</tt> <i>b</i> <tt>then</tt> <i>X</i> <tt>else</tt> <i>Y</i>
+</blockquote>
+
+<p class="noindent">where <i>b</i> is an logical expression, <i>X</i> and <i>Y</i> are set
+expressions, which must define sets of the same dimension.
+
+   <p>The resultant value of the conditional expression depends on the value
+of the logical expression that follows the keyword <tt>if</tt>. If it
+takes on the value <i>true</i>, the resultant set is the value of the
+expression that follows the keyword <tt>then</tt>. Otherwise, if the
+logical expression takes on the value <i>false</i>, the resultant set is
+the value of the expression that follows the keyword <tt>else</tt>.
+
+<h4 class="subheading">Parenthesized expressions</h4>
+
+<p>Any set expression may be enclosed in parentheses that syntactically
+makes it primary set expression.
+
+   <p>Parentheses may be used in set expressions, as in algebra, to specify
+the desired order in which operations are to be performed. Where
+parentheses are used, the expression within the parentheses is evaluated
+before the resultant value is used.
+
+   <p>The resultant value of the parenthesized expression is the same as the
+value of the expression enclosed within parentheses.
+
+<h4 class="subheading">Set operators</h4>
+
+<p>In MathProg there are the following set operators, which may be used in
+set expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="20%"><i>X</i> <tt>union</tt> <i>Y</i> </td><td valign="top" width="80%">union
+$X\cup Y$
+<br></td></tr><tr align="left"><td valign="top" width="20%"><i>X</i> <tt>diff</tt> <i>Y</i> </td><td valign="top" width="80%">difference
+$X\backslash Y$
+<br></td></tr><tr align="left"><td valign="top" width="20%"><i>X</i> <tt>symdiff</tt> <i>Y</i> </td><td valign="top" width="80%">symmetric difference
+$X\oplus Y$
+<br></td></tr><tr align="left"><td valign="top" width="20%"><i>X</i> <tt>inter</tt> <i>Y</i> </td><td valign="top" width="80%">intersection
+$X\cap Y$
+<br></td></tr><tr align="left"><td valign="top" width="20%"><i>X</i> <tt>cross</tt> <i>Y</i> </td><td valign="top" width="80%">cross (Cartesian) product
+$X\times Y$
+   <br></td></tr></table>
+</blockquote>
+
+<p class="noindent">where <i>X</i> and <i>Y</i> are set expressions, which must define sets of the
+identical dimension (except for the Cartesian product).
+
+   <p>If the expression includes more than one set operator, all operators are
+performed from left to right according to the hierarchy of operations
+(see below).
+
+   <p>The resultant value of the expression, which contains set operators, is
+the result of applying the operators to their operands.
+
+   <p>The dimension of the resultant set, i.e. the dimension of <i>n</i>-tuples,
+of which the resultant set consists of, is the same as the dimension of
+the operands, except the Cartesian product, where the dimension of the
+resultant set is the sum of dimensions of the operands.
+
+<h4 class="subheading">Hierarchy of operations</h4>
+
+<p>The following list shows the hierarchy of operations in set expressions:
+
+   <blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="70%"><i>Operation</i> </td><td valign="top" width="30%"><i>Hierarchy</i>
+<br></td></tr><tr align="left"><td valign="top" width="70%">Evaluation of numeric operations </td><td valign="top" width="30%">1st-7th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Evaluation of symbolic operations </td><td valign="top" width="30%">8th-9th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Evaluation of iterated or &ldquo;arithmetic&rdquo; set (<tt>setof</tt>,
+<tt>..</tt>) </td><td valign="top" width="30%">10th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Cartesian product (<tt>cross</tt>) </td><td valign="top" width="30%">11th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Intersection (<tt>inter</tt>) </td><td valign="top" width="30%">12th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Union and difference (<tt>union</tt>, <tt>diff</tt>,
+<tt>symdiff</tt>) </td><td valign="top" width="30%">13th
+<br></td></tr><tr align="left"><td valign="top" width="70%">Conditional evaluation (<tt>if</tt> $\dots$ <tt>then</tt> $\dots$
+<tt>else</tt>) </td><td valign="top" width="30%">14th
+   <br></td></tr></table>
+</blockquote>
+
+   <p>This hierarchy is used to determine which of two consecutive operations
+is performed first. If the first operator is higher than or equal to the
+second, the first operation is performed. If it is not, the second
+operator is compared to the third, etc. When the end of the expression
+is reached, all of the remaining operations are performed in the reverse
+order.
+
+   </body></html>
+
