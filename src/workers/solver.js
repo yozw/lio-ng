@@ -1,6 +1,7 @@
 "use strict"
 
 importScripts('../../lib/glpk/glpk.js');
+importScripts('math/adaptive_function_estimation.js');
 
 function solveGmplModel(code) {
   var workspace = glp_mpl_alloc_wksp();

@@ -24,11 +24,14 @@ module.exports = function(config) {
     files: [
       'lib/angular/angular.js',
       'lib/angular/angular-mocks.js',
+      'lib/priority-queue/priority-queue.no-require.js',
       'lib/ui-ace/ui-ace.js',
       'lib/ui-bootstrap/ui-bootstrap.js',
       'src/application.js',
-      'src/components/*.js',
-      'src/services/message.js',
+      'src/common/*.js',
+      'src/directives/*.js',
+      'src/services/*.js',
+      'src/workers/math/*.js',
       'test/**/*.Test.js'
     ],
 
@@ -42,14 +45,14 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-    
+      'src/**/*.js': ['coverage']
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
 
     // web server port

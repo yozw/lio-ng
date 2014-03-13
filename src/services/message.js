@@ -34,6 +34,3 @@ app.service('messageService', function ($rootScope) {
     }
   };
 });
-
-
-

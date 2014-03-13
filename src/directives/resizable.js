@@ -1,4 +1,4 @@
-angular.module('ui.resizable', []);
+var module = angular.module('ui.resizable', []);
 
 /**
  * Directive for components that may change their size depending on the window size.
