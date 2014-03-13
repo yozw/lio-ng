@@ -1,0 +1,3 @@
+#!/bin/bash
+OUT="../../public/gmpl.html"
+texi2html gmpl.texi --verbose --noheader --css-ref=../lib/ui-bootstrap/bootstrap.css --css-include=gmpl.css  --output $OUT

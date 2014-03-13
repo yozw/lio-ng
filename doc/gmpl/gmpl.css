@@ -1,0 +1,16 @@
+table {
+  margin-bottom: 1em;
+}
+
+body {
+  padding: 4em;
+}
+
+blockquote {
+  border: none !important;
+}
+
+.example {
+  margin-left: 20px;
+}
+

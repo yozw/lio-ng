@@ -1,6 +1,6 @@
 var app = angular.module('lio-ng', ['ui.bootstrap', 'ui.ace', 'ui.tabs', 'ui.resizable']);
 
-app.controller('AppCtrl', function ($scope, model, solverService, storageService, messageService) {
+app.controller('AppCtrl', function ($scope, model, solverService, storageService, messageService, aboutDialogService) {
   "use strict";
   $scope.examples = [
     {name: 'Dovetail', url: '/lio-ng/models/dovetail.mod'},
@@ -26,6 +26,10 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
 
     messageService.set("Solving model");
     solverService.solve(model.code, callback);
+  };
+
+  $scope.showAbout = function() {
+    aboutDialogService.open();
   };
 
   $scope.loadModel = function (url) {

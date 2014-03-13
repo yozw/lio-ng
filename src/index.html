@@ -7,10 +7,11 @@
   <script type="text/javascript" src="../lib/angular/angular.js"></script>
   <script type="text/javascript" src="../lib/ui-ace/ui-ace.js"></script>
   <script type="text/javascript" src="../lib/ui-bootstrap/ui-bootstrap.js"></script>
-  <script type="text/javascript" src="directives/tabs.js"></script>
   <script type="text/javascript" src="directives/resizable.js"></script>
+  <script type="text/javascript" src="directives/tabs.js"></script>
   <script type="text/javascript" src="application.js"></script>
   <script type="text/javascript" src="common/util.js"></script>
+  <script type="text/javascript" src="services/about.js"></script>
   <script type="text/javascript" src="services/message.js"></script>
   <script type="text/javascript" src="services/solver.js"></script>
   <script type="text/javascript" src="services/storage.js"></script>
@@ -24,12 +25,18 @@
     <li class="dropdown">
       <a class="dropdown-toggle">Model</a>
       <ul class="dropdown-menu">
-        <li><a>Solve</a></li>
         <li><a>Language</a></li>
         <li><a>Clear model</a></li>
         <li><a>Save</a></li>
         <li><a>Download</a></li>
         <li><a>Print</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle">Run</a>
+      <ul class="dropdown-menu">
+        <li><a ng-click="solveModel()">Solve</a></li>
+        <li><a>Sensitivity analysis...</a></li>
       </ul>
     </li>
     <li class="dropdown">
@@ -43,8 +50,9 @@
     <li class="dropdown">
       <a class="dropdown-toggle">Help</a>
       <ul class="dropdown-menu">
+        <li><a target="_blank" href="http://www.lio.yoriz.co.uk/">Book website</a></li>
         <li><a>GMPL Language reference</a></li>
-        <li><a>About...</a></li>
+        <li><a ng-click="showAbout()">About...</a></li>
       </ul>
     </li>
   </ul>
