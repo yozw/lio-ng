@@ -8,7 +8,7 @@ function solveGmplModel(code) {
   var workspace = glp_mpl_alloc_wksp();
   var lp = glp_create_prob();
 
-  glp_mpl_read_model_from_string(workspace, 'Model', code);
+  glp_mpl_read_model_from_string(workspace, 'model', code);
   glp_mpl_generate(workspace, null, null, null);
   glp_mpl_build_prob(workspace, lp);
   glp_scale_prob(lp, GLP_SF_AUTO);
