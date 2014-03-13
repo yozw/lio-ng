@@ -2,7 +2,7 @@
  * Solver service
  */
 app.service('solverService', function (messageService, model) {
-  "use strict"
+  "use strict";
   var worker;
 
   return {

@@ -1,7 +1,7 @@
 var module = angular.module('ui.tabs', []);
 
 module.directive('tabs', function () {
-  "use strict"
+  "use strict";
   return {
     restrict: 'E',
     scope: {},
@@ -37,7 +37,7 @@ module.directive('tabs', function () {
 });
 
 module.directive('tabpane', function () {
-  "use strict"
+  "use strict";
   return {
     require: "^tabs",
     restrict: "E",

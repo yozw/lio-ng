@@ -1,4 +1,5 @@
-"use strict"
+"use strict";
+;
 
 importScripts('../../lib/glpk/glpk.js');
 importScripts('math/adaptive_function_estimation.js');
@@ -39,7 +40,7 @@ var actions = {};
 actions['solve'] = actionSolve;
 
 self.addEventListener('message', function (e) {
-  "use strict"
+  "use strict";
 
   function log(value) {
     self.postMessage({action: 'log', message: value});

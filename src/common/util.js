@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 var Stopwatch = function (clockFunction) {
   if (arguments.length < 1) {
@@ -46,7 +46,7 @@ Function.prototype.memoize = function () {
     } else {
       return cache[arg] = self(arg);
     }
-  }
+  };
   wrapper.cache = cache;
   return wrapper;
 };

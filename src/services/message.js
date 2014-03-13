@@ -2,7 +2,7 @@
  * Butter bar code
  */
 app.service('messageService', function ($rootScope) {
-  "use strict"
+  "use strict";
   var idCounter = 0;
 
   function apply() {

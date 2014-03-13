@@ -10,10 +10,10 @@ var Interval = function (start, end) {
 
 Interval.prototype.toString = function () {
   return "[" + this.start + "," + this.end + "]";
-}
+};
 
 AFE = function () {
-  "use strict"
+  "use strict";
 
   this.subdivide = function (interval, midpoint) {
     if (arguments.length == 1) {
@@ -40,7 +40,7 @@ AFE = function () {
   /** Calculates the slope of the piecewise interpolant of the function on the given interval **/
   var derivative = function (f, interval) {
     return (f(interval.end) - f(interval.start)) / interval.length;
-  }
+  };
 
   /** Calculate the priority value of interval I. This priority value depends on
    the difference between derivative of I and the interval before and after I. **/
@@ -55,7 +55,7 @@ AFE = function () {
           interval.length * Math.abs(derivative(f, interval) - derivative(f, interval.next)));
     }
     return weight;
-  }
+  };
 
   this.estimate = function (oracle, start, end) {
     var f = oracle.memoize();

@@ -1,7 +1,7 @@
 var app = angular.module('lio-ng', ['ui.bootstrap', 'ui.ace', 'ui.tabs', 'ui.resizable']);
 
 app.controller('AppCtrl', function ($scope, model, solverService, storageService) {
-  "use strict"
+  "use strict";
   $scope.examples = [
     {name: 'Dovetail', url: '/lio-ng/models/dovetail.mod'},
     {name: 'Diet problem', url: '/lio-ng/models/diet.mod'},
@@ -16,13 +16,13 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
     model.log = "";
 
     var callback = Object();
-    callback.log = function(message) {
+    callback.log = function (message) {
       model.log += message + "\n";
       $scope.$apply();
-    }
+    };
 
     solverService.solve(model.code, callback);
-  }
+  };
 
   $scope.loadModel = function (url) {
     function callback(code) {
@@ -33,7 +33,7 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
     }
 
     storageService.readModel(url, callback);
-  }
+  };
 
   $scope.loadModel("/lio-ng/models/dovetail.mod");
 });
@@ -43,7 +43,7 @@ app.factory('model', function () {
 });
 
 app.controller('ButterBarCtrl', function ($scope, messageService) {
-  "use strict"
+  "use strict";
   $scope.isVisible = false;
   $scope.status = messageService.status;
   $scope.clear = messageService.clear;

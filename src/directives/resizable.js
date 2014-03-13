@@ -4,7 +4,7 @@ var module = angular.module('ui.resizable', []);
  * Directive for components that may change their size depending on the window size.
  */
 module.directive('resizable', function ($window) {
-  "use strict"
+  "use strict";
   return function ($scope) {
     $scope.updateWindowSize = function () {
       $scope.windowHeight = $window.innerHeight;
