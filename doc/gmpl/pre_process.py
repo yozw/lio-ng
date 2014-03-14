@@ -5,6 +5,7 @@ from copy import copy
 
 class Scope(object):
   echo = True
+  comment = ""
 
 """ Callback for when the parser finds a tag that has a matching @end <env> command """
 def enter_environment(env, scope, line):
@@ -54,6 +55,8 @@ def cleanup_file(lines):
           line = enter_environment(cmd, scope_stack[-1], line)
         elif cmd == 'sp':
           line = ""
+        elif cmd == 'contents':
+          line = "@contents\n@ifnottex\n@node Top\n@top GNU MathProg Language Reference\n@end ifnottex"
 
       scope = scope_stack[-1]
       echo = scope.echo
