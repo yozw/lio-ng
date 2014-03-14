@@ -1,6 +1,14 @@
 #!/bin/bash
 TMPFILE=".gmpl.tmp"
-python pre-process.py > $TMPFILE
-#makeinfo --html --no-headers --no-split $TMPFILE --css-ref=bootstrap.css --css-include=custom.css -o gmpl.html
-makeinfo --html $TMPFILE --css-ref=../../lib/ui-bootstrap/bootstrap.css --css-include=custom.css -o ../../public/gmpl
+OUTDIR="../../public/gmpl"
+python pre_process_test.py
+
+# Pre-process texinfo file
+python pre_process.py > $TMPFILE
+
+# Use makeinfo to turn pre-processed file into HTML files
+makeinfo --html $TMPFILE --css-ref=../../lib/ui-bootstrap/bootstrap.css --css-include=custom.css -o $OUTDIR
+
+# Do some post-processing
+find $OUTDIR | grep '\.html$' | xargs -L 1 sed -i -e 's/<a name="/<a class="anchor" name="/g' 
 

@@ -122,7 +122,7 @@ MathJax.Hub.Config({
 </head>
 <body>
 <div class="node">
-<a name="Set-data-block"></a>
+<a class="anchor" name="Set-data-block"></a>
 <p>
 Next:&nbsp;<a rel="next" accesskey="n" href="Parameter-data-block.html#Parameter-data-block">Parameter data block</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Coding-data-section.html#Coding-data-section">Coding data section</a>,
@@ -223,11 +223,11 @@ the elemental set defined in the data block. It has the following
 syntactic form:
 
    <blockquote>
-<tt>(</tt> $s_1$  <tt>,</tt> $s_2$  <tt>,</tt> $\dots$ <tt>,</tt>
-$s_n$  <tt>)</tt>
+<tt>(</tt> $s_1$ <tt>,</tt> $s_2$ <tt>,</tt> $\dots$ <tt>,</tt>
+$s_n$ <tt>)</tt>
 </blockquote>
 
-<p class="noindent">where $s_1$ , $s_2$ , $\dots$, $s_n$  are components of the
+<p class="noindent">where $s_1, s_2, \dots, s_n$ are components of the
 slice.
 
    <p>Each component of the slice can be a number or symbol or the asterisk
@@ -238,11 +238,11 @@ must have four components. The number of asterisks in the slice is
 called <dfn>slice dimension</dfn>.
 
    <p>The effect of using slices is the following. If a <i>m</i>-dimensional
-slice (i.e. a slice which has $m$  asterisks) is specified in the
+slice (i.e. a slice which has $m$ asterisks) is specified in the
 data block, all subsequent data records must specifiy tuples of the
-dimension <i>m</i>. Whenever a $m$ -tuple is encountered, each
+dimension <i>m</i>. Whenever a $m$-tuple is encountered, each
 asterisk in the slice is replaced by corresponding components of the
-$m$ -tuple that gives the resultant <i>n</i>-tuple, which is included
+$m$-tuple that gives the resultant <i>n</i>-tuple, which is included
 in the elemental set to be defined. For example, if the slice
 <tt>(a,*,1,2,*)</tt> is in effect, and 2-tuple <tt>(3,b)</tt> is encountered
 in a subsequent data record, the resultant 5-tuple included in the
@@ -262,10 +262,10 @@ asterisks, is assumed.
 the following syntactic form:
 
    <blockquote>
-$t_1$  <tt>,</tt> $t_2$  <tt>,</tt> $\dots$ <tt>,</tt> $t_n$
+$t_1$ <tt>,</tt> $t_2$ <tt>,</tt> $\dots$ <tt>,</tt> $t_n$
 </blockquote>
 
-<p class="noindent">where $t_1$ , $t_2$ , $\dots$, $t_n$  are components of the
+<p class="noindent">where $t_1, t_2, \dots, t_n$ are components of the
 <i>n</i>-tuple. Each component can be a number or symbol. Commae between
 components are optional and may be omitted.
 
@@ -284,20 +284,20 @@ r_m &amp; a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} &amp; \cr
 }$
 </blockquote>
 
-<p class="noindent">where $r_1$ , $r_2$ , $\dots$, $r_m$  are numbers and/or
-symbols which correspond to rows of the matrix, $c_1$ , $c_2$ ,
-$\dots$, $c_n$  are numbers and/or symbols which correspond to columns
-of the matrix, $a_{11}$ , $a_{12}$ , $\dots$, $a_{mn}$  are
+<p class="noindent">where $r_1, r_2, \dots, r_m$ are numbers and/or
+symbols which correspond to rows of the matrix, $c_1, c_2,
+\dots, c_n$ are numbers and/or symbols which correspond to columns
+of the matrix, $a_{11}, a_{12}, \dots, a_{mn}$ are
 the matrix elements, which can be either the sign <code>+</code> or the sign
 <code>-</code>. (In this data record the delimiter <code>:</code> preceding the
 column list and the delimiter <code>:=</code> following the column list cannot
 be omitted.)
 
-   <p>Each element $a_{ij}$  of the matrix data block (where
-$1\leq i\leq m$ , $1\leq j\leq n$ ) corresponds to 2-tuple
-$(r_i, c_j)$ . If $a_{ij}$  is the plus sign (<code>+</code>), the
+   <p>Each element $a_{ij}$ of the matrix data block (where
+$1\leq i\leq m, 1\leq j\leq n$) corresponds to 2-tuple
+$(r_i, c_j)$. If $a_{ij}$ is the plus sign (<code>+</code>), the
 corresponding 2-tuple (or a longer <i>n</i>-tuple, if a slice is used)
-is included in the elemental set. Otherwise, if $a_{ij}$  is the
+is included in the elemental set. Otherwise, if $a_{ij}$ is the
 minus sign (<code>-</code>) sign, the corresponding 2-tuple is not included
 in the elemental set.
 
@@ -324,7 +324,7 @@ is optional and may be omitted.)
 
    <p>This data record is completely analogous to the matrix data record (see
 above) with the only exception that each element
-$a_{ij}$  of the matrix corresponds to 2-tuple $(c_j,r_i)$ .
+$a_{ij}$ of the matrix corresponds to 2-tuple $(c_j,r_i)$.
 
    <p>Being once specified the <code>(tr)</code> indicator effects on <em>all</em>
 subsequent data records until either a slice or the end of data block
@@ -332,11 +332,11 @@ has been encountered.
 
    <div class="footnote">
 <hr>
-<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> There is another way to specify
+<h4>Footnotes</h4><p class="footnote"><small>[<a class="anchor" name="fn-1" href="#fnd-1">1</a>]</small> There is another way to specify
 data for a simple set along with data for parameters. This feature is
 discussed in the next section.</p>
 
-   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> <dfn>Data record</dfn> is simply a
+   <p class="footnote"><small>[<a class="anchor" name="fn-2" href="#fnd-2">2</a>]</small> <dfn>Data record</dfn> is simply a
 technical term. It <em>does not mean</em> that data records have any
 special formatting.</p>
 

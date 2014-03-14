@@ -121,7 +121,7 @@ MathJax.Hub.Config({
 </head>
 <body>
 <div class="node">
-<a name="Linear-programming-problem"></a>
+<a class="anchor" name="Linear-programming-problem"></a>
 <p>
 Next:&nbsp;<a rel="next" accesskey="n" href="Model-objects.html#Model-objects">Model objects</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
@@ -137,41 +137,41 @@ the following statement:
 <blockquote>
 <blockquote>
 minimize (or maximize)
-$$z=c_1x_1+c_2x_2+\dots+c_nx_n+c_0\eqno(1)$$
+$$\begin{equation}z=c_1x_1+c_2x_2+\dots+c_nx_n+c_0\tag{1}\end{equation}$$
 subject to linear constraints
-$$\matrix{
+$$\begin{equation}\matrix{
 L_1\leq a_{11}x_1+a_{12}x_2+\dots+a_{1n}x_n\leq U_1\cr
 L_2\leq a_{21}x_1+a_{22}x_2+\dots+a_{2n}x_n\leq U_2\cr
 .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\ \ .\cr
 L_m\leq a_{m1}x_1+a_{m2}x_2+\dots+a_{mn}x_n\leq U_m\cr
-}\eqno(2)$$
+}\tag{2}\end{equation}$$
 and bounds of variables
-$$\matrix{
+$$\begin{equation}\matrix{
 l_1\leq x_1\leq u_1\cr
 l_2\leq x_2\leq u_2\cr
 .\ \ .\ \ .\ \ .\cr
 l_n\leq x_n\leq u_n\cr
-}\eqno(3)$$
+}\tag{3}\end{equation}$$
 </blockquote>
 </blockquote>
 </blockquote>
 
 <p class="noindent">where:
-   <p><table summary=""><tr align="left"><td valign="top" width="20%">$x_1$ , $x_2$ , $\dots$, $x_n$  </td><td valign="top" width="80%">are variables;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$z$  </td><td valign="top" width="80%">is the objective function;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$c_1$ , $c_2$ , $\dots$, $c_n$  </td><td valign="top" width="80%">are coefficients of
+   <p><table summary=""><tr align="left"><td valign="top" width="20%">$x_1, x_2, \dots, x_n$ </td><td valign="top" width="80%">are variables;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$z$ </td><td valign="top" width="80%">is the objective function;
+<br></td></tr><tr align="left"><td valign="top" width="20%">$c_1, c_2, \dots, c_n$ </td><td valign="top" width="80%">are coefficients of
 the objective function;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$c_0$  </td><td valign="top" width="80%">is the constant term (&ldquo;shift&rdquo;) of the objective
+<br></td></tr><tr align="left"><td valign="top" width="20%">$c_0$ </td><td valign="top" width="80%">is the constant term (&ldquo;shift&rdquo;) of the objective
 function;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$a_{11}$ , $a_{12}$ , $\dots$, $a_{mn}$  </td><td valign="top" width="80%">are
+<br></td></tr><tr align="left"><td valign="top" width="20%">$a_{11}, a_{12}, \dots, a_{mn}$ </td><td valign="top" width="80%">are
 constraint coefficients;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$L_1$ , $L_2$ , $\dots$, $L_m$  </td><td valign="top" width="80%">are lower
+<br></td></tr><tr align="left"><td valign="top" width="20%">$L_1, L_2, \dots, L_m$ </td><td valign="top" width="80%">are lower
 constraint bounds;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$U_1$ , $U_2$ , $\dots$, $U_m$  </td><td valign="top" width="80%">are upper
+<br></td></tr><tr align="left"><td valign="top" width="20%">$U_1, U_2, \dots, U_m$ </td><td valign="top" width="80%">are upper
 constraint bounds;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$l_1$ , $l_2$ , $\dots$, $l_n$  </td><td valign="top" width="80%">are lower bounds of
+<br></td></tr><tr align="left"><td valign="top" width="20%">$l_1, l_2, \dots, l_n$ </td><td valign="top" width="80%">are lower bounds of
 variables;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$u_1$ , $u_2$ , $\dots$, $u_n$  </td><td valign="top" width="80%">are upper bounds of
+<br></td></tr><tr align="left"><td valign="top" width="20%">$u_1, u_2, \dots, u_n$ </td><td valign="top" width="80%">are upper bounds of
 variables.
    <br></td></tr></table>
 
@@ -181,22 +181,22 @@ bounds. Thus, the following types of variables and constraints are
 allowed:
 
    <blockquote>
-   <p><table summary=""><tr align="left"><td valign="top" width="25%">$-\infty&lt;x&lt;+\infty$  </td><td valign="top" width="75%">Free (unbounded) variable
-<br></td></tr><tr align="left"><td valign="top" width="25%">$x\geq l$  </td><td valign="top" width="75%">Variable with lower bound
-<br></td></tr><tr align="left"><td valign="top" width="25%">$x\leq u$  </td><td valign="top" width="75%">Variable with upper bound
-<br></td></tr><tr align="left"><td valign="top" width="25%">$l\leq x\leq u$  </td><td valign="top" width="75%">Double-bounded variable
-<br></td></tr><tr align="left"><td valign="top" width="25%">$x=l\ (=u)$  </td><td valign="top" width="75%">Fixed variable
+   <p><table summary=""><tr align="left"><td valign="top" width="25%">$-\infty&lt;x&lt;+\infty$ </td><td valign="top" width="75%">Free (unbounded) variable
+<br></td></tr><tr align="left"><td valign="top" width="25%">$x\geq l$ </td><td valign="top" width="75%">Variable with lower bound
+<br></td></tr><tr align="left"><td valign="top" width="25%">$x\leq u$ </td><td valign="top" width="75%">Variable with upper bound
+<br></td></tr><tr align="left"><td valign="top" width="25%">$l\leq x\leq u$ </td><td valign="top" width="75%">Double-bounded variable
+<br></td></tr><tr align="left"><td valign="top" width="25%">$x=l\ (=u)$ </td><td valign="top" width="75%">Fixed variable
    <br></td></tr></table>
 
-   <p><table summary=""><tr align="left"><td valign="top" width="25%">$-\infty&lt;\sum a_jx_j&lt;+\infty$  </td><td valign="top" width="75%">Free (unbounded) linear
+   <p><table summary=""><tr align="left"><td valign="top" width="25%">$-\infty&lt;\sum a_jx_j&lt;+\infty$ </td><td valign="top" width="75%">Free (unbounded) linear
 form
-<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j\geq L$  </td><td valign="top" width="75%">Inequality constraint &ldquo;greater than
+<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j\geq L$ </td><td valign="top" width="75%">Inequality constraint &ldquo;greater than
 or equal to&rdquo;
-<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j\leq U$  </td><td valign="top" width="75%">Inequality constraint &ldquo;less than or
+<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j\leq U$ </td><td valign="top" width="75%">Inequality constraint &ldquo;less than or
 equal to&rdquo;
-<br></td></tr><tr align="left"><td valign="top" width="25%">$L\leq\sum a_jx_j\leq U$  </td><td valign="top" width="75%">Double-bounded inequality
+<br></td></tr><tr align="left"><td valign="top" width="25%">$L\leq\sum a_jx_j\leq U$ </td><td valign="top" width="75%">Double-bounded inequality
 constraint
-<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j=L\ (=U)$  </td><td valign="top" width="75%">Equality constraint
+<br></td></tr><tr align="left"><td valign="top" width="25%">$\sum a_jx_j=L\ (=U)$ </td><td valign="top" width="75%">Equality constraint
    <br></td></tr></table>
 </blockquote>
 

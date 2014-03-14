@@ -122,7 +122,7 @@ MathJax.Hub.Config({
 </head>
 <body>
 <div class="node">
-<a name="Set-expressions"></a>
+<a class="anchor" name="Set-expressions"></a>
 <p>
 Next:&nbsp;<a rel="next" accesskey="n" href="Logical-expressions.html#Logical-expressions">Logical expressions</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Indexing-expressions-and-dummy-indices.html#Indexing-expressions-and-dummy-indices">Indexing expressions and dummy indices</a>,
@@ -171,13 +171,13 @@ expressions may be constructed by using certain set operators.
 syntactic forms:
 
    <blockquote>
-$\{e_1,e_2,\dots,e_m\}$
+$\{e_1,e_2,\dots,e_m\}
 
-   <p>$\{(e_{11},\dots,e_{1n}),(e_{21},\dots,e_{2n}),\dots,(e_{m1},\dots,
+   <p>\{(e_{11},\dots,e_{1n}),(e_{21},\dots,e_{2n}),\dots,(e_{m1},\dots,
 e_{mn})\}$
 </blockquote>
 
-<p class="noindent">where $e_1$ , $\dots$, $e_m$ , $e_{11}$ , $\dots$, $e_{mn}$
+<p class="noindent">where $e_1, \dots, e_m, e_{11}, \dots, e_{mn}$
 are numeric or symbolic expressions.
 
    <p>If the first form is used, the resultant set consists of 1-tuples
@@ -204,8 +204,8 @@ following syntactic form:
 $name[i_1,i_2,\dots,i_n],$
 </blockquote>
 
-<p class="noindent">where $name$  is the symbolic name of the set object, $i_1$ ,
-$i_2$ , $\dots$, $i_n$  are subscripts.
+<p class="noindent">where $name$ is the symbolic name of the set object, $i_1,
+i_2, \dots, i_n$ are subscripts.
 
    <p>Each subscript must be a numeric or symbolic expression. The number of
 subscripts in the subscript list must be the same as the dimension of
@@ -220,22 +220,22 @@ member of the set object that determines the resultant set.
 following two syntactic forms:
 
    <blockquote>
-$t_0$  <tt>..</tt> $t_f$  <tt>by</tt> $\delta t$
+$t_0$ <tt>..</tt> $t_f$ <tt>by</tt> $\delta t
 
-   <p>$t_0$  <tt>..</tt> $t_f$
+   <p>t_0$ <tt>..</tt> $t_f$
 </blockquote>
 
-<p class="noindent">where $t_0$ , $t_1$ , and $\delta t$  are numeric
-expressions (the value of $\delta t$  must not be zero). The second
-form is equivalent to the first form, where $\delta t=1$ .
+<p class="noindent">where $t_0, t_1$, and $\delta t$ are numeric
+expressions (the value of $\delta t$ must not be zero). The second
+form is equivalent to the first form, where $\delta t=1$.
 
-   <p>If $\delta t&gt;0$ , the resultant set is determined as follows:
+   <p>If $\delta t&gt;0$, the resultant set is determined as follows:
 
    <blockquote>
 $\{t:\exists k\in{\cal Z}(t=t_0+k\delta t,\ t_0\leq t\leq t_f)\}$
 </blockquote>
 
-<p class="noindent">Otherwise, if $\delta t&lt;0$ , the resultant set is determined as
+<p class="noindent">Otherwise, if $\delta t&lt;0$, the resultant set is determined as
 follows:
 
    <blockquote>
@@ -269,8 +269,8 @@ resultant set consists of 1-tuples and is determined as follows:
 $\{x:(i_1,\dots,i_n)\in\Delta\},$
 </blockquote>
 
-<p class="noindent">where $x$  is a value of the integrand, $i_1$ , $\dots$,
-$i_n$  are dummy indices introduced in the indexing expression,
+<p class="noindent">where $x$ is a value of the integrand, $i_1, \dots,
+i_n$ are dummy indices introduced in the indexing expression,
 $\Delta$
 is the domain, a set of <i>n</i>-tuples specified by the indexing
 expression which defines particular values assigned to the dummy indices
@@ -284,8 +284,8 @@ determined as follows:
 $\{(x_1,\dots,x_m):(i_1,\dots,i_n)\in\Delta\},$
 </blockquote>
 
-<p class="noindent">where $x_1$ , $\dots$, $x_m$  are values of the expressions in the
-integrand list, $i_1$ , $\dots$, $i_n$  and $\Delta$
+<p class="noindent">where $x_1, \dots, x_m$ are values of the expressions in the
+integrand list, $i_1, \dots, i_n$ and $\Delta$
 have the same meaning as above.
 
 <h4 class="subheading">Conditional expressions</h4>

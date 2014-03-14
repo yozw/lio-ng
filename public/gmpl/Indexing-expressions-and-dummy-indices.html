@@ -122,7 +122,7 @@ MathJax.Hub.Config({
 </head>
 <body>
 <div class="node">
-<a name="Indexing-expressions-and-dummy-indices"></a>
+<a class="anchor" name="Indexing-expressions-and-dummy-indices"></a>
 <p>
 Next:&nbsp;<a rel="next" accesskey="n" href="Set-expressions.html#Set-expressions">Set expressions</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Symbolic-expressions.html#Symbolic-expressions">Symbolic expressions</a>,
@@ -133,18 +133,18 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Expressions.html#Expressions">Expressio
 <h3 class="section">3.3 Indexing expressions and dummy indices</h3>
 
 <p><dfn>Indexing expression</dfn> is an auxiliary construction, which specifies
-a plain set of $n$ -tuples and introduces dummy indices. It has two
+a plain set of $n$-tuples and introduces dummy indices. It has two
 syntactic forms:
 
    <blockquote>
-<tt>{</tt> $entry_1,entry_2,\dots,entry_m$  <tt>}</tt>
+<tt>{</tt> $entry_1,entry_2,\dots,entry_m$ <tt>}</tt>
 
-   <p><tt>{</tt> $entry_1,entry_2,\dots,entry_m$  : $predicate$
+   <p><tt>{</tt> $entry_1,entry_2,\dots,entry_m$ : $predicate$
 <tt>}</tt>
 </blockquote>
 
-<p class="noindent">where $entry_1,entry_2,\dots,entry_m$  are indexing entries,
-$predicate$  is a logical expression which specifies an optional
+<p class="noindent">where $entry_1,entry_2,\dots,entry_m$ are indexing entries,
+$predicate$ is a logical expression which specifies an optional
 predicate.
 
    <p>Each indexing entry in the indexing expression has one of the following
@@ -153,7 +153,7 @@ three forms:
    <blockquote>
 <i>t</i> <tt>in</tt> <i>S</i>
 
-   <p>$(t_1,t_2,\dots,t_k)$  <tt>in</tt> $S$
+   <p>$(t_1,t_2,\dots,t_k)$ <tt>in</tt> $S$
 
    <p><i>S</i>
 </blockquote>
@@ -176,7 +176,7 @@ where at least one index must be a dummy index. The third, reduced form
 of the indexing entry has the same effect as if there were <i>t</i>
 (if <i>S</i> is 1-dimensional) or
 $t_1,t_2,\dots,t_k$
-(if $S$  is $n$ -dimensional) all specified as dummy indices.
+(if $S$ is $n$-dimensional) all specified as dummy indices.
 
    <p><dfn>Dummy index</dfn> is an auxiliary model object, which acts like an
 individual variable. Values assigned to dummy indices are components
@@ -237,11 +237,11 @@ particular, the algorithmic description of the indexing expression
 above is the following:
 
    <blockquote>
-<b>for all</b> $i\in A$  <b>do</b>
+<b>for all</b> $i\in A$ <b>do</b>
 
-   <p><b>for all</b> $(j,k)\in B$  <b>do</b>
+   <p><b>for all</b> $(j,k)\in B$ <b>do</b>
 
-   <p><b>for all</b> $l\in C$  <b>do</b>
+   <p><b>for all</b> $l\in C$ <b>do</b>
 
    <p><i>action</i>;
 </blockquote>
@@ -323,11 +323,11 @@ a numeric expression. The algorithmic decsription of this indexing
 expression is the following:
 
    <blockquote>
-<b>for all</b> $i\in A$  <b>do</b>
+<b>for all</b> $i\in A$ <b>do</b>
 
-   <p><b>for all</b> $(j,k)\in B$  <b>and</b> $j=i-1$  <b>do</b>
+   <p><b>for all</b> $(j,k)\in B$ <b>and</b> $j=i-1$ <b>do</b>
 
-   <p><b>for all</b> $l\in C$  <b>do</b>
+   <p><b>for all</b> $l\in C$ <b>do</b>
 
    <p><i>action</i>;
 </blockquote>
@@ -348,7 +348,7 @@ index that corresponds to the first component of 2-tuples from the set
    <p>The general rule is: the number of components of <i>n</i>-tuples defined
 by an indexing expression is the same as the number of dummy indices in
 that indexing expression, where the correspondence between dummy indices
-and components on $n$ -tuples in the resultant set is positional,
+and components on $n$-tuples in the resultant set is positional,
 i.e. the first dummy index corresponds to the first component, the
 second dummy index corresponds to the second component, etc.
 
@@ -365,13 +365,13 @@ the only indexing entry.
 algorithmic description of this indexing expression is the following:
 
    <blockquote>
-<b>for all</b> $i\in A$  <b>do</b>
+<b>for all</b> $i\in A$ <b>do</b>
 
-   <p><b>for all</b> $(j,k)\in B$  <b>do</b>
+   <p><b>for all</b> $(j,k)\in B$ <b>do</b>
 
-   <p><b>for all</b> $l\in C$  <b>do</b>
+   <p><b>for all</b> $l\in C$ <b>do</b>
 
-   <p><b>if</b> $i\leq 5$  <b>and</b> $k\neq$  `<i>Mar</i>'
+   <p><b>if</b> $i\leq 5$ <b>and</b> $k\neq$ `<i>Mar</i>'
 <b>then</b>
 
    <p><i>action</i>;

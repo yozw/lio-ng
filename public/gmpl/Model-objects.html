@@ -122,7 +122,7 @@ MathJax.Hub.Config({
 </head>
 <body>
 <div class="node">
-<a name="Model-objects"></a>
+<a class="anchor" name="Model-objects"></a>
 <p>
 Next:&nbsp;<a rel="next" accesskey="n" href="Structure-of-model-description.html#Structure-of-model-description">Structure of model description</a>,
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Linear-programming-problem.html#Linear-programming-problem">Linear programming problem</a>,
@@ -143,13 +143,13 @@ uniquely identifies the object and is intended for referencing purposes.
    <p>Model objects, including sets, can be multidimensional arrays built
 over indexing sets. Formally, <i>n</i>-dimensional array <i>A</i> is the
 mapping:
-$$A:\Delta\rightarrow\Xi,\eqno(4)$$
-where $\Delta\subseteq S_1\times S_2\times\dots\times S_n$  is a
-subset of the Cartesian product of indexing sets, $\Xi$  is a set of
-the array members. In MathProg the set $\Delta$  is called
-<dfn>subscript domain</dfn>. Its members are $n$ -tuples
-$(i_1,i_2,\dots,i_n)$ , where $i_1\in S_1$ , $i_2\in S_2$ ,
-$\dots$, $i_n\in S_n$ .
+$$\begin{equation}A:\Delta\rightarrow\Xi,\tag{4}\end{equation}$$
+where $\Delta\subseteq S_1\times S_2\times\dots\times S_n$ is a
+subset of the Cartesian product of indexing sets, $\Xi$ is a set of
+the array members. In MathProg the set $\Delta$ is called
+<dfn>subscript domain</dfn>. Its members are $n$-tuples
+$(i_1,i_2,\dots,i_n)$, where $i_1\in S_1, i_2\in S_2,
+\dots, i_n\in S_n$.
 
    <p>If <i>n</i> = 0, the Cartesian product above has exactly one element
 (namely, 0-tuple), so it is convenient to think scalar objects as
@@ -171,10 +171,10 @@ model object as follows:
    <p>In order to refer to a particular object member the object should be
 provided with subscripts. For example, if <i>a</i> is 2-dimensional
 parameter built over
-$I\times J$ ,
+$I\times J$,
 a reference to its particular
 member can be written as <i>a</i>[<i>i</i>,&nbsp;<i>j</i>], where
-$i\in I$  and $j\in J$ . 
+$i\in I$ and $j\in J$. 
 It is understood that scalar objects being 0-dimensional need no
 subscripts.
 

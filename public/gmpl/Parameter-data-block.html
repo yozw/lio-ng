@@ -121,7 +121,7 @@ MathJax.Hub.Config({
 </head>
 <body>
 <div class="node">
-<a name="Parameter-data-block"></a>
+<a class="anchor" name="Parameter-data-block"></a>
 <p>
 Previous:&nbsp;<a rel="previous" accesskey="p" href="Set-data-block.html#Set-data-block">Set data block</a>,
 Up:&nbsp;<a rel="up" accesskey="u" href="Model-data.html#Model-data">Model data</a>
@@ -228,11 +228,11 @@ be used for improving readability of data blocks.
 the parameter array. It has the following syntactic form:
 
    <blockquote>
-<tt>[</tt> $s_1$  <tt>,</tt> $s_2$  <tt>,</tt> $\dots$ <tt>,</tt>
-$s_n$  <tt>]</tt>
+<tt>[</tt> $s_1$ <tt>,</tt> $s_2$ <tt>,</tt> $\dots$ <tt>,</tt>
+$s_n$ <tt>]</tt>
 </blockquote>
 
-<p class="noindent">where $s_1$ , $s_2$ , $\dots$, $s_n$  are components of the
+<p class="noindent">where $s_1, s_2, \dots, s_n$ are components of the
 slice.
 
    <p>Each component of the slice can be a number or symbol or the asterisk
@@ -270,11 +270,11 @@ asterisks, is assumed.
 plain format. This record has the following syntactic form:
 
    <blockquote>
-$t_1$  <tt>,</tt> $t_2$  <tt>,</tt> $\dots$ <tt>,</tt> $t_n$
+$t_1$ <tt>,</tt> $t_2$ <tt>,</tt> $\dots$ <tt>,</tt> $t_n$
 <tt>,</tt> $v$
 </blockquote>
 
-<p class="noindent">where $t_1$ , $t_2$ , $\dots$, $t_n$  are subscripts, $v$
+<p class="noindent">where $t_1, t_2, \dots, t_n$ are subscripts, $v$
 is a value. Each subscript as well as the value can be a number or
 symbol. Commae following subscripts are optional and may be omitted.
 
@@ -297,23 +297,23 @@ r_m &amp; a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} &amp; \cr
 }$
 </blockquote>
 
-<p class="noindent">where $r_1$ , $r_2$ , $\dots$, $r_m$  are numbers and/or
-symbols which correspond to rows of the table, $c_1$ , $c_2$ ,
-$\dots$, $c_n$  are numbers and/or symbols which correspond to columns
-of the table, $a_{11}$ , $a_{12}$ , $\dots$, $a_{mn}$  are the
+<p class="noindent">where $r_1, r_2, \dots, r_m$ are numbers and/or
+symbols which correspond to rows of the table, $c_1, c_2,
+\dots, c_n$ are numbers and/or symbols which correspond to columns
+of the table, $a_{11}, a_{12}, \dots, a_{mn}$ are the
 table elements. Each element can be a number or symbol or the single
 decimal point. (In this data record the delimiter <tt>:</tt> preceding
 the column list and the delimiter <tt>:=</tt> following the column list
 cannot be omitted.)
 
-   <p>Each element $a_{ij}$  of the tabular data block
-($1\leq i\leq m$ , $1\leq j\leq n$ ) defines two subscripts,
-where the first subscript is $r_i$ , and the second one is
-$c_j$ . These subscripts are used in conjunction with the current
+   <p>Each element $a_{ij}$ of the tabular data block
+($1\leq i\leq m, 1\leq j\leq n$) defines two subscripts,
+where the first subscript is $r_i$, and the second one is
+$c_j$. These subscripts are used in conjunction with the current
 slice to form the complete subscript list which identifies a particular
-member of the parameter array. If $a_{ij}$  is a number or symbol,
+member of the parameter array. If $a_{ij}$ is a number or symbol,
 this value is assigned to the parameter member. However, if
-$a_{ij}$  is the single decimal point, the member is assigned
+$a_{ij}$ is the single decimal point, the member is assigned
 a default value specified either in the parameter data block or in the
 parameter statement, or, if no default value is specified, the member
 remains undefined.
@@ -341,7 +341,7 @@ is optional and may be omitted.)
    <p>This data record is completely analogous to the tabular data record (see
 above) with the only exception that the first subscript defined by the
 element
-$a_{ij}$  is $c_j$  while the second one is $r_i$ .
+$a_{ij}$ is $c_j$ while the second one is $r_i$.
 
    <p>Being once specified the <code>(tr)</code> indicator effects on all subsequent
 data records until either a slice or the end of data block has been
@@ -370,7 +370,7 @@ $\matrix{
      <dl>
 <dt>Note:<dd>The keyword <tt>default</tt> may be omitted along with a value
 following it. 
-<br><dt><dd>The symbolic name $s$  of a set may be omitted along with the
+<br><dt><dd>The symbolic name $s$ of a set may be omitted along with the
 colon following it. 
 <br><dt><dd>All comae are optional and may be omitted. 
 </dl>
@@ -380,13 +380,13 @@ to the following data blocks:
 
    <blockquote>
 <tt>set</tt> $s:=(t_{11},t_{12},\dots,t_{1n})\ (t_{21},t_{22},
-\dots,t_{2n})\ \dots\ (t_{m1},t_{m2},\dots,t_{mn})$  ;
+\dots,t_{2n})\ \dots\ (t_{m1},t_{m2},\dots,t_{mn})$ ;
 
-   <p><tt>param</tt> $p_j$  <tt>default</tt> <i>value</i> :=
+   <p><tt>param</tt> $p_j$ <tt>default</tt> <i>value</i> :=
 
    <p>$[t_{11},t_{12},\dots,t_{1n}]\ a_{1j}
 \ [t_{21},t_{22},\dots,t_{2n}]\ a_{2j}\ \dots\ [t_{m1},t_{m2},\dots,
-t_{mn}]\ a_{mj}$  ;
+t_{mn}]\ a_{mj}$ ;
 </blockquote>
 
 <p class="noindent">where <i>j</i> = 1, 2, $\dots$, <i>k</i>.
