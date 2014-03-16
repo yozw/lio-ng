@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h3>Sensitivity analysis</h3>
+</div>
+<div class="modal-body">
+  <table style="width: 100%">
+    <tr>
+      <td style="width: 8em;">Value range</td>
+      <td>
+        <input class="form-control input-range" type="number" ng-model="parameters.minimum">
+        <span class="input-range-to">to</span>
+        <input class="form-control input-range" type="number" ng-model="parameters.maximum">
+      </td>
+    </tr>
+    <tr>
+      <td>Method</td>
+      <td>
+        <select class="form-control" ng-model="parameters.method" ng-options="method.name for method in methods"></select>
+      </td>
+    </tr>
+  </table>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="ok()">OK</button>
+  <button class="btn" ng-click="cancel()">Cancel</button>
+</div>
