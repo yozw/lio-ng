@@ -1,7 +1,7 @@
 "use strict";
-;
 
 importScripts('../../lib/glpk/glpk.js');
+importScripts('../common/table.js');
 importScripts('math/adaptive_function_estimation.js');
 
 function solveGmplModel(code) {
@@ -18,7 +18,20 @@ function solveGmplModel(code) {
   var smcp = new SMCP(options);
   glp_simplex(lp, smcp);
 
+  var table = new Table();
+
+  var varNameColumn = table.addColumn("Variable");
+  var valueColumn = table.addColumn("Value");
+
+  for (var i = 1; i <= glp_get_num_cols(lp); i++) {
+    var row = table.addRow();
+    row.setValue(varNameColumn, glp_get_col_name(lp, i));
+    row.setValue(valueColumn, glp_get_col_prim(lp, i));
+  }
+
+  self.postMessage({action: 'emit-table', table: table.serialize()});
   self.postMessage({action: 'done', result: {}, objective: {}});
+
   return lp;
 }
 

@@ -18,6 +18,9 @@ app.service('solverService', function (model) {
           case 'log':
             callback.log(obj.message);
             break;
+          case 'emit-table':
+            callback.emitTable(obj.table);
+            break;
           case 'done':
             stop();
             console.log("Solver finished in " + stopWatch.getElapsed() + " msec");
@@ -27,9 +30,8 @@ app.service('solverService', function (model) {
       };
 
       stopWatch.start();
-      worker.postMessage({action: 'solve', code: code, mip: false});
+      worker.postMessage({action: 'solve', code: code});
     }
   };
 });
-
 

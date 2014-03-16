@@ -1,7 +1,15 @@
 var app = angular.module('lio-ng', ['ui.bootstrap', 'ui.ace', 'ui.tabs', 'ui.resizable']);
 
-app.controller('AppCtrl', function ($scope, model, solverService, storageService, messageService, aboutDialogService) {
+app.controller('AppCtrl', function (
+    $scope,
+    model,
+    solverService,
+    storageService,
+    messageService,
+    aboutDialog,
+    sensitivityDialog) {
   "use strict";
+
   $scope.examples = [
     {name: 'Dovetail', url: '/lio-ng/models/dovetail.mod'},
     {name: 'Diet problem', url: '/lio-ng/models/diet.mod'},
@@ -12,8 +20,10 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
   ];
 
   $scope.model = model;
+
   $scope.solveModel = function () {
     model.log = "";
+    model.result = "";
 
     var callback = Object();
     callback.log = function (message) {
@@ -23,13 +33,21 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
     callback.finished = function (message) {
       messageService.set("Solving finished");
     };
+    callback.emitTable = function (table) {
+      model.result += JSON.stringify(table);
+      $scope.$apply();
+    };
 
     messageService.set("Solving model");
     solverService.solve(model.code, callback);
   };
 
   $scope.showAbout = function() {
-    aboutDialogService.open();
+    aboutDialog.open();
+  };
+
+  $scope.showSensitivityDialog = function() {
+    sensitivityDialog.open();
   };
 
   $scope.loadModel = function (url) {
@@ -47,7 +65,7 @@ app.controller('AppCtrl', function ($scope, model, solverService, storageService
 });
 
 app.factory('model', function () {
-  return {code: "", log: ""};
+  return {code: "", log: "", result: ""};
 });
 
 app.controller('ButterBarCtrl', function ($scope, messageService) {

@@ -72,3 +72,14 @@ button.btn {
   color: black;
   text-decoration: none;
 }
+
+input.input-range {
+  width: 40%;
+  display: inline-block;
+}
+
+span.input-range-to {
+  text-align: center;
+  width: 15%;
+  display: inline-block;
+}

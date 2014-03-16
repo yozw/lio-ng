@@ -11,7 +11,8 @@
   <script type="text/javascript" src="directives/tabs.js"></script>
   <script type="text/javascript" src="application.js"></script>
   <script type="text/javascript" src="common/util.js"></script>
-  <script type="text/javascript" src="services/about.js"></script>
+  <script type="text/javascript" src="dialogs/about.js"></script>
+  <script type="text/javascript" src="dialogs/sensitivity.js"></script>
   <script type="text/javascript" src="services/message.js"></script>
   <script type="text/javascript" src="services/solver.js"></script>
   <script type="text/javascript" src="services/storage.js"></script>
@@ -36,7 +37,7 @@
       <a class="dropdown-toggle">Run</a>
       <ul class="dropdown-menu">
         <li><a ng-click="solveModel()">Solve</a></li>
-        <li><a>Sensitivity analysis...</a></li>
+        <li><a ng-click="showSensitivityDialog()">Sensitivity analysis...</a></li>
       </ul>
     </li>
     <li class="dropdown">
@@ -84,7 +85,7 @@
          style="height: {{windowHeight - 26}}px; width: {{windowWidth - 124}}px;"></div>
   </tabpane>
   <tabpane name="Result">
-    <div ng-bind="model.code"></div>
+    <div ng-bind="model.result"></div>
   </tabpane>
   <tabpane name="Messages">
     <div id="model-log"
