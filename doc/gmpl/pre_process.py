@@ -92,7 +92,7 @@ def combine_math(text):
   last_len = 0
   while len(text) != last_len:
     last_len = len(text)
-    text = re.sub("([^\$]|^)\$([^\$]+)\$([\s,]+)\$([^\$]+)\$([^\$]|$)", replace_fn, text)
+    text = re.sub("([^\$]|^)\$([^\$]+)\$([ ,]+)\$([^\$]+)\$([^\$]|$)", replace_fn, text)
   return text
   
 """ Finds all $$ and $ environment and applies expression_to_mathjax to their contents """

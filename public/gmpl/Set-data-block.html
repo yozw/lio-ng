@@ -42,22 +42,46 @@ into another language, under the above conditions for modified versions.-->
   span.sc    { font-variant:small-caps }
   span.roman { font-family:serif; font-weight:normal; } 
   span.sansserif { font-family:sans-serif; font-weight:normal; } 
+body {
+  padding: 3.5em 0 0 0; 
+}
+
 table {
   margin-bottom: 1em;
   font: inherit;
+  width: 100%;
 }
 
-body {
-  padding: 8em 3em 3em 3em;
+#content-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  text-align: center;
 }
+
+#content {
+  width: 1024px;
+  padding-left: 3em;
+  padding-right: 3em;
+  display: inline-block;
+  text-align: left;
+}
+
+@media screen and (max-width: 1024px) {
+  #content {
+    width: 100%;
+  }
+}  
 
 div.node {
   position: fixed;
+  line-height: 1.2em;
+  padding: 0.9em 3em 0.9em 3em;
   top: 0;
   left: 0;
+  height: 3.5em;
   width: 100%;
   background: #f8f8f8;
-  padding: 2em 3em 1em 3em;
   border-bottom: 1px solid #e8e8e8;
   z-index: 1000;
 }
@@ -66,9 +90,9 @@ div.node hr {
   display: none;
 }
 
-
 blockquote {
   border: none !important;
+  margin: 0;
 }
 
 .example {
@@ -83,6 +107,10 @@ blockquote {
 .footnote-marker {
   vertical-align: super;
   font-size: 100%;
+}
+
+p {
+  text-align: justify;
 }
 
 blockquote small {
@@ -105,6 +133,11 @@ td {
   vertical-align: text-top !important;
 }
 
+pre.smalldisplay pre {
+  border: none;
+  padding: 0;  
+}
+
 --></style>
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -120,7 +153,7 @@ MathJax.Hub.Config({
 --></style>
 <link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
 </head>
-<body>
+<body><div id="content-wrapper"><div id="content">
 <div class="node">
 <a class="anchor" name="Set-data-block"></a>
 <p>
@@ -285,8 +318,8 @@ r_m &amp; a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn} &amp; \cr
 </blockquote>
 
 <p class="noindent">where $r_1, r_2, \dots, r_m$ are numbers and/or
-symbols which correspond to rows of the matrix, $c_1, c_2,
-\dots, c_n$ are numbers and/or symbols which correspond to columns
+symbols which correspond to rows of the matrix, $c_1, c_2$,
+$\dots, c_n$ are numbers and/or symbols which correspond to columns
 of the matrix, $a_{11}, a_{12}, \dots, a_{mn}$ are
 the matrix elements, which can be either the sign <code>+</code> or the sign
 <code>-</code>. (In this data record the delimiter <code>:</code> preceding the
@@ -342,5 +375,5 @@ special formatting.</p>
 
    <hr></div>
 
-   </body></html>
+   </div></div><body></html>
 

@@ -39,22 +39,46 @@ into another language, under the above conditions for modified versions.-->
   span.sc    { font-variant:small-caps }
   span.roman { font-family:serif; font-weight:normal; } 
   span.sansserif { font-family:sans-serif; font-weight:normal; } 
+body {
+  padding: 3.5em 0 0 0; 
+}
+
 table {
   margin-bottom: 1em;
   font: inherit;
+  width: 100%;
 }
 
-body {
-  padding: 8em 3em 3em 3em;
+#content-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  text-align: center;
 }
+
+#content {
+  width: 1024px;
+  padding-left: 3em;
+  padding-right: 3em;
+  display: inline-block;
+  text-align: left;
+}
+
+@media screen and (max-width: 1024px) {
+  #content {
+    width: 100%;
+  }
+}  
 
 div.node {
   position: fixed;
+  line-height: 1.2em;
+  padding: 0.9em 3em 0.9em 3em;
   top: 0;
   left: 0;
+  height: 3.5em;
   width: 100%;
   background: #f8f8f8;
-  padding: 2em 3em 1em 3em;
   border-bottom: 1px solid #e8e8e8;
   z-index: 1000;
 }
@@ -63,9 +87,9 @@ div.node hr {
   display: none;
 }
 
-
 blockquote {
   border: none !important;
+  margin: 0;
 }
 
 .example {
@@ -80,6 +104,10 @@ blockquote {
 .footnote-marker {
   vertical-align: super;
   font-size: 100%;
+}
+
+p {
+  text-align: justify;
 }
 
 blockquote small {
@@ -102,6 +130,11 @@ td {
   vertical-align: text-top !important;
 }
 
+pre.smalldisplay pre {
+  border: none;
+  padding: 0;  
+}
+
 --></style>
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -117,7 +150,7 @@ MathJax.Hub.Config({
 --></style>
 <link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
 </head>
-<body>
+<body><div id="content-wrapper"><div id="content">
 <h1 class="settitle">Modeling Language GNU MathProg</h1>
    <div class="contents">
 <h2>Table of Contents</h2>
@@ -189,7 +222,6 @@ Up:&nbsp;<a rel="up" accesskey="u" href="../index.html#dir">(dir)</a>
 
 <h2 class="unnumbered">GNU MathProg Language Reference</h2>
 
-<!-- keep -->
 <ul class="menu">
 <li><a accesskey="1" href="Introduction.html#Introduction">Introduction</a>
 <li><a accesskey="2" href="Coding-model-description.html#Coding-model-description">Coding model description</a>
@@ -202,5 +234,5 @@ Up:&nbsp;<a rel="up" accesskey="u" href="../index.html#dir">(dir)</a>
 <li><a accesskey="9" href="Acknowledgements.html#Acknowledgements">Acknowledgements</a>
 </ul>
 
-   </body></html>
+   </div></div><body></html>
 

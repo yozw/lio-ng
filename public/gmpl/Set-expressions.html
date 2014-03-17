@@ -42,22 +42,46 @@ into another language, under the above conditions for modified versions.-->
   span.sc    { font-variant:small-caps }
   span.roman { font-family:serif; font-weight:normal; } 
   span.sansserif { font-family:sans-serif; font-weight:normal; } 
+body {
+  padding: 3.5em 0 0 0; 
+}
+
 table {
   margin-bottom: 1em;
   font: inherit;
+  width: 100%;
 }
 
-body {
-  padding: 8em 3em 3em 3em;
+#content-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  text-align: center;
 }
+
+#content {
+  width: 1024px;
+  padding-left: 3em;
+  padding-right: 3em;
+  display: inline-block;
+  text-align: left;
+}
+
+@media screen and (max-width: 1024px) {
+  #content {
+    width: 100%;
+  }
+}  
 
 div.node {
   position: fixed;
+  line-height: 1.2em;
+  padding: 0.9em 3em 0.9em 3em;
   top: 0;
   left: 0;
+  height: 3.5em;
   width: 100%;
   background: #f8f8f8;
-  padding: 2em 3em 1em 3em;
   border-bottom: 1px solid #e8e8e8;
   z-index: 1000;
 }
@@ -66,9 +90,9 @@ div.node hr {
   display: none;
 }
 
-
 blockquote {
   border: none !important;
+  margin: 0;
 }
 
 .example {
@@ -83,6 +107,10 @@ blockquote {
 .footnote-marker {
   vertical-align: super;
   font-size: 100%;
+}
+
+p {
+  text-align: justify;
 }
 
 blockquote small {
@@ -105,6 +133,11 @@ td {
   vertical-align: text-top !important;
 }
 
+pre.smalldisplay pre {
+  border: none;
+  padding: 0;  
+}
+
 --></style>
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -120,7 +153,7 @@ MathJax.Hub.Config({
 --></style>
 <link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
 </head>
-<body>
+<body><div id="content-wrapper"><div id="content">
 <div class="node">
 <a class="anchor" name="Set-expressions"></a>
 <p>
@@ -171,9 +204,9 @@ expressions may be constructed by using certain set operators.
 syntactic forms:
 
    <blockquote>
-$\{e_1,e_2,\dots,e_m\}
+$\{e_1,e_2,\dots,e_m\}$
 
-   <p>\{(e_{11},\dots,e_{1n}),(e_{21},\dots,e_{2n}),\dots,(e_{m1},\dots,
+   <p>$\{(e_{11},\dots,e_{1n}),(e_{21},\dots,e_{2n}),\dots,(e_{m1},\dots,
 e_{mn})\}$
 </blockquote>
 
@@ -204,8 +237,8 @@ following syntactic form:
 $name[i_1,i_2,\dots,i_n],$
 </blockquote>
 
-<p class="noindent">where $name$ is the symbolic name of the set object, $i_1,
-i_2, \dots, i_n$ are subscripts.
+<p class="noindent">where $name$ is the symbolic name of the set object, $i_1$,
+$i_2, \dots, i_n$ are subscripts.
 
    <p>Each subscript must be a numeric or symbolic expression. The number of
 subscripts in the subscript list must be the same as the dimension of
@@ -220,9 +253,9 @@ member of the set object that determines the resultant set.
 following two syntactic forms:
 
    <blockquote>
-$t_0$ <tt>..</tt> $t_f$ <tt>by</tt> $\delta t
+$t_0$ <tt>..</tt> $t_f$ <tt>by</tt> $\delta t$
 
-   <p>t_0$ <tt>..</tt> $t_f$
+   <p>$t_0$ <tt>..</tt> $t_f$
 </blockquote>
 
 <p class="noindent">where $t_0, t_1$, and $\delta t$ are numeric
@@ -269,8 +302,8 @@ resultant set consists of 1-tuples and is determined as follows:
 $\{x:(i_1,\dots,i_n)\in\Delta\},$
 </blockquote>
 
-<p class="noindent">where $x$ is a value of the integrand, $i_1, \dots,
-i_n$ are dummy indices introduced in the indexing expression,
+<p class="noindent">where $x$ is a value of the integrand, $i_1, \dots$,
+$i_n$ are dummy indices introduced in the indexing expression,
 $\Delta$
 is the domain, a set of <i>n</i>-tuples specified by the indexing
 expression which defines particular values assigned to the dummy indices
@@ -380,5 +413,5 @@ operator is compared to the third, etc. When the end of the expression
 is reached, all of the remaining operations are performed in the reverse
 order.
 
-   </body></html>
+   </div></div><body></html>
 

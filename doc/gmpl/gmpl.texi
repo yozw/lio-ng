@@ -102,8 +102,6 @@ the following statement:
 
 @iftex
 @quotation
-@quotation
-@quotation
 minimize (or maximize)
 @tex
 $$z=c_1x_1+c_2x_2+\dots+c_nx_n+c_0\eqno(1)$$
@@ -127,12 +125,11 @@ l_n\leq x_n\leq u_n\cr
 }\eqno(3)$$
 @end tex
 @end quotation
-@end quotation
-@end quotation
 
 @noindent
 where:
-@multitable @columnfractions .20 .80
+@quotation
+@multitable @columnfractions .25 .75
 @item @math{x_1}, @math{x_2}, @dots, @math{x_n} @tab are variables;
 @item @math{z} @tab is the objective function;
 @item @math{c_1}, @math{c_2}, @dots, @math{c_n} @tab are coefficients of
@@ -150,6 +147,7 @@ variables;
 @item @math{u_1}, @math{u_2}, @dots, @math{u_n} @tab are upper bounds of
 variables.
 @end multitable
+@end quotation
 @end iftex
 
 @ifnottex

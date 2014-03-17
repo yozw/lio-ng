@@ -41,22 +41,46 @@ into another language, under the above conditions for modified versions.-->
   span.sc    { font-variant:small-caps }
   span.roman { font-family:serif; font-weight:normal; } 
   span.sansserif { font-family:sans-serif; font-weight:normal; } 
+body {
+  padding: 3.5em 0 0 0; 
+}
+
 table {
   margin-bottom: 1em;
   font: inherit;
+  width: 100%;
 }
 
-body {
-  padding: 8em 3em 3em 3em;
+#content-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  text-align: center;
 }
+
+#content {
+  width: 1024px;
+  padding-left: 3em;
+  padding-right: 3em;
+  display: inline-block;
+  text-align: left;
+}
+
+@media screen and (max-width: 1024px) {
+  #content {
+    width: 100%;
+  }
+}  
 
 div.node {
   position: fixed;
+  line-height: 1.2em;
+  padding: 0.9em 3em 0.9em 3em;
   top: 0;
   left: 0;
+  height: 3.5em;
   width: 100%;
   background: #f8f8f8;
-  padding: 2em 3em 1em 3em;
   border-bottom: 1px solid #e8e8e8;
   z-index: 1000;
 }
@@ -65,9 +89,9 @@ div.node hr {
   display: none;
 }
 
-
 blockquote {
   border: none !important;
+  margin: 0;
 }
 
 .example {
@@ -82,6 +106,10 @@ blockquote {
 .footnote-marker {
   vertical-align: super;
   font-size: 100%;
+}
+
+p {
+  text-align: justify;
 }
 
 blockquote small {
@@ -104,6 +132,11 @@ td {
   vertical-align: text-top !important;
 }
 
+pre.smalldisplay pre {
+  border: none;
+  padding: 0;  
+}
+
 --></style>
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -119,7 +152,7 @@ MathJax.Hub.Config({
 --></style>
 <link rel="stylesheet" type="text/css" href="../../lib/ui-bootstrap/bootstrap.css">
 </head>
-<body>
+<body><div id="content-wrapper"><div id="content">
 <div class="node">
 <a class="anchor" name="Linear-programming-problem"></a>
 <p>
@@ -134,8 +167,6 @@ Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introdu
 the following statement:
 
    <blockquote>
-<blockquote>
-<blockquote>
 minimize (or maximize)
 $$\begin{equation}z=c_1x_1+c_2x_2+\dots+c_nx_n+c_0\tag{1}\end{equation}$$
 subject to linear constraints
@@ -153,27 +184,27 @@ l_2\leq x_2\leq u_2\cr
 l_n\leq x_n\leq u_n\cr
 }\tag{3}\end{equation}$$
 </blockquote>
-</blockquote>
-</blockquote>
 
 <p class="noindent">where:
-   <p><table summary=""><tr align="left"><td valign="top" width="20%">$x_1, x_2, \dots, x_n$ </td><td valign="top" width="80%">are variables;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$z$ </td><td valign="top" width="80%">is the objective function;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$c_1, c_2, \dots, c_n$ </td><td valign="top" width="80%">are coefficients of
+<blockquote>
+   <p><table summary=""><tr align="left"><td valign="top" width="25%">$x_1, x_2, \dots, x_n$ </td><td valign="top" width="75%">are variables;
+<br></td></tr><tr align="left"><td valign="top" width="25%">$z$ </td><td valign="top" width="75%">is the objective function;
+<br></td></tr><tr align="left"><td valign="top" width="25%">$c_1, c_2, \dots, c_n$ </td><td valign="top" width="75%">are coefficients of
 the objective function;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$c_0$ </td><td valign="top" width="80%">is the constant term (&ldquo;shift&rdquo;) of the objective
+<br></td></tr><tr align="left"><td valign="top" width="25%">$c_0$ </td><td valign="top" width="75%">is the constant term (&ldquo;shift&rdquo;) of the objective
 function;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$a_{11}, a_{12}, \dots, a_{mn}$ </td><td valign="top" width="80%">are
+<br></td></tr><tr align="left"><td valign="top" width="25%">$a_{11}, a_{12}, \dots, a_{mn}$ </td><td valign="top" width="75%">are
 constraint coefficients;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$L_1, L_2, \dots, L_m$ </td><td valign="top" width="80%">are lower
+<br></td></tr><tr align="left"><td valign="top" width="25%">$L_1, L_2, \dots, L_m$ </td><td valign="top" width="75%">are lower
 constraint bounds;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$U_1, U_2, \dots, U_m$ </td><td valign="top" width="80%">are upper
+<br></td></tr><tr align="left"><td valign="top" width="25%">$U_1, U_2, \dots, U_m$ </td><td valign="top" width="75%">are upper
 constraint bounds;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$l_1, l_2, \dots, l_n$ </td><td valign="top" width="80%">are lower bounds of
+<br></td></tr><tr align="left"><td valign="top" width="25%">$l_1, l_2, \dots, l_n$ </td><td valign="top" width="75%">are lower bounds of
 variables;
-<br></td></tr><tr align="left"><td valign="top" width="20%">$u_1, u_2, \dots, u_n$ </td><td valign="top" width="80%">are upper bounds of
+<br></td></tr><tr align="left"><td valign="top" width="25%">$u_1, u_2, \dots, u_n$ </td><td valign="top" width="75%">are upper bounds of
 variables.
    <br></td></tr></table>
+</blockquote>
 
    <p>Bounds of variables and constraint bounds can be finite as well as
 infinite. Besides, lower bounds can be equal to corresponding upper
@@ -204,5 +235,5 @@ constraint
 programming (MIP) problems, where some (or all) structural variables are
 restricted to be integer.
 
-   </body></html>
+   </div></div><body></html>
 
