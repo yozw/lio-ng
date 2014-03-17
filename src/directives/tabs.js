@@ -1,4 +1,4 @@
-var module = angular.module('ui.tabs', []);
+var module = angular.module('directives.tabs', []);
 
 module.directive('tabs', function () {
   "use strict";

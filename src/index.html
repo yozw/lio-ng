@@ -7,6 +7,7 @@
   <script type="text/javascript" src="../lib/angular/angular.js"></script>
   <script type="text/javascript" src="../lib/ui-ace/ui-ace.js"></script>
   <script type="text/javascript" src="../lib/ui-bootstrap/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="directives/resulttable.js"></script>
   <script type="text/javascript" src="directives/resizable.js"></script>
   <script type="text/javascript" src="directives/tabs.js"></script>
   <script type="text/javascript" src="application.js"></script>
@@ -82,10 +83,16 @@
          ui-ace="{mode: 'xml'}"
          ng-model="model.code"
          resizable
-         style="height: {{windowHeight - 26}}px; width: {{windowWidth - 124}}px;"></div>
+         style="height: {{windowHeight - 26}}px; width: 100%;"></div>
   </tabpane>
   <tabpane name="Result">
-    <div ng-bind="model.result"></div>
+    <div id="results">
+      <div ng-repeat="entry in model.results">
+        <div ng-switch on="entry.type">
+          <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
+        </div>
+      </div>
+    </div>
   </tabpane>
   <tabpane name="Messages">
     <div id="model-log"

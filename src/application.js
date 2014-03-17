@@ -1,7 +1,13 @@
-var app = angular.module('lio-ng', ['ui.bootstrap', 'ui.ace', 'ui.tabs', 'ui.resizable']);
+var app = angular.module('lio-ng',
+    [ 'ui.bootstrap',
+      'ui.ace',
+      'directives.tabs',
+      'directives.resizable',
+      'directives.resulttable']);
 
 app.controller('AppCtrl', function (
     $scope,
+    $compile,
     model,
     solverService,
     storageService,
@@ -23,7 +29,7 @@ app.controller('AppCtrl', function (
 
   $scope.solveModel = function () {
     model.log = "";
-    model.result = "";
+    model.results = [];
 
     var callback = Object();
     callback.log = function (message) {
@@ -34,7 +40,9 @@ app.controller('AppCtrl', function (
       messageService.set("Solving finished");
     };
     callback.emitTable = function (table) {
-      model.result += JSON.stringify(table);
+      $scope.model.results.push(
+          {type: 'table', table: table}
+      );
       $scope.$apply();
     };
 
@@ -65,7 +73,7 @@ app.controller('AppCtrl', function (
 });
 
 app.factory('model', function () {
-  return {code: "", log: "", result: ""};
+  return {code: "", log: "", results: []};
 });
 
 app.controller('ButterBarCtrl', function ($scope, messageService) {
