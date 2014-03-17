@@ -19,6 +19,7 @@
   <script type="text/javascript" src="services/storage.js"></script>
   <link rel="stylesheet" type="text/css" href="../lib/ui-bootstrap/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/application.css">
+  <link rel="stylesheet" type="text/css" href="directives/resulttable.css">
 </head>
 
 <body ng-controller="AppCtrl">
@@ -68,7 +69,8 @@
 
 <tabs>
   <tabpane name="Information">
-    <div class="info-panel">
+    <div id="model-info" resizable
+         style="height: {{windowHeight - 26}}px;">
       <h1>Online solver</h1>
 
       <p>This is the online solver for the book <a href="http://www.lio.yoriz.co.uk/">Linear and Integer Optimization:
@@ -86,7 +88,8 @@
          style="height: {{windowHeight - 26}}px; width: 100%;"></div>
   </tabpane>
   <tabpane name="Result">
-    <div id="results">
+    <div id="model-results" resizable
+         style="height: {{windowHeight - 26}}px;">
       <div ng-repeat="entry in model.results">
         <div ng-switch on="entry.type">
           <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
@@ -103,7 +106,7 @@
   </tabpane>
 </tabs>
 
-<button style="position: absolute; bottom: 0; left: 0; height: 48px; width: 133px;"
+<button style="position: absolute; bottom: 0; left: 0; height: 48px; width: 140px;"
         ng-click="solveModel()"
         class="btn btn-success">Solve model
 </button>

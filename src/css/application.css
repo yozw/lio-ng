@@ -30,14 +30,6 @@ body {
   z-index: 1000;
 }
 
-.info-panel {
-  padding: 16px;
-}
-
-.info-panel h1 {
-  margin-top: 0;
-}
-
 .nav a {
   cursor: pointer;
 }
@@ -55,9 +47,23 @@ button.btn {
   white-space: pre;
 }
 
+#model-info {
+  overflow: auto;
+  padding: 8px 8px 8px 16px;
+}
+
+#model-info h1 {
+  margin-top: 0;
+}
+
 #model-log {
   overflow: auto;
-  padding: 8px;
+  padding: 8px 8px 8px 16px;
+}
+
+#model-results {
+  overflow: auto;
+  padding: 8px 8px 8px 16px;
 }
 
 .close-btn {
@@ -82,4 +88,12 @@ span.input-range-to {
   text-align: center;
   width: 15%;
   display: inline-block;
+}
+
+.tab-content {
+  background: white;
+}
+
+.tab-container {
+  background: #f4f4f4;
 }

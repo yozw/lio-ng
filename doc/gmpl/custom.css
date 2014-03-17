@@ -23,16 +23,15 @@ table {
   text-align: left;
 }
 
-@media screen and (max-width: 1024px) {
-  #content {
-    width: 100%;
-  }
-}  
-
 div.node {
+  display: -webkit-flex; 
+  display: flex; 
+  -webkit-flex-flow: row; 
+  flex-flow: row; 
+  align-items: center;
   position: fixed;
-  line-height: 1.2em;
-  padding: 0.9em 3em 0.9em 3em;
+  padding-left: 3em;
+  padding-right: 3em;
   top: 0;
   left: 0;
   height: 3.5em;
@@ -42,13 +41,12 @@ div.node {
   z-index: 1000;
 }
 
-div.node hr {
-  display: none;
+div.node p {
+  margin: 0;
 }
 
-blockquote {
-  border: none !important;
-  margin: 0;
+div.node hr {
+  display: none;
 }
 
 .example {
@@ -67,6 +65,11 @@ blockquote {
 
 p {
   text-align: justify;
+}
+
+blockquote {
+  border: none !important;
+  margin: 0;
 }
 
 blockquote small {
@@ -94,6 +97,25 @@ pre.smalldisplay pre {
   padding: 0;  
 }
 
+@media screen and (max-width: 1024px) {
+  #content {
+    width: 100%;
+  }
+}  
+
+@media screen and (max-device-width: 800px) {
+  #content {
+    width: 100%;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+  
+  div.node {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+}  
+
 --></style>
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -105,4 +127,6 @@ MathJax.Hub.Config({
     displayAlign: "left"
 });
 </script>
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+<meta name="viewport" content="width=device-width" />
 <style><--
