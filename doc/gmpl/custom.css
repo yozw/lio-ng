@@ -72,6 +72,11 @@ blockquote {
   margin: 0;
 }
 
+blockquote:before,
+blockquote:after {
+  content: none !important;
+}
+
 blockquote small {
   display: inline !important;
 }
