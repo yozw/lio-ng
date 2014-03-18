@@ -2,10 +2,12 @@
 
 importScripts('../../lib/glpk/glpk.js');
 importScripts('../common/table.js');
+importScripts('../common/graph.js');
 importScripts('math/adaptive_function_estimation.js');
 importScripts('math/feasible_region_graph.js');
 importScripts('math/math_util.js');
 importScripts('math/glpk_util.js');
+importScripts('math/convex_hull.js');
 
 /**
  * Sends a table back to the main thread.
@@ -18,7 +20,7 @@ function postTable(table) {
  * Sends a graph back to the main thread.
  */
 function postGraph(graph) {
-  self.postMessage({action: 'emit-graph', graph: graph.serialize()});
+  self.postMessage({action: 'emit-graph', graph: graph.toJqPlot()});
 }
 
 function actionSolve(e) {
@@ -26,8 +28,8 @@ function actionSolve(e) {
   var lp = GlpkUtil.solveGmpl(code);
   postTable(GlpkUtil.getPrimalSolutionTable(lp));
 
-  if (glp_get_num_cols(lp) == 2) {
-    postGraph(getFeasibleRegionGraph(lp));
+  if (glp_get_num_cols(lp) === 2) {
+    postGraph(FeasibleRegionGraph.create(lp));
   }
 
   self.postMessage({action: 'done', result: {}, objective: {}});
@@ -35,7 +37,7 @@ function actionSolve(e) {
 
 function getAction(e) {
   var action = e.data.action;
-  if (typeof action == 'string' || action instanceof String) {
+  if (typeof action === 'string' || action instanceof String) {
     return actions[action];
   } else {
     return undefined;
@@ -56,7 +58,7 @@ self.addEventListener('message', function (e) {
 
   var actionFn = getAction(e);
 
-  if (actionFn == undefined) {
+  if (actionFn === undefined) {
     console.warn('Unknown action: ', JSON.stringify(e));
   }
 

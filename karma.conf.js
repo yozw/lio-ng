@@ -28,6 +28,7 @@ module.exports = function(config) {
       'lib/glpk/glpk.js',
       'lib/ui-ace/ui-ace.js',
       'lib/ui-bootstrap/ui-bootstrap.js',
+      'lib/ui-chart/chart.js',
       'src/application.js',
       'src/common/*.js',
       'src/directives/*.js',

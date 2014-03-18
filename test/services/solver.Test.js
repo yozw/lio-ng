@@ -18,7 +18,7 @@ describe("solverService", function () {
     solverService = $injector.get('solverService');
   });
 
-  it('should solve a model',
+  it('solves a model',
       function () {
         var finished = false;
         var callback = Object();

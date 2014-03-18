@@ -5,12 +5,12 @@ module.directive('tabs', function () {
   return {
     restrict: 'E',
     scope: {},
-    transclude: true, 
+    transclude: true,
     templateUrl: 'directives/tabs.html',
     link: function (scope, element) {
       scope.tabs = [];
       scope.activeTab = 0;
-      
+
       var innerDivs = element.find("div");
       for (var i = 0; i < innerDivs.length; i++) {
         var child = angular.element(innerDivs[i]);
@@ -22,10 +22,10 @@ module.directive('tabs', function () {
       scope.setActiveTab(0);
     },
     controller: function ($scope) {
-      $scope.setActiveTab = function(index) {
+      $scope.setActiveTab = function (index) {
         $scope.activeTab = index;
         for (var i = 0; i < $scope.tabs.length; i++) {
-          if (i == index) {
+          if (i === index) {
             $scope.tabs[i].element.addClass('active');
           } else {
             $scope.tabs[i].element.removeClass('active');

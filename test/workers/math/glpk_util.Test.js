@@ -11,12 +11,21 @@ var DOVETAIL = "var x1 >= 0;\n"
 
 describe("GlpkUtil", function () {
 
-  it('should correctly parse variable names', function () {
+  it('parses variable names', function () {
   });
 
-  it('should correctly solve a GMPL model', function () {
+  it('solves a GMPL model', function () {
     var lp = GlpkUtil.solveGmpl(DOVETAIL);
 
+  });
+
+  it('finds the constraints of the LO model', function () {
+    var lp = GlpkUtil.solveGmpl(DOVETAIL);
+    var constraints = GlpkUtil.getConstraints(lp);
+    var expectedMatrix = [[-1, 0], [0, -1], [1, 1], [3, 1], [1, 0], [0, 1]];
+    var expectedRhs = [0, 0, 9, 18, 7, 6];
+    expect(constraints.matrix).toEqual(expectedMatrix);
+    expect(constraints.rhs).toEqual(expectedRhs);
   });
 
 });

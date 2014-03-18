@@ -2,19 +2,19 @@
 
 describe("Interval", function () {
 
-  it('should have correctly set properties', function () {
+  it('has correctly set properties', function () {
     var interval = new Interval(5, 12);
     expect(interval.start).toEqual(5);
     expect(interval.end).toEqual(12);
     expect(interval.length).toEqual(7);
   });
 
-  it('should correctly be represented as a string', function () {
+  it('is represented as a string', function () {
     var interval = new Interval(5, 12);
     expect(interval.toString()).toEqual("[5,12]");
   });
 
-  it('should correctly subdivide an interval', function () {
+  it('subdivides an interval', function () {
     var interval = new Interval(1, 3);
     var subdivided = interval.subdivide();
     expect(subdivided.left.start).toEqual(1);
@@ -28,7 +28,7 @@ describe("Interval", function () {
     expect(subdivided.right.next).toEqual(undefined);
   });
 
-  it('should correctly subdivide an interval with a given midpoint', function () {
+  it('subdivides an interval with a given midpoint', function () {
     var interval = new Interval(1, 3);
     var subdivided = interval.subdivide(2.5);
     expect(subdivided.left.start).toEqual(1);
@@ -37,7 +37,7 @@ describe("Interval", function () {
     expect(subdivided.right.end).toEqual(3);
   });
 
-  it('should correctly subdivide an interval in a chain of intervals', function () {
+  it('subdivides an interval in a chain of intervals', function () {
     var interval1 = new Interval(0, 2);
     var interval2 = new Interval(2, 4);
     var interval3 = new Interval(4, 6);
@@ -59,35 +59,35 @@ describe("Interval", function () {
   });
 });
 
-describe("AFE", function () {
+describe("AdaptiveFunctionEstimation", function () {
 
-  it('should correctly create an interval', function () {
+  it('creates an interval', function () {
     var interval = new Interval(1, 2);
     expect(interval.start).toEqual(1);
     expect(interval.end).toEqual(2);
   });
 
-  it('should correctly estimate a linear function', function () {
-    var afe = new AFE();
-    var f = function(x) {
+  it('estimates a linear function', function () {
+    var afe = new AdaptiveFunctionEstimation();
+    var f = function (x) {
       return 30 + x * 5;
     };
 
     afe.estimate(f, 0, 10);
   });
 
-  it('should correctly estimate a quadratic function', function () {
-    var afe = new AFE();
-    var f = function(x) {
+  it('estimates a quadratic function', function () {
+    var afe = new AdaptiveFunctionEstimation();
+    var f = function (x) {
       return 30 + x * x * 5;
     };
 
     afe.estimate(f, 0, 10);
   });
 
-  it('should correctly estimate a sine function', function () {
-    var afe = new AFE();
-    var f = function(x) {
+  it('estimates a sine function', function () {
+    var afe = new AdaptiveFunctionEstimation();
+    var f = function (x) {
       return Math.sin(x);
     };
 

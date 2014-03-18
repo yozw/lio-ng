@@ -65,7 +65,7 @@ GlpkUtil.solveGmpl = function (code) {
  * @param lp
  * @returns {Table}
  */
-GlpkUtil.getPrimalSolutionTable = function(lp) {
+GlpkUtil.getPrimalSolutionTable = function (lp) {
   var table = new Table();
 
   var varNameColumn = table.addColumn("Variable");
@@ -79,3 +79,57 @@ GlpkUtil.getPrimalSolutionTable = function(lp) {
 
   return table;
 };
+
+"use strict";
+
+var LpUtil = Object();
+
+/**
+ * Gets all constraints for the specified Glpk lp object
+ * @param lp
+ * @returns {{matrix: Array, rhs: Array}}
+ */
+GlpkUtil.getConstraints = function (lp) {
+  "use strict";
+  var lb, ub, row;
+
+  var matrix = [];
+  var rhs = [];
+  var n = glp_get_num_rows(lp);
+  var m = glp_get_num_cols(lp);
+
+  // Get variable bounds
+  for (var i = 1; i <= m; i++) {
+    lb = glp_get_col_lb(lp, i);
+    ub = glp_get_col_ub(lp, i);
+    if (MathUtil.isFinite(lb)) {
+      row = MathUtil.zeroes(m);
+      row[i - 1] = -1;
+      matrix.push(row);
+      rhs.push(-lb);
+    }
+    if (ub != Number.MAX_VALUE) {
+      row = MathUtil.zeroes(m);
+      row[i - 1] = 1;
+      matrix.push(row);
+      rhs.push(ub);
+    }
+  }
+
+  // Get technology constraints
+  for (var j = 1; j <= n; j++) {
+    row = GlpkUtil.getRow(lp, j)
+    lb = glp_get_row_lb(lp, j);
+    ub = glp_get_row_ub(lp, j);
+    if (lb != -Number.MAX_VALUE) {
+      matrix.push(MathUtil.multiplyVector(row, -1));
+      rhs.push(-lb);
+    }
+    if (ub != Number.MAX_VALUE) {
+      matrix.push(row);
+      rhs.push(ub);
+    }
+  }
+  return {matrix: matrix, rhs: rhs};
+};
+

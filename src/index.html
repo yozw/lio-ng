@@ -9,6 +9,7 @@
   <script type="text/javascript" src="../lib/angular/angular.js"></script>
   <script type="text/javascript" src="../lib/ui-ace/ui-ace.js"></script>
   <script type="text/javascript" src="../lib/ui-bootstrap/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="../lib/ui-chart/chart.js"></script>
   <script type="text/javascript" src="directives/resulttable.js"></script>
   <script type="text/javascript" src="directives/resizable.js"></script>
   <script type="text/javascript" src="directives/tabs.js"></script>
@@ -69,7 +70,8 @@
 
 <div class="butter-bar-outer">
   <div class="butter-bar-inner" ng-controller="ButterBarCtrl" ng-show="isVisible">
-    {{status.message}} <div class="close-btn" ng-click="clear()">&#10006;</div>
+    {{status.message}}
+    <div class="close-btn" ng-click="clear()">&#10006;</div>
   </div>
 </div>
 
@@ -99,6 +101,10 @@
       <div ng-repeat="entry in model.results">
         <div ng-switch on="entry.type">
           <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
+          <div ng-switch-when="graph">
+            Chart
+            <div ui-chart="entry.graph.data" chart-options="entry.graph.options"></div>
+          </div>
         </div>
       </div>
     </div>

@@ -21,6 +21,9 @@ app.service('solverService', function (model) {
           case 'emit-table':
             callback.emitTable(obj.table);
             break;
+          case 'emit-graph':
+            callback.emitGraph(obj.graph);
+            break;
           case 'done':
             stop();
             console.log("Solver finished in " + stopWatch.getElapsed() + " msec");

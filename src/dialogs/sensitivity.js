@@ -25,12 +25,12 @@ app.controller("SensitivityDialogCtrl", function ($scope, $modalInstance) {
     name: 'Adaptive',
     value: 'adaptive',
     description: 'The adaptive algorithm automatically chooses parameter values, focusing on the most interesting '
-       + '(i.e., non-linear) parts of the sensitivity function. This usually leads to better results.'};
+        + '(i.e., non-linear) parts of the sensitivity function. This usually leads to better results.'};
   var EVEN_SPACED = {
     name: 'Evenly spaced',
     value: 'spaced',
     description: 'The even spacing algorithm chooses parameter values that are evenly spaced in the chosen parameter '
-       + 'range, and solves the model for these parameter values.'};
+        + 'range, and solves the model for these parameter values.'};
 
   var variables = [];
   variables.push({name: 'Optimal objective value'});

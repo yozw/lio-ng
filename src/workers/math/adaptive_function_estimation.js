@@ -15,7 +15,7 @@ Interval.prototype.toString = function () {
 };
 
 Interval.prototype.subdivide = function (midpoint) {
-  if (midpoint == undefined) {
+  if (midpoint === undefined) {
     midpoint = (this.start + this.end) / 2;
   }
 
@@ -38,7 +38,7 @@ Interval.prototype.subdivide = function (midpoint) {
 };
 
 
-var AFE = function () {
+var AdaptiveFunctionEstimation = function () {
   "use strict";
 
   /** Calculates the slope of the piecewise interpolant of the function on the given interval **/

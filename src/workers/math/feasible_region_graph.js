@@ -1,36 +1,31 @@
 "use strict";
 
-function getConstraints(lp) {
-  "use strict";
-  var matrix = [];
-  var rhs = [];
-  var n = glp_get_num_rows(lp);
+var FeasibleRegionGraph = Object();
 
-  for (var i = 1; i <= n; i++) {
-    var row = GlpkUtil.getRow(lp, i)
-    var lb = glp_get_row_lb(lp, i);
-    var ub = glp_get_row_ub(lp, i);
-    if (lb != -Number.MAX_VALUE) {
-      matrix.push(MathUtil.multiplyVector(row, -1));
-      rhs.push(-lb);
+FeasibleRegionGraph.create = function (lp) {
+  "use strict";
+  var graph = new Graph();
+
+  var constraints = GlpkUtil.getConstraints(lp);
+  var vertices = MathUtil.getVertices(constraints.matrix, constraints.rhs);
+
+  // graph.addScatterPlot(vertices);
+
+  if (vertices.length > 0) {
+    var hull = new ConvexHull();
+    hull.compute(vertices);
+    var indices = hull.getIndices();
+    var data = [];
+    for (var i = 0; i < indices.length; i++) {
+      var index = indices[i];
+      data.push(vertices[index]);
     }
-    if (ub != Number.MAX_VALUE) {
-      matrix.push(row);
-      rhs.push(ub);
+    if (data.length > 1) {
+      data.push(data[0]);
     }
+    console.log(JSON.stringify(data));
+    graph.addPolygon(data);
   }
-  console.log(matrix);
-  return {matrix: matrix, rhs: rhs};
-}
 
-function getFeasibleRegionGraph(lp) {
-  "use strict";
-  getConstraints(lp);
-
-  var o = Object();
-  o.serialize = function() {
-    return "";
-  };
-
-  return o;
-}
+  return graph;
+};

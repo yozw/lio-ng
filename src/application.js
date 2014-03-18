@@ -1,20 +1,13 @@
 var app = angular.module('lio-ng',
     [ 'ui.bootstrap',
       'ui.ace',
+      'ui.chart',
       'directives.tabs',
       'directives.resizable',
-      'directives.resulttable']);
+      'directives.resulttable'
+    ]);
 
-app.controller('AppCtrl', function (
-    $scope,
-    $compile,
-    model,
-    solverService,
-    storageService,
-    messageService,
-    aboutDialog,
-    sensitivityDialog,
-    feedbackDialog) {
+app.controller('AppCtrl', function ($scope, $compile, model, solverService, storageService, messageService, aboutDialog, sensitivityDialog, feedbackDialog) {
   "use strict";
 
   $scope.examples = [
@@ -46,20 +39,27 @@ app.controller('AppCtrl', function (
       );
       $scope.$apply();
     };
+    callback.emitGraph = function (graph) {
+      $scope.model.results.push(
+          {type: 'graph', graph: graph}
+      );
+      console.log(JSON.stringify($scope.model.results));
+      $scope.$apply();
+    };
 
     messageService.set("Solving model");
     solverService.solve(model.code, callback);
   };
 
-  $scope.showAbout = function() {
+  $scope.showAbout = function () {
     aboutDialog.open();
   };
 
-  $scope.showFeedback = function() {
+  $scope.showFeedback = function () {
     feedbackDialog.open();
   };
 
-  $scope.showSensitivityDialog = function() {
+  $scope.showSensitivityDialog = function () {
     sensitivityDialog.open();
   };
 
@@ -86,7 +86,7 @@ app.controller('ButterBarCtrl', function ($scope, messageService) {
   $scope.isVisible = false;
   $scope.status = messageService.status;
   $scope.clear = messageService.clear;
-  $scope.$watch('status.message', function(value) {
+  $scope.$watch('status.message', function (value) {
     $scope.isVisible = value.length > 0;
   });
 });

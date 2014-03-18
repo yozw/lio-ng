@@ -11,7 +11,7 @@ app.service('storageService', function ($http, messageService) {
               callback(data);
             }
           })
-          .error(function() {
+          .error(function () {
             messageService.set("Could not load model");
           });
     }

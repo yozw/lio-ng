@@ -20,7 +20,7 @@ app.service('messageService', function ($rootScope) {
       this.status.message = "";
     },
     dismiss: function (msgid) {
-      if (idCounter == msgid) {
+      if (idCounter === msgid) {
         this.status.message = "";
       }
     },

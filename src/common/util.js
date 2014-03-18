@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ * Stopwatch that measures elapsed time
+ * @param [clockFunction] optional clock function for unit testing
+ * @constructor
+ */
 var Stopwatch = function (clockFunction) {
   if (arguments.length < 1) {
     clockFunction = function () {
@@ -37,6 +42,10 @@ var Stopwatch = function (clockFunction) {
   };
 };
 
+/**
+ * Prototype function that turns any function into a memoized version.
+ * @returns {wrapper} the memoized function
+ */
 Function.prototype.memoize = function () {
   var self = this;
   var cache = {};

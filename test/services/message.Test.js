@@ -9,27 +9,27 @@ describe("messageService", function () {
     messageService = $injector.get('messageService');
   });
 
-  it('should set and get the message',
+  it('sets and gets the message',
       function () {
         messageService.set('hello');
         expect(messageService.get()).toEqual('hello');
       });
 
-  it('should clear the message',
+  it('clears the message',
       function () {
         messageService.set('hello');
         messageService.clear();
         expect(messageService.get()).toEqual('');
       });
 
-  it('should dismiss the message',
+  it('dismisses the message',
       function () {
         var msgId = messageService.set('hello');
         messageService.dismiss(msgId);
         expect(messageService.get()).toEqual('');
       });
 
-  it('should not dismiss the message if another message came later',
+  it('does not dismiss the message if another message came later',
       function () {
         var msgId = messageService.set('hello');
         messageService.set('world');
