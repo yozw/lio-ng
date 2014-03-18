@@ -39,26 +39,9 @@ function getPrimalSolutionTable(lp) {
   return table;
 }
 
-function solveGmplModel(code) {
-  var workspace = glp_mpl_alloc_wksp();
-  var lp = glp_create_prob();
-
-  glp_mpl_read_model_from_string(workspace, 'model', code);
-  glp_mpl_generate(workspace, null, null, null);
-  glp_mpl_build_prob(workspace, lp);
-  glp_scale_prob(lp, GLP_SF_AUTO);
-
-  var options = {presolve: GLP_ON};
-
-  var smcp = new SMCP(options);
-  glp_simplex(lp, smcp);
-
-  return lp;
-}
-
 function actionSolve(e) {
   var code = e.data.code;
-  var lp = solveGmplModel(code);
+  var lp = GlpkUtil.solveGmpl(code);
   postTable(getPrimalSolutionTable(lp));
 
   if (glp_get_num_cols(lp) == 2) {
@@ -102,23 +85,3 @@ self.addEventListener('message', function (e) {
   }
 }, false);
 
-/*
-
- var i;
-
- if (obj.mip) {
- glp_intopt(lp);
- objective = glp_mip_obj_val(lp);
- for (i = 1; i <= glp_get_num_cols(lp); i++) {
- result[glp_get_col_name(lp, i)] = glp_mip_col_val(lp, i);
- }
- } else {
- objective = glp_get_obj_val(lp);
- for (i = 1; i <= glp_get_num_cols(lp); i++) {
- result[glp_get_col_name(lp, i)] = glp_get_col_prim(lp, i);
- }
- }
-
- lp = null;
-
- */

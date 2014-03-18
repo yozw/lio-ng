@@ -1,6 +1,6 @@
 'use strict';
 
-describe("glpk_util", function () {
+describe("GlpkUtil", function () {
 
   it('should correctly parse variable names', function () {
   });
