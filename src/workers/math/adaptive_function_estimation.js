@@ -1,3 +1,5 @@
+"use strict";
+
 var MAXITER = 300;
 var PRECISION = 1e-6;
 var SIMPLIFY_PRECISION = 1e-5;
@@ -12,7 +14,7 @@ Interval.prototype.toString = function () {
   return "[" + this.start + "," + this.end + "]";
 };
 
-AFE = function () {
+var AFE = function () {
   "use strict";
 
   this.subdivide = function (interval, midpoint) {

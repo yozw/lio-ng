@@ -4,6 +4,9 @@ importScripts('../../lib/glpk/glpk.js');
 importScripts('../common/table.js');
 importScripts('math/adaptive_function_estimation.js');
 importScripts('math/feasible_region_graph.js');
+importScripts('math/math_util.js');
+importScripts('math/glpk_util.js');
+
 /**
  * Sends a table back to the main thread.
  */
