@@ -21,28 +21,10 @@ function postGraph(graph) {
   self.postMessage({action: 'emit-graph', graph: graph.serialize()});
 }
 
-/**
- * Constructs a primal solution table for the specified lp object.
- */
-function getPrimalSolutionTable(lp) {
-  var table = new Table();
-
-  var varNameColumn = table.addColumn("Variable");
-  var valueColumn = table.addColumn("Value");
-
-  for (var i = 1; i <= glp_get_num_cols(lp); i++) {
-    var row = table.addRow();
-    row.setValue(varNameColumn, glp_get_col_name(lp, i));
-    row.setValue(valueColumn, glp_get_col_prim(lp, i));
-  }
-
-  return table;
-}
-
 function actionSolve(e) {
   var code = e.data.code;
   var lp = GlpkUtil.solveGmpl(code);
-  postTable(getPrimalSolutionTable(lp));
+  postTable(GlpkUtil.getPrimalSolutionTable(lp));
 
   if (glp_get_num_cols(lp) == 2) {
     postGraph(getFeasibleRegionGraph(lp));

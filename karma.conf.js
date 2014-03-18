@@ -25,6 +25,7 @@ module.exports = function(config) {
       'lib/angular/angular.js',
       'lib/angular/angular-mocks.js',
       'lib/priority-queue/priority-queue.no-require.js',
+      'lib/glpk/glpk.js',
       'lib/ui-ace/ui-ace.js',
       'lib/ui-bootstrap/ui-bootstrap.js',
       'src/application.js',

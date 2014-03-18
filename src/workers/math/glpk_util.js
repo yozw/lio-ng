@@ -59,3 +59,23 @@ GlpkUtil.solveGmpl = function (code) {
 
   return lp;
 };
+
+/**
+ * Constructs a primal solution table for the specified lp object.
+ * @param lp
+ * @returns {Table}
+ */
+GlpkUtil.getPrimalSolutionTable = function(lp) {
+  var table = new Table();
+
+  var varNameColumn = table.addColumn("Variable");
+  var valueColumn = table.addColumn("Value");
+
+  for (var i = 1; i <= glp_get_num_cols(lp); i++) {
+    var row = table.addRow();
+    row.setValue(varNameColumn, glp_get_col_name(lp, i));
+    row.setValue(valueColumn, glp_get_col_prim(lp, i));
+  }
+
+  return table;
+};
