@@ -2,19 +2,33 @@
   <h3>Sensitivity analysis</h3>
 </div>
 <div class="modal-body">
-  <table style="width: 100%">
+  <div class="bs-callout bs-callout-info">
+    Specify your sensitivity parameters below.
+  </div>
+  <table class="input-table">
     <tr>
-      <td style="width: 8em;">Value range</td>
-      <td>
+      <td style="width: 12em;">Parameter value range</td>
+      <td style="display: flex; align-items: center;">
         <input class="form-control input-range" type="number" ng-model="parameters.minimum">
         <span class="input-range-to">to</span>
         <input class="form-control input-range" type="number" ng-model="parameters.maximum">
       </td>
     </tr>
     <tr>
+      <td>Variable of interest</td>
+      <td>
+        <select class="form-control" ng-model="parameters.variable"
+                ng-options="variable.name for variable in variables"></select>
+      </td>
+    </tr>
+    <tr>
       <td>Method</td>
       <td>
-        <select class="form-control" ng-model="parameters.method" ng-options="method.name for method in methods"></select>
+        <select class="form-control" ng-model="parameters.method"
+                ng-options="method.name for method in methods"></select>
+        <div class="bs-callout bs-callout-warning">
+          {{parameters.method.description}}
+        </div>
       </td>
     </tr>
   </table>

@@ -3,6 +3,38 @@
 importScripts('../../lib/glpk/glpk.js');
 importScripts('../common/table.js');
 importScripts('math/adaptive_function_estimation.js');
+importScripts('math/feasible_region_graph.js');
+/**
+ * Sends a table back to the main thread.
+ */
+function postTable(table) {
+  self.postMessage({action: 'emit-table', table: table.serialize()});
+}
+
+/**
+ * Sends a graph back to the main thread.
+ */
+function postGraph(graph) {
+  self.postMessage({action: 'emit-graph', graph: graph.serialize()});
+}
+
+/**
+ * Constructs a primal solution table for the specified lp object.
+ */
+function getPrimalSolutionTable(lp) {
+  var table = new Table();
+
+  var varNameColumn = table.addColumn("Variable");
+  var valueColumn = table.addColumn("Value");
+
+  for (var i = 1; i <= glp_get_num_cols(lp); i++) {
+    var row = table.addRow();
+    row.setValue(varNameColumn, glp_get_col_name(lp, i));
+    row.setValue(valueColumn, glp_get_col_prim(lp, i));
+  }
+
+  return table;
+}
 
 function solveGmplModel(code) {
   var workspace = glp_mpl_alloc_wksp();
@@ -18,26 +50,19 @@ function solveGmplModel(code) {
   var smcp = new SMCP(options);
   glp_simplex(lp, smcp);
 
-  var table = new Table();
-
-  var varNameColumn = table.addColumn("Variable");
-  var valueColumn = table.addColumn("Value");
-
-  for (var i = 1; i <= glp_get_num_cols(lp); i++) {
-    var row = table.addRow();
-    row.setValue(varNameColumn, glp_get_col_name(lp, i));
-    row.setValue(valueColumn, glp_get_col_prim(lp, i));
-  }
-
-  self.postMessage({action: 'emit-table', table: table.serialize()});
-  self.postMessage({action: 'done', result: {}, objective: {}});
-
   return lp;
 }
 
 function actionSolve(e) {
   var code = e.data.code;
-  solveGmplModel(code);
+  var lp = solveGmplModel(code);
+  postTable(getPrimalSolutionTable(lp));
+
+  if (glp_get_num_cols(lp) == 2) {
+    postGraph(getFeasibleRegionGraph(lp));
+  }
+
+  self.postMessage({action: 'done', result: {}, objective: {}});
 }
 
 function getAction(e) {

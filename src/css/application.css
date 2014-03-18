@@ -97,3 +97,40 @@ span.input-range-to {
 .tab-container {
   background: #f4f4f4;
 }
+
+.bs-callout {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #eee;
+}
+
+.bs-callout-info {
+  background-color: #f4f8fa;
+  border-color: #5bc0de;
+}
+
+.bs-callout-warning {
+  background-color: #fcf8f2;
+  border-color: #f0ad4e;
+}
+
+.bs-callout-danger {
+  background-color: #fdf7f7;
+  border-color: #d9534f;
+}
+
+table.input-table {
+   width: 100%;
+}
+
+table.input-table td {
+  vertical-align: top;
+  line-height: 34px;
+}
+
+table.input-table td .bs-callout {
+  line-height: 1.41;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
