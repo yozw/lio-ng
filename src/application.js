@@ -43,7 +43,6 @@ app.controller('AppCtrl', function ($scope, $compile, model, solverService, stor
       $scope.model.results.push(
           {type: 'graph', graph: graph}
       );
-      console.log(JSON.stringify($scope.model.results));
       $scope.$apply();
     };
 

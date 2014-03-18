@@ -23,7 +23,6 @@ FeasibleRegionGraph.create = function (lp) {
     if (data.length > 1) {
       data.push(data[0]);
     }
-    console.log(JSON.stringify(data));
     graph.addPolygon(data);
   }
 

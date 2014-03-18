@@ -9,8 +9,6 @@ app.service('solverService', function (model) {
     solve: function (code, callback) {
       var stopWatch = new Stopwatch();
 
-      console.log("Solving model");
-
       worker = new Worker("workers/solver.js");
       worker.onmessage = function (e) {
         var obj = e.data;
@@ -26,7 +24,9 @@ app.service('solverService', function (model) {
             break;
           case 'done':
             stop();
-            console.log("Solver finished in " + stopWatch.getElapsed() + " msec");
+            if (console) {
+              console.log("Solver finished in " + stopWatch.getElapsed() + " msec");
+            }
             callback.finished("Finished");
             break;
         }
