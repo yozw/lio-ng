@@ -119,6 +119,13 @@ span.input-range-to {
   border-color: #d9534f;
 }
 
+.divider-vertical {
+  width: 100%;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-top: 1px solid #ddd;
+}
+
 table.input-table {
    width: 100%;
 }
@@ -134,3 +141,7 @@ table.input-table td .bs-callout {
   padding-bottom: 4px;
 }
 
+table.input-table td textarea {
+  height: 150px;
+  resize: none;
+}

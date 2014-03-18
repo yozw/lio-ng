@@ -13,7 +13,8 @@ app.controller('AppCtrl', function (
     storageService,
     messageService,
     aboutDialog,
-    sensitivityDialog) {
+    sensitivityDialog,
+    feedbackDialog) {
   "use strict";
 
   $scope.examples = [
@@ -52,6 +53,10 @@ app.controller('AppCtrl', function (
 
   $scope.showAbout = function() {
     aboutDialog.open();
+  };
+
+  $scope.showFeedback = function() {
+    feedbackDialog.open();
   };
 
   $scope.showSensitivityDialog = function() {
