@@ -14,30 +14,32 @@ Interval.prototype.toString = function () {
   return "[" + this.start + "," + this.end + "]";
 };
 
+Interval.prototype.subdivide = function (midpoint) {
+  if (midpoint == undefined) {
+    midpoint = (this.start + this.end) / 2;
+  }
+
+  var left = new Interval(this.start, midpoint);
+  var right = new Interval(midpoint, this.end);
+
+  left.previous = this.previous;
+  left.next = right;
+  right.previous = left;
+  right.next = this.next;
+
+  if (this.previous !== undefined) {
+    this.previous.next = left;
+  }
+  if (this.next !== undefined) {
+    this.next.previous = right;
+  }
+
+  return {left: left, right: right};
+};
+
+
 var AFE = function () {
   "use strict";
-
-  this.subdivide = function (interval, midpoint) {
-    if (arguments.length == 1) {
-      midpoint = (interval.start + interval.end) / 2;
-    }
-    var left = new Interval(interval.start, midpoint);
-    var right = new Interval(midpoint, interval.end);
-
-    left.previous = interval.previous;
-    left.next = right;
-    right.previous = left;
-    right.next = interval.next;
-
-    if (interval.previous !== undefined) {
-      interval.previous.next = left;
-    }
-    if (interval.next !== undefined) {
-      interval.next.previous = right;
-    }
-
-    return {left: left, right: right};
-  };
 
   /** Calculates the slope of the piecewise interpolant of the function on the given interval **/
   var derivative = function (f, interval) {
@@ -88,7 +90,7 @@ var AFE = function () {
       /* If the actual and predicted value are different enough, subdivide the interval and add the new intervals to
        the queue, provided that the intervals are not too small. */
       if (Math.abs(actual - predicted) > PRECISION * Math.abs(actual)) {
-        var newIntervals = this.subdivide(interval, x);
+        var newIntervals = interval.subdivide(x);
         if (newIntervals.left.length > minimumIntervalLength) {
           intervalQueue.queue(newIntervals.left);
         }
