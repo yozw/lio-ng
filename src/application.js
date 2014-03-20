@@ -4,10 +4,14 @@ var app = angular.module('lio-ng',
       'ui.chart',
       'directives.tabs',
       'directives.resizable',
+      'directives.resultgraph',
       'directives.resulttable'
     ]);
 
-app.controller('AppCtrl', function ($scope, $compile, model, solverService, storageService, messageService, aboutDialog, sensitivityDialog, feedbackDialog) {
+app.controller('AppCtrl', function (
+    $scope, $compile, model, 
+    jqPlotRenderService, solverService, storageService, messageService, 
+    aboutDialog, sensitivityDialog, feedbackDialog) {
   "use strict";
 
   $scope.examples = [
@@ -41,7 +45,7 @@ app.controller('AppCtrl', function ($scope, $compile, model, solverService, stor
     };
     callback.emitGraph = function (graph) {
       $scope.model.results.push(
-          {type: 'graph', graph: graph}
+          {type: 'graph', graph: jqPlotRenderService.render(graph)}
       );
       $scope.$apply();
     };

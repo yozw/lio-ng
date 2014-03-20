@@ -20,7 +20,7 @@ function postTable(table) {
  * Sends a graph back to the main thread.
  */
 function postGraph(graph) {
-  self.postMessage({action: 'emit-graph', graph: graph.toJqPlot()});
+  self.postMessage({action: 'emit-graph', graph: graph.serialize()});
 }
 
 function actionSolve(e) {

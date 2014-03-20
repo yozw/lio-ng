@@ -12,7 +12,11 @@ var Graph = function () {
   };
 
   this.addPolygon = function (data) {
-    self.layers.push(new Graph.PolygonPlot(data));
+    self.layers.push(new Graph.Polygon(data));
+  };
+  
+  this.addLine = function (normal, rhs) {
+    self.layers.push(new Graph.Line(normal, rhs));    
   };
 
   this.serialize = function () {
@@ -23,38 +27,6 @@ var Graph = function () {
       object.layers.push(self.layers[i].serialize());
     }
     return object;
-  };
-
-  // TODO: move this to an angular directive
-  this.toJqPlot = function () {
-    var jqPlot = {};
-    jqPlot.data = [];
-    jqPlot.options = {
-      sortData: false,
-      highlighter: {
-        show: true,
-        sizeAdjust: 6
-      },
-      cursor: {
-        show: true,
-        zoom: true,
-        tooltipLocation: 'sw'
-      },
-      series: [
-        {
-          showMarker: false,
-          markerOptions: {size: 0, shadow: false},
-          color: "#80A0FF",
-          fill: true,
-          fillColor: "rgba(128,128,255,0.2)",
-          fillAndStroke: true,
-          shadow: false}
-      ]};
-
-    for (var i = 0; i < self.layers.length; i++) {
-      jqPlot.data.push(self.layers[i].data);
-    }
-    return jqPlot;
   };
 
 };
@@ -69,13 +41,24 @@ Graph.ScatterPlot = function (data) {
   };
 };
 
-Graph.PolygonPlot = function (data) {
+Graph.Polygon = function (data) {
   var self = this;
   self.data = data;
   self.zIndex = 0;
 
   self.serialize = function () {
     return {type: 'polygon', data: self.data, zIndex: self.zIndex};
+  };
+};
+
+Graph.Line = function (normal, rhs) {
+  var self = this;
+  self.normal = normal;
+  self.rhs = rhs;
+  self.zIndex = 0;
+
+  self.serialize = function () {
+    return {type: 'line', normal: self.normal, rhs: self.rhs, zIndex: self.zIndex};
   };
 };
 

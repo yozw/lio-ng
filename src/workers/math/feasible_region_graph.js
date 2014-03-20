@@ -7,11 +7,13 @@ FeasibleRegionGraph.create = function (lp) {
   var graph = new Graph();
 
   var constraints = GlpkUtil.getConstraints(lp);
+  for (var i = 0; i < constraints.matrix.length; i++) {
+    graph.addLine(constraints.matrix[i], constraints.rhs[i]);
+  }
+    
   var vertices = MathUtil.getVertices(constraints.matrix, constraints.rhs);
 
-  // graph.addScatterPlot(vertices);
-
-  if (vertices.length > 0) {
+  if (vertices.length > 1) {
     var hull = new ConvexHull();
     hull.compute(vertices);
     var indices = hull.getIndices();
@@ -25,6 +27,10 @@ FeasibleRegionGraph.create = function (lp) {
     }
     graph.addPolygon(data);
   }
+
+  graph.addScatterPlot(vertices);
+  
+  console.log(JSON.stringify(graph.serialize()));
 
   return graph;
 };
