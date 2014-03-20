@@ -1,6 +1,7 @@
-var module = angular.module('directives.tabs', []);
+var module = angular.module('directives.tabs', ['ui.chart']);
 
-module.directive('tabs', function () {
+// TODO(yori): Do not inject the ui chart refresh service here!
+module.directive('tabs', function (uiChartRefreshService) {
   "use strict";
   return {
     restrict: 'E',
@@ -22,6 +23,10 @@ module.directive('tabs', function () {
       scope.setActiveTab(0);
     },
     controller: function ($scope) {
+      $scope.$watch('activeTab', function() {
+        uiChartRefreshService.refreshAll();
+      });
+      
       $scope.setActiveTab = function (index) {
         $scope.activeTab = index;
         for (var i = 0; i < $scope.tabs.length; i++) {
