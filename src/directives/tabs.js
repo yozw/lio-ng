@@ -1,6 +1,7 @@
 var module = angular.module('directives.tabs', ['ui.chart']);
 
 // TODO(yori): Do not inject the ui chart refresh service here!
+// TODO(yori): Make charts only update when the results tab becomes active
 module.directive('tabs', function (uiChartRefreshService) {
   "use strict";
   return {
