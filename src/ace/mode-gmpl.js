@@ -69,6 +69,10 @@ ace.define(
               regex: "subject to"
             },
             {
+              token: "keyword",
+              regex: "s\\.t\\."
+            },
+            {
               token: "string",           // " string
               regex: '".*?"'
             },

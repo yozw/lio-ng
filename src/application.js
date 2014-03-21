@@ -15,12 +15,16 @@ app.controller('AppCtrl', function (
   "use strict";
 
   $scope.examples = [
-    {name: 'Dovetail', url: '/lio-ng/models/dovetail.mod'},
-    {name: 'Diet problem', url: '/lio-ng/models/diet.mod'},
-    {name: 'Knapsack problem', url: '/lio-ng/models/knapsack.mod'},
-    {name: 'Portfolio optimization', url: '/lio-ng/models/portfolio.mod'},
-    {name: 'Machine scheduling problem', url: '/lio-ng/models/scheduling.mod'},
-    {name: 'Decentralization problem', url: '/lio-ng/models/decentral.mod'}
+    {name: 'Dovetail', url: '/lio-ng/models/book/dovetail.mod'},
+    {name: 'Diet problem', url: '/lio-ng/models/book/diet.mod'},
+    {name: 'Knapsack problem', url: '/lio-ng/models/book/knapsack.mod'},
+    {name: 'Portfolio optimization', url: '/lio-ng/models/book/portfolio.mod'},
+    {name: 'Machine scheduling problem', url: '/lio-ng/models/book/scheduling.mod'},
+    {name: 'Decentralization problem', url: '/lio-ng/models/book/decentral.mod'},
+    {name: 'Knight\'s tour', url: '/lio-ng/models/winglpk/knights.mod'},
+    {name: 'Personnel assignment problem', url: '/lio-ng/models/winglpk/personnel.mod'},
+    {name: 'Portfolio optimization using mean absolute deviation', url: '/lio-ng/models/glpk/PortfolioMAD.mod'},
+    {name: 'Simple single unit dispatch', url: '/lio-ng/models/glpk/dispatch.mod'},
   ];
 
   $scope.model = model;
