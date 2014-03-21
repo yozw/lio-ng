@@ -6,7 +6,7 @@
   </tr>
   <tr ng-repeat="row in ngModel.rows">
     <td ng-repeat="value in row">
-      {{value}}
+      {{formatValue(value)}}
     </td>
   </tr>
 </table>
