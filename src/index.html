@@ -7,6 +7,7 @@
   <script type="text/javascript" src="../lib/jqplot/plugins/jqplot.highlighter.js"></script>
   <script type="text/javascript" src="../lib/jqplot/plugins/jqplot.cursor.js"></script>
   <script type="text/javascript" src="../lib/ace/ace.js"></script>
+  <script type="text/javascript" src="ace/mode-gmpl.js"></script>
   <script type="text/javascript" src="../lib/glpk/glpk.js"></script>
   <script type="text/javascript" src="../lib/angular/angular.js"></script>
   <script type="text/javascript" src="../lib/ui-ace/ui-ace.js"></script>
@@ -28,6 +29,7 @@
   <link rel="stylesheet" type="text/css" href="../lib/ui-bootstrap/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="../lib/jqplot/jquery.jqplot.css">
   <link rel="stylesheet" type="text/css" href="css/application.css">
+  <link rel="stylesheet" type="text/css" href="ace/ace.css">
   <link rel="stylesheet" type="text/css" href="directives/resulttable.css">
 </head>
 
@@ -94,7 +96,7 @@
   </tabpane>
   <tabpane name="Model">
     <div id="editor"
-         ui-ace="{mode: 'xml'}"
+         ui-ace="{mode: 'gmpl', theme: 'chrome'}"
          ng-model="model.code"
          resizable
          style="height: {{windowHeight - 26}}px; width: 100%;"></div>
