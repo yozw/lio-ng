@@ -29,7 +29,6 @@
   <link rel="stylesheet" type="text/css" href="../lib/ui-bootstrap/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="../lib/jqplot/jquery.jqplot.css">
   <link rel="stylesheet" type="text/css" href="css/application.css">
-  <link rel="stylesheet" type="text/css" href="ace/ace.css">
   <link rel="stylesheet" type="text/css" href="directives/resulttable.css">
 </head>
 
@@ -56,8 +55,13 @@
     <li class="dropdown">
       <a class="dropdown-toggle">Examples</a>
       <ul class="dropdown-menu">
-        <li ng-repeat="example in examples">
-          <a ng-click="loadModel(example.url)">{{example.name}}</a>
+        <li ng-repeat="item in examples" ng-class="{'dropdown-submenu': item.hasOwnProperty('subItems')}">
+          <a ng-click="loadModel(item.url)">{{item.name}}</a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="subItem in item.subItems">
+              <a ng-click="loadModel(subItem.url)">{{subItem.name}}</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </li>
