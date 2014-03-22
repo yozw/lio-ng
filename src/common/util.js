@@ -59,4 +59,3 @@ Function.prototype.memoize = function () {
   wrapper.cache = cache;
   return wrapper;
 };
-

@@ -200,3 +200,21 @@ table.input-table td textarea {
   border-radius: 6px 0 6px 6px;
 }
 
+.display-math {
+  display: block;
+  text-align: center;
+}
+
+.display-math table {
+  display: inline-block;
+}
+
+.display-math table td {
+  text-align: left;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.math {
+  font-family: 'Arial';
+}

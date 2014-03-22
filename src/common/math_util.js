@@ -137,3 +137,55 @@ MathUtil.getLineEndpoints = function(normal, rhs, minX, maxX, minY, maxY) {
   }
   return [ [x1, y1], [x2, y2] ];
 }
+
+/**
+ * Takes a list of 2d points and calculates the minimum and maximum x and y values.
+ * @param points
+ * @returns {{minX: number, maxX: number, minY: number, maxY: number}}
+ */
+MathUtil.getBounds = function (points) {
+  if (points.length > 0) {
+    var minX = points[0][0];
+    var maxX = points[0][0];
+    var minY = points[0][1];
+    var maxY = points[0][1];
+    for (var i = 1; i < points.length; i++) {
+      minX = Math.min(points[i][0], minX);
+      maxX = Math.max(points[i][0], maxX);
+      minY = Math.min(points[i][1], minY);
+      maxY = Math.max(points[i][1], maxY);
+    }
+  }
+  return {minX: minX, maxX: maxX, minY: minY, maxY: maxY};
+};
+
+/**
+ * Takes a dictionary containing minimum and maximum x and y values, and expands the bounds by an
+ * {@code expansionFactor}. If the range is zero, it is expanded to have size {@code defaultRange}.
+ * @param bounds
+ * @param expansionFactor
+ * @param defaultRange
+ * @returns {{minX: number, maxX: number, minY: number, maxY: number}}
+ */
+MathUtil.expandBounds = function (bounds, expansionFactor, defaultRange) {
+  var rangeX = bounds.maxX - bounds.minX;
+  var rangeY = bounds.maxY - bounds.minY;
+  var expandX, expandY;
+  if (rangeX === 0) {
+    expandX = defaultRange / 2;
+  } else {
+    expandX = expansionFactor * rangeX / 2;
+  }
+  if (rangeY === 0) {
+    expandY = defaultRange / 2;
+  } else {
+    expandY = expansionFactor * rangeY / 2;
+  }
+  return {
+    minX: bounds.minX - expandX,
+    maxX: bounds.maxX + expandX,
+    minY: bounds.minY - expandY,
+    maxY: bounds.maxY + expandY
+  };
+};
+

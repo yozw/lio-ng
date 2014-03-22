@@ -78,5 +78,28 @@ describe("MathUtil", function () {
     var b = [-1];
     expect(MathUtil.getLineEndpoints(a, b, -2, 2, -2, 2)).toEqual([[-2, -1], [1, 2]]);
   });
+
+  it('getBounds retrieves the bounds of a set of points', function () {
+    var points = [[1, 2], [3, 4]];
+    expect(MathUtil.getBounds(points)).toEqual({minX: 1, maxX: 3, minY: 2, maxY: 4});
+  });
+
+  it('getBounds works with negative numbers', function () {
+    var points = [[-1, -2], [-3, -4]];
+    expect(MathUtil.getBounds(points)).toEqual({minX: -3, maxX: -1, minY: -4, maxY: -2});
+  });
+
+  it('expandBounds expands bounds correctly', function() {
+    var bounds = {minX: 1, maxX: 3, minY: 2, maxY: 6};
+    expect(MathUtil.expandBounds(bounds, 0.5, 1)).toEqual({minX: 0.5, maxX: 3.5, minY: 1, maxY: 7});
+  })
+
+  it('expandBounds expands bounds correctly when a range has length zero', function() {
+    var bounds = {minX: 1, maxX: 1, minY: 2, maxY: 6};
+    expect(MathUtil.expandBounds(bounds, 0.5, 1)).toEqual({minX: 0.5, maxX: 1.5, minY: 1, maxY: 7});
+
+    bounds = {minX: 1, maxX: 3, minY: 4, maxY: 4};
+    expect(MathUtil.expandBounds(bounds, 0.5, 1)).toEqual({minX: 0.5, maxX: 3.5, minY: 3.5, maxY: 4.5});
+  })
 });
 

@@ -2,39 +2,6 @@
 
 var FeasibleRegionGraph = Object();
 
-function getBounds(vertices) {
-  if (vertices.length > 0) {
-    var minX = vertices[0][0];
-    var maxX = vertices[0][0];
-    var minY = vertices[0][1];
-    var maxY = vertices[0][1];
-    for (var i = 1; i < vertices.length; i++) {
-      minX = Math.min(vertices[i][0], minX);
-      maxX = Math.max(vertices[i][0], maxX);
-      minY = Math.min(vertices[i][1], minY);
-      maxY = Math.max(vertices[i][1], maxY);
-    }
-  }
-  return {minX: minX, maxX: maxX, minY: minY, maxY: maxY};
-}
-
-function expandBounds(bounds, expansionFactor, defaultRange) {
-  var rangeX = bounds.maxX - bounds.minX;
-  var rangeY = bounds.maxY - bounds.minY;
-  if (rangeX === 0) {
-    rangeX = defaultRange;
-  }
-  if (rangeY === 0) {
-    rangeY = defaultRange;
-  }
-  return {
-    minX: bounds.minX - expansionFactor * rangeX / 2,
-    maxX: bounds.maxX + expansionFactor * rangeX / 2,
-    minY: bounds.minY - expansionFactor * rangeY / 2,
-    maxY: bounds.maxY + expansionFactor * rangeY / 2
-  };
-}
-
 FeasibleRegionGraph.create = function (lp) {
   "use strict";
   var graph = new Graph();
@@ -49,15 +16,15 @@ FeasibleRegionGraph.create = function (lp) {
   var vertices = MathUtil.getVertices(constraints.matrix, constraints.rhs);
 
   // Get the minimal 2d box containing all vertices
-  var vertexBounds = getBounds(vertices);
+  var vertexBounds = MathUtil.getBounds(vertices);
 
   // Expand it by 50% and set the result as the viewport
-  var viewBounds = expandBounds(vertexBounds, 0.5, 1.0);
+  var viewBounds = MathUtil.expandBounds(vertexBounds, 0.5, 1.0);
   graph.setXRange(viewBounds.minX, viewBounds.maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);
 
   // Expand it by 1000% and use this as artificial bounds; these virtual bounds are used to symbolize "infinity".
-  var worldBounds = expandBounds(vertexBounds, 10.0, 10.0);
+  var worldBounds = MathUtil.expandBounds(vertexBounds, 10.0, 10.0);
 
   // Add artificial constraints; this aids displaying an unbounded feasible region
   constraints.matrix.push([1, 0]);

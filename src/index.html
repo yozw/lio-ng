@@ -108,22 +108,35 @@
       <p>More formally, linear optimization is a technique for the optimization of a linear objective function, subject
         to linear equality and linear inequality constraints. Its feasible region is a convex polyhedron, which is a
         set defined as the intersection of finitely many half spaces, each of which is defined by a linear inequality.
-        Its objective function is a real-valued affine function defined on this polyhedron. A linear programming
+        Its objective function is a real-valued affine function defined on this polyhedron. A linear optimization
         algorithm finds a point in the polyhedron where this function has the smallest (or largest) value if such a
         point exists.
-        Linear programs are problems that can be expressed in canonical form:</p>
+        Linear optimization models can be expressed in the following canonical form:</p>
 
-      $$\begin{array}{ll}
-        {\rm maximize} & \mathbf{c}^{\sf T} \mathbf{x} \\
-        {\rm subject\ to} & \mathbf{A}\mathbf{x} \leq \mathbf{b} \\
-        & \mathbf{x} \geq \mathbf{0}.
-        \end{array}$$
+        <div class="bs-callout bs-callout-info ng-binding">
+          <div class="display-math">
+          <table>
+            <tr>
+              <td>maximize</td><td><span class="math"><b>c</b><sup>T</sup><b>x</b></span></td>
+            </tr>
+            <tr>
+              <td>subject to</td><td><span class="math"><b>A</b><b>x</b>&nbsp;&le;&nbsp;<b>b</b></span></td>
+            </tr>
+            <tr>
+              <td></td><td><span class="math"><b>x</b>&nbsp;&ge;&nbsp;<b>0</b></span></td>
+            </tr>
+          </table>
+          </div>
+        </div>
 
-      where $\mathbf{x}$ represents the vector of variables (to be determined), $\mathbf{c}$ and $\mathbf{b}$ are
-      vectors of known coefficients, $\mathbf{A}$ is a known matrix of coefficients, and $(\cdot)^{\sf T}$ is the matrix
+      where <span class="math"><b>x</b></span> represents the vector of variables (to be determined),
+      <span class="math"><b>c</b></span> and <span class="math"><b>b</b></span> are
+      vectors of known coefficients, <span class="math"><b>A</b></span> is a known matrix of coefficients, and
+      <span class="math">(&middot;)<sup>T</sup></span> is the matrix
       transpose. The expression to be maximized or minimized is called the objective function
-      ($\mathbf{c}^{\sf T}\mathbf{x}$ in this case).
-      The inequalities $\mathbf{A}\mathbf{x} \leq \mathbf{b}$ and $\mathbf{x}\geq\mathbf{0}$ are the constraints
+      (<span class="math"><b>c</b><sup>T</sup><b>x</b></span> in this case).
+      The inequalities <span class="math"><b>A</b><b>x</b>&nbsp;&le;&nbsp;<b>b</b> and
+      <span class="math"><b>x</b>&nbsp;&ge;&nbsp;<b>0</b></span> are the constraints
       that specify the set of points over which the objective function is to be optimized.
 
 
@@ -160,14 +173,6 @@
         ng-click="solveModel()"
         class="btn btn-success">Solve model
 </button>
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-  messageStyle: "none"
-});
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 </body>
 </html>
