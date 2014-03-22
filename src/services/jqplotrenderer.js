@@ -5,7 +5,7 @@ app.service('jqPlotRenderService', function () {
      title: 'Feasible region',
      axes: {
        xaxis: {min: -1, max: 10, label: 'x1'},
-       yaxis: {min: -1, max: 10, label: 'x2'},
+       yaxis: {min: -1, max: 10, label: 'x2'}
      },
      sortData: false,
      highlighter: {
@@ -66,47 +66,10 @@ app.service('jqPlotRenderService', function () {
     
     return layers.map(toTriple).sort(tripleComparator).map(getLayer);
   }
-  
-  function getLineData(normal, rhs) {
-    var minX = -10, maxX = 10, minY = -10, maxY = 10;
-    var a = normal[0], b = normal[1], c = rhs;
-    
-    var x1, y1, x2, y2;
-    
-    // solve equation ax + by = c, staying inside the bounds 
-    // set by minX, maxX, minY, maxY
-    if (b === 0) {
-      return [ [c / a, minY], [c / a, maxY] ];
-    } else if (a === 0) {
-      return [ [minX, c / b], [maxX, c / b] ];
-    } 
-    
-    x1 = minX;
-    x2 = maxX;
-    y1 = (c - a * x1) / b;
-    y2 = (c - a * x2) / b;
-    if (y1 > maxY) {
-      y1 = maxY;
-      x1 = (c - b * y1) / a;
-    } else if (y1 < minY) {
-      y1 = minY;
-      x1 = (c - b * y1) / a;
-    }
-    
-    if (y2 > maxY) {
-      y2 = maxY;
-      x2 = (c - b * y2) / a;
-    } else if (y2 < minY) {
-      y2 = minY;
-      x2 = (c - b * y2) / a;
-    }
-    return [ [x1, y1], [x2, y2] ];
-  }
-     
+
   function getSeriesData(layer) {
-    console.log(JSON.stringify(layer));
     if (layer.type === "line") {
-      return getLineData(layer.normal, layer.rhs);
+      return MathUtil.getLineEndpoints(layer.normal, layer.rhs, -10, 10, -10, 10);
     } else {
       return layer.data;
     }
@@ -131,8 +94,6 @@ app.service('jqPlotRenderService', function () {
       jqPlot.data = seriesData;
       jqPlot.options = jQuery.extend(true, {}, defaultOptions);
       jqPlot.options.series = seriesOptions;
-      
-      console.log(JSON.stringify(jqPlot));
       return jqPlot;
     }
   };

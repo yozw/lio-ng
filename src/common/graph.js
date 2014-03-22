@@ -1,22 +1,34 @@
 "use strict";
 
 // TODO: implement serialization/deserialization
-// TODO: Write unit tests
 var Graph = function () {
 
   var self = this;
   this.layers = [];
 
   this.addScatterPlot = function (data) {
-    self.layers.push(new Graph.ScatterPlot(data));
+    self.layers.push({
+      type: 'scatter',
+      data: data,
+      zIndex: 0
+    });
   };
 
   this.addPolygon = function (data) {
-    self.layers.push(new Graph.Polygon(data));
+    self.layers.push({
+      type: 'polygon',
+      data: data,
+      zIndex: 0
+    });
   };
   
   this.addLine = function (normal, rhs) {
-    self.layers.push(new Graph.Line(normal, rhs));    
+    self.layers.push({
+      type: 'line',
+      normal: normal,
+      rhs: rhs,
+      zIndex: 0
+    });
   };
 
   this.serialize = function () {
@@ -24,41 +36,9 @@ var Graph = function () {
     var object = {};
     object.layers = [];
     for (i = 0; i < self.layers.length; i++) {
-      object.layers.push(self.layers[i].serialize());
+      object.layers.push(self.layers[i]);
     }
     return object;
   };
 
 };
-
-Graph.ScatterPlot = function (data) {
-  var self = this;
-  self.data = data;
-  self.zIndex = 0;
-
-  self.serialize = function () {
-    return {type: 'scatter', data: self.data, zIndex: self.zIndex};
-  };
-};
-
-Graph.Polygon = function (data) {
-  var self = this;
-  self.data = data;
-  self.zIndex = 0;
-
-  self.serialize = function () {
-    return {type: 'polygon', data: self.data, zIndex: self.zIndex};
-  };
-};
-
-Graph.Line = function (normal, rhs) {
-  var self = this;
-  self.normal = normal;
-  self.rhs = rhs;
-  self.zIndex = 0;
-
-  self.serialize = function () {
-    return {type: 'line', normal: self.normal, rhs: self.rhs, zIndex: self.zIndex};
-  };
-};
-

@@ -16,6 +16,7 @@ describe("GlpkUtil", function () {
 
   it('solves a GMPL model', function () {
     var lp = GlpkUtil.solveGmpl(DOVETAIL);
+    // TODO: Expand unit test
 
   });
 

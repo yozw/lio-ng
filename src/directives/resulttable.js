@@ -1,5 +1,6 @@
 var module = angular.module('directives.resulttable', []);
 
+// TODO: Write unit tests
 module.directive('resultTable', function () {
   "use strict";
   return {

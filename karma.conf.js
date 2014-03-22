@@ -22,6 +22,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'lib/jquery/jquery-2.1.0.min.js',
       'lib/angular/angular.js',
       'lib/angular/angular-mocks.js',
       'lib/priority-queue/priority-queue.no-require.js',

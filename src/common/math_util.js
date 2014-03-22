@@ -91,4 +91,49 @@ MathUtil.getVertices = function (matrix, rhs) {
   return vertices;
 };
 
+/**
+ * Calculates the two intersections between the two-dimensional line {@code normal . [x y] = rhs} and the two-dimensional
+ * box given by {@code minX <= x <= maxX} and {@code minY <= y <= maxY}.
+ *
+ * @param normal
+ * @param rhs
+ * @param minX
+ * @param maxX
+ * @param minY
+ * @param maxY
+ * @returns {*[]}
+ */
 
+MathUtil.getLineEndpoints = function(normal, rhs, minX, maxX, minY, maxY) {
+  var a = normal[0], b = normal[1];
+  var x1, y1, x2, y2;
+
+  // solve equation ax + by = c, staying inside the bounds
+  // set by minX, maxX, minY, maxY
+  if (b === 0) {
+    return [ [rhs / a, minY], [rhs / a, maxY] ];
+  } else if (a === 0) {
+    return [ [minX, rhs / b], [maxX, rhs / b] ];
+  }
+
+  x1 = minX;
+  x2 = maxX;
+  y1 = (rhs - a * x1) / b;
+  y2 = (rhs - a * x2) / b;
+  if (y1 > maxY) {
+    y1 = maxY;
+    x1 = (rhs - b * y1) / a;
+  } else if (y1 < minY) {
+    y1 = minY;
+    x1 = (rhs - b * y1) / a;
+  }
+
+  if (y2 > maxY) {
+    y2 = maxY;
+    x2 = (rhs - b * y2) / a;
+  } else if (y2 < minY) {
+    y2 = minY;
+    x2 = (rhs - b * y2) / a;
+  }
+  return [ [x1, y1], [x2, y2] ];
+}

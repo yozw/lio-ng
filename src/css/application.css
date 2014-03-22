@@ -30,6 +30,12 @@ body {
   z-index: 1000;
 }
 
+@media print {
+  .butter-bar-outer {
+    display: none;
+  }
+}
+
 .nav a {
   cursor: pointer;
 }

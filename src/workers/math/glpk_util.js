@@ -11,6 +11,7 @@ GlpkUtil.parseVariableName = function (name) {
  * @param lp
  * @returns {Array}
  */
+// TODO: Write unit test
 GlpkUtil.getObjectiveVector = function (lp) {
   "use strict";
   var vector = [];
@@ -26,6 +27,7 @@ GlpkUtil.getObjectiveVector = function (lp) {
  * @param i
  * @returns {*}
  */
+// TODO: Write unit test
 GlpkUtil.getRow = function (lp, i) {
   var m = glp_get_num_cols(lp);
   var row = MathUtil.zeroes(m);
@@ -65,6 +67,7 @@ GlpkUtil.solveGmpl = function (code) {
  * @param lp
  * @returns {Table}
  */
+// TODO: Write unit test
 GlpkUtil.getPrimalSolutionTable = function (lp) {
   var table = new Table();
 
@@ -79,10 +82,6 @@ GlpkUtil.getPrimalSolutionTable = function (lp) {
 
   return table;
 };
-
-"use strict";
-
-var LpUtil = Object();
 
 /**
  * Gets all constraints for the specified Glpk lp object

@@ -18,7 +18,7 @@ FeasibleRegionGraph.create = function (lp) {
     hull.compute(vertices);
     var indices = hull.getIndices();
     var data = [];
-    for (var i = 0; i < indices.length; i++) {
+    for (i = 0; i < indices.length; i++) {
       var index = indices[i];
       data.push(vertices[index]);
     }
@@ -30,7 +30,5 @@ FeasibleRegionGraph.create = function (lp) {
 
   graph.addScatterPlot(vertices);
   
-  console.log(JSON.stringify(graph.serialize()));
-
   return graph;
 };

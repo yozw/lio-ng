@@ -1,6 +1,7 @@
 /**
  * Solver service
  */
+// TODO: Write unit tests
 app.service('solverService', function (model) {
   "use strict";
   var worker;

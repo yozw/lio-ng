@@ -8,14 +8,11 @@ var app = angular.module('lio-ng',
       'directives.resulttable'
     ]);
 
-app.controller('AppCtrl', function (
-    $scope, $compile, model, 
-    jqPlotRenderService, solverService, storageService, messageService, 
-    aboutDialog, sensitivityDialog, feedbackDialog) {
+app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService, solverService, storageService, messageService, aboutDialog, sensitivityDialog, feedbackDialog) {
   "use strict";
 
   $scope.examples = [
-    {name: 'Book', url: 'none', subItems: [
+    {name: 'From the book', url: 'none', subItems: [
       {name: 'Dovetail', url: '/lio-ng/models/book/dovetail.mod'},
       {name: 'Diet problem', url: '/lio-ng/models/book/diet.mod'},
       {name: 'Knapsack problem', url: '/lio-ng/models/book/knapsack.mod'},
@@ -23,10 +20,14 @@ app.controller('AppCtrl', function (
       {name: 'Machine scheduling problem', url: '/lio-ng/models/book/scheduling.mod'},
       {name: 'Decentralization problem', url: '/lio-ng/models/book/decentral.mod'}
     ]},
-    {name: 'Knight\'s tour', url: '/lio-ng/models/winglpk/knights.mod'},
-    {name: 'Personnel assignment problem', url: '/lio-ng/models/winglpk/personnel.mod'},
-    {name: 'Portfolio optimization using mean absolute deviation', url: '/lio-ng/models/glpk/PortfolioMAD.mod'},
-    {name: 'Simple single unit dispatch', url: '/lio-ng/models/glpk/dispatch.mod'},
+    {name: 'Scheduling', url: 'none', subItems: [
+      {name: 'Knight\'s tour', url: '/lio-ng/models/winglpk/knights.mod'},
+      {name: 'Personnel assignment problem', url: '/lio-ng/models/winglpk/personnel.mod'},
+      {name: 'Simple single unit dispatch', url: '/lio-ng/models/glpk/dispatch.mod'}
+    ]},
+    {name: 'Financial', url: 'none', subItems: [
+      {name: 'Portfolio optimization using mean absolute deviation', url: '/lio-ng/models/glpk/PortfolioMAD.mod'}
+    ]}
   ];
 
   $scope.model = model;
@@ -78,7 +79,7 @@ app.controller('AppCtrl', function (
       if (!$scope.$$phase) {
         $scope.$apply();
       }
-      MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     }
 
     storageService.readModel(url, callback);

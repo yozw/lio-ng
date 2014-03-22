@@ -1,3 +1,4 @@
+// TODO: Write unit tests
 app.service('storageService', function ($http, messageService) {
   "use strict";
   return {

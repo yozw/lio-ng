@@ -3,9 +3,9 @@
 importScripts('../../lib/glpk/glpk.js');
 importScripts('../common/table.js');
 importScripts('../common/graph.js');
+importScripts('../common/math_util.js');
 importScripts('math/adaptive_function_estimation.js');
 importScripts('math/feasible_region_graph.js');
-importScripts('math/math_util.js');
 importScripts('math/glpk_util.js');
 importScripts('math/convex_hull.js');
 
