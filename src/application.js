@@ -78,6 +78,7 @@ app.controller('AppCtrl', function (
       if (!$scope.$$phase) {
         $scope.$apply();
       }
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     }
 
     storageService.readModel(url, callback);
