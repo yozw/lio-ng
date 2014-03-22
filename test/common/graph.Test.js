@@ -4,7 +4,6 @@ describe("Graph", function () {
 
   it('add a line', function () {
     var graph = new Graph();
-
     graph.addLine([1, 1], 5);
 
     expect(graph.layers.length).toEqual(1);

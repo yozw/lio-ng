@@ -4,8 +4,8 @@ app.service('jqPlotRenderService', function () {
    var defaultOptions = {
      title: 'Feasible region',
      axes: {
-       xaxis: {min: -1, max: 10, label: 'x1'},
-       yaxis: {min: -1, max: 10, label: 'x2'}
+       xaxis: {min: 0, max: 1, label: 'x1'},
+       yaxis: {min: 0, max: 1, label: 'x2'}
      },
      sortData: false,
      highlighter: {
@@ -93,6 +93,12 @@ app.service('jqPlotRenderService', function () {
       var jqPlot = {};
       jqPlot.data = seriesData;
       jqPlot.options = jQuery.extend(true, {}, defaultOptions);
+
+      jqPlot.options.axes.xaxis.min = graph.xrange.min;
+      jqPlot.options.axes.xaxis.max = graph.xrange.max;
+      jqPlot.options.axes.yaxis.min = graph.yrange.min;
+      jqPlot.options.axes.yaxis.max = graph.yrange.max;
+
       jqPlot.options.series = seriesOptions;
       return jqPlot;
     }
