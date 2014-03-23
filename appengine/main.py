@@ -13,7 +13,7 @@ def hello():
 @app.errorhandler(404)
 def page_not_found(e):
   """Return a custom 404 error."""
-  return 'Sorry, Nothing at this URL.', 404
+  return 'Sorry, nothing at this URL.', 404
 
 
 @app.errorhandler(500)

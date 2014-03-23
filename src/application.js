@@ -13,24 +13,24 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
 
   $scope.examples = [
     {name: 'From the book', url: 'none', subItems: [
-      {name: 'Dovetail', url: '/lio-ng/models/book/dovetail.mod'},
-      {name: 'Diet problem', url: '/lio-ng/models/book/diet.mod'},
-      {name: 'Knapsack problem', url: '/lio-ng/models/book/knapsack.mod'},
-      {name: 'Portfolio optimization', url: '/lio-ng/models/book/portfolio.mod'},
-      {name: 'Machine scheduling problem', url: '/lio-ng/models/book/scheduling.mod'},
-      {name: 'Decentralization problem', url: '/lio-ng/models/book/decentral.mod'}
+      {name: 'Dovetail', url: '/models/book/dovetail.mod'},
+      {name: 'Diet problem', url: '/models/book/diet.mod'},
+      {name: 'Knapsack problem', url: '/models/book/knapsack.mod'},
+      {name: 'Portfolio optimization', url: '/models/book/portfolio.mod'},
+      {name: 'Machine scheduling problem', url: '/models/book/scheduling.mod'},
+      {name: 'Decentralization problem', url: '/models/book/decentral.mod'}
     ]},
     {name: 'Two-dimensional models', url: 'none', subItems: [
-      {name: 'Dovetail', url: '/lio-ng/models/book/dovetail.mod'},
-      {name: 'Circle', url: '/lio-ng/models/circle.mod'}
+      {name: 'Dovetail', url: '/models/book/dovetail.mod'},
+      {name: 'Circle', url: '/models/circle.mod'}
     ]},
     {name: 'Scheduling', url: 'none', subItems: [
-      {name: 'Knight\'s tour', url: '/lio-ng/models/winglpk/knights.mod'},
-      {name: 'Personnel assignment problem', url: '/lio-ng/models/winglpk/personnel.mod'},
-      {name: 'Simple single unit dispatch', url: '/lio-ng/models/glpk/dispatch.mod'}
+      {name: 'Knight\'s tour', url: '/models/winglpk/knights.mod'},
+      {name: 'Personnel assignment problem', url: '/models/winglpk/personnel.mod'},
+      {name: 'Simple single unit dispatch', url: '/models/glpk/dispatch.mod'}
     ]},
     {name: 'Financial', url: 'none', subItems: [
-      {name: 'Portfolio optimization using mean absolute deviation', url: '/lio-ng/models/glpk/PortfolioMAD.mod'}
+      {name: 'Portfolio optimization using mean absolute deviation', url: '/models/glpk/PortfolioMAD.mod'}
     ]}
   ];
 
@@ -88,7 +88,7 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
     storageService.readModel(url, callback);
   };
 
-  $scope.loadModel("/lio-ng/models/book/dovetail.mod");
+  $scope.loadModel("/models/book/dovetail.mod");
 });
 
 app.factory('model', function () {
