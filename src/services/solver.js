@@ -10,7 +10,7 @@ app.service('solverService', function (model) {
     solve: function (code, callback) {
       var stopWatch = new Stopwatch();
 
-      worker = new Worker("workers/solver.js");
+      worker = new Worker("/src/workers/solver.js");
       worker.onmessage = function (e) {
         var obj = e.data;
         switch (obj.action) {

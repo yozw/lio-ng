@@ -5,7 +5,7 @@ app.factory('feedbackDialog', function ($modal, $log) {
     open: function () {
 
       var modalInstance = $modal.open({
-        templateUrl: 'dialogs/feedback.html',
+        templateUrl: '/src/dialogs/feedback.html',
         controller: "FeedbackDialogCtrl"
       });
 

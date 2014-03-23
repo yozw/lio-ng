@@ -8,7 +8,7 @@ module.directive('tabs', function (uiChartRefreshService) {
     restrict: 'E',
     scope: {},
     transclude: true,
-    templateUrl: 'directives/tabs.html',
+    templateUrl: '/src/directives/tabs.html',
     link: function (scope, element) {
       scope.tabs = [];
       scope.activeTab = 0;

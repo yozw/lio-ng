@@ -2,41 +2,41 @@
 <html ng-app="lio-ng">
 <head>
   <title>Linear Optimization</title>
-  <script type="text/javascript" src="../lib/jquery/jquery-2.1.0.min.js"></script>
-  <script type="text/javascript" src="../lib/jqplot/jquery.jqplot.js"></script>
-  <script type="text/javascript" src="../lib/jqplot/plugins/jqplot.highlighter.js"></script>
-  <script type="text/javascript" src="../lib/jqplot/plugins/jqplot.cursor.js"></script>
-  <script type="text/javascript" src="../lib/ace/ace.js"></script>
-  <script type="text/javascript" src="ace/mode-gmpl.js"></script>
-  <script type="text/javascript" src="../lib/glpk/glpk.js"></script>
-  <script type="text/javascript" src="../lib/angular/angular.js"></script>
-  <script type="text/javascript" src="../lib/ui-ace/ui-ace.js"></script>
-  <script type="text/javascript" src="../lib/ui-bootstrap/ui-bootstrap.js"></script>
-  <script type="text/javascript" src="../lib/ui-chart/chart.js"></script>
-  <script type="text/javascript" src="directives/resultgraph.js"></script>
-  <script type="text/javascript" src="directives/resulttable.js"></script>
-  <script type="text/javascript" src="directives/resizable.js"></script>
-  <script type="text/javascript" src="directives/tabs.js"></script>
-  <script type="text/javascript" src="application.js"></script>
-  <script type="text/javascript" src="common/util.js"></script>
-  <script type="text/javascript" src="common/math_util.js"></script>
-  <script type="text/javascript" src="dialogs/about.js"></script>
-  <script type="text/javascript" src="dialogs/feedback.js"></script>
-  <script type="text/javascript" src="dialogs/sensitivity.js"></script>
-  <script type="text/javascript" src="services/jqplotrenderer.js"></script>
-  <script type="text/javascript" src="services/message.js"></script>
-  <script type="text/javascript" src="services/solver.js"></script>
-  <script type="text/javascript" src="services/storage.js"></script>
-  <link rel="stylesheet" type="text/css" href="../lib/ui-bootstrap/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="../lib/jqplot/jquery.jqplot.css">
-  <link rel="stylesheet" type="text/css" href="css/application.css">
-  <link rel="stylesheet" type="text/css" href="directives/resulttable.css">
+  <script type="text/javascript" src="/lib/jquery/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="/lib/jqplot/jquery.jqplot.js"></script>
+  <script type="text/javascript" src="/lib/jqplot/plugins/jqplot.highlighter.js"></script>
+  <script type="text/javascript" src="/lib/jqplot/plugins/jqplot.cursor.js"></script>
+  <script type="text/javascript" src="/lib/ace/ace.js"></script>
+  <script type="text/javascript" src="/src/ace/mode-gmpl.js"></script>
+  <script type="text/javascript" src="/lib/glpk/glpk.js"></script>
+  <script type="text/javascript" src="/lib/angular/angular.js"></script>
+  <script type="text/javascript" src="/lib/ui-ace/ui-ace.js"></script>
+  <script type="text/javascript" src="/lib/ui-bootstrap/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="/lib/ui-chart/chart.js"></script>
+  <script type="text/javascript" src="/src/directives/resultgraph.js"></script>
+  <script type="text/javascript" src="/src/directives/resulttable.js"></script>
+  <script type="text/javascript" src="/src/directives/resizable.js"></script>
+  <script type="text/javascript" src="/src/directives/tabs.js"></script>
+  <script type="text/javascript" src="/src/application.js"></script>
+  <script type="text/javascript" src="/src/common/util.js"></script>
+  <script type="text/javascript" src="/src/common/math_util.js"></script>
+  <script type="text/javascript" src="/src/dialogs/about.js"></script>
+  <script type="text/javascript" src="/src/dialogs/feedback.js"></script>
+  <script type="text/javascript" src="/src/dialogs/sensitivity.js"></script>
+  <script type="text/javascript" src="/src/services/jqplotrenderer.js"></script>
+  <script type="text/javascript" src="/src/services/message.js"></script>
+  <script type="text/javascript" src="/src/services/solver.js"></script>
+  <script type="text/javascript" src="/src/services/storage.js"></script>
+  <link rel="stylesheet" type="text/css" href="/lib/ui-bootstrap/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/lib/jqplot/jquery.jqplot.css">
+  <link rel="stylesheet" type="text/css" href="/src/css/application.css">
+  <link rel="stylesheet" type="text/css" href="/src/directives/resulttable.css">
 </head>
 
 <body ng-controller="AppCtrl">
 <div class="collapse navbar-collapse navbar-inverse">
   <ul class="nav navbar-nav">
-    <li class="dropdown">
+<!--    <li class="dropdown">
       <a class="dropdown-toggle">Model</a>
       <ul class="dropdown-menu">
         <li><a>Language</a></li>
@@ -45,7 +45,7 @@
         <li><a>Download</a></li>
         <li><a>Print</a></li>
       </ul>
-    </li>
+    </li> -->
     <li class="dropdown">
       <a class="dropdown-toggle">Run</a>
       <ul class="dropdown-menu">

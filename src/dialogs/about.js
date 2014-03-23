@@ -5,7 +5,7 @@ app.factory('aboutDialog', function ($modal, $log) {
     open: function () {
 
       var modalInstance = $modal.open({
-        templateUrl: 'dialogs/about.html',
+        templateUrl: '/src/dialogs/about.html',
         controller: "AboutDialogCtrl"
       });
 

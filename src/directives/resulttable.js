@@ -10,7 +10,7 @@ module.directive('resultTable', function () {
     scope: {
       ngModel: '='
     },
-    templateUrl: 'directives/resulttable.html',
+    templateUrl: '/src/directives/resulttable.html',
     link: function(scope) {
       scope.formatValue = function (value) {
         if (typeof value === 'number') {

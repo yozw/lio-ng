@@ -5,7 +5,7 @@ app.factory('sensitivityDialog', function ($modal, $log) {
     open: function () {
 
       var modalInstance = $modal.open({
-        templateUrl: 'dialogs/sensitivity.html',
+        templateUrl: '/src/dialogs/sensitivity.html',
         controller: "SensitivityDialogCtrl"
       });
 

@@ -10,7 +10,7 @@ module.directive('resultGraph', function () {
     scope: {
       ngModel: '='
     },
-    templateUrl: 'directives/resultgraph.html'
+    templateUrl: '/src/directives/resultgraph.html'
   };
 });
 
