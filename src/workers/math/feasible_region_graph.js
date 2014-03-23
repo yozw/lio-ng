@@ -16,12 +16,15 @@ FeasibleRegionGraph.create = function (lp) {
   var vertices = MathUtil.getVertices(constraints.matrix, constraints.rhs);
 
   // Get the minimal 2d box containing all vertices
-  var vertexBounds = MathUtil.getBounds(vertices);
-
-  // Expand it by 50% and set the result as the viewport
-  var viewBounds = MathUtil.expandBounds(vertexBounds, 0.5, 1.0);
-  graph.setXRange(viewBounds.minX, viewBounds.maxX);
-  graph.setYRange(viewBounds.minY, viewBounds.maxY);
+  var vertexBounds;
+  var viewBounds;
+  if (vertices.length > 0) {
+    vertexBounds = MathUtil.getBounds(vertices);
+    viewBounds = MathUtil.expandBounds(vertexBounds, 0.5, 1.0);
+  } else {
+    vertexBounds = {minX: 0, maxX: 0, minY: 0, maxY: 0};
+    viewBounds = null;
+  }
 
   // Expand it by 1000% and use this as artificial bounds; these virtual bounds are used to symbolize "infinity".
   var worldBounds = MathUtil.expandBounds(vertexBounds, 10.0, 10.0);
@@ -39,7 +42,18 @@ FeasibleRegionGraph.create = function (lp) {
   // Calculate the vertices of this artificially constrained problem
   vertices = MathUtil.getVertices(constraints.matrix, constraints.rhs);
 
-  if (vertices.length > 1) {
+  if (viewBounds === null) {
+    // TODO: Sort out what to do here exactly
+    // If one of the coordinates goes off to infinity: shrink by a small factor
+    // Otherwise, expand by either a factor or a constant
+    viewBounds = MathUtil.expandBounds(MathUtil.getBounds(vertices), 0, 1);
+  }
+
+  if (vertices.length == 0) {
+    // TODO: decide what to do if the feasible region is empty
+  } else if (vertices.length == 2) {
+    graph.addPolygon(vertices);
+  } else if (vertices.length > 2) {
     var hull = new ConvexHull();
     hull.compute(vertices);
     var indices = hull.getIndices();
@@ -55,6 +69,10 @@ FeasibleRegionGraph.create = function (lp) {
   }
 
   graph.addScatterPlot(vertices);
-  
+
+  graph.setXRange(viewBounds.minX, viewBounds.maxX);
+  graph.setYRange(viewBounds.minY, viewBounds.maxY);
+
+  console.log(JSON.stringify(graph));
   return graph;
 };

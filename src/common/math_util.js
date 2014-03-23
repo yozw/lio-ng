@@ -60,6 +60,14 @@ MathUtil.isFinite = function (number) {
   return (number > -Number.MAX_VALUE) && (number < Number.MAX_VALUE);
 };
 
+MathUtil.uniqueBy = function(array, keyFn) {
+  var seen = {};
+  return array.filter(function(element) {
+    var key = keyFn(element);
+    return (seen[key] === 1) ? 0 : seen[key] = 1;
+  });
+};
+
 MathUtil.getVertices = function (matrix, rhs) {
   var vertices = [];
   for (var i = 0; i < matrix.length; i++) {
@@ -88,7 +96,7 @@ MathUtil.getVertices = function (matrix, rhs) {
       }
     }
   }
-  return vertices;
+  return MathUtil.uniqueBy(vertices, JSON.stringify);
 };
 
 /**
@@ -144,17 +152,15 @@ MathUtil.getLineEndpoints = function(normal, rhs, minX, maxX, minY, maxY) {
  * @returns {{minX: number, maxX: number, minY: number, maxY: number}}
  */
 MathUtil.getBounds = function (points) {
-  if (points.length > 0) {
-    var minX = points[0][0];
-    var maxX = points[0][0];
-    var minY = points[0][1];
-    var maxY = points[0][1];
-    for (var i = 1; i < points.length; i++) {
-      minX = Math.min(points[i][0], minX);
-      maxX = Math.max(points[i][0], maxX);
-      minY = Math.min(points[i][1], minY);
-      maxY = Math.max(points[i][1], maxY);
-    }
+  var minX = points[0][0];
+  var maxX = points[0][0];
+  var minY = points[0][1];
+  var maxY = points[0][1];
+  for (var i = 1; i < points.length; i++) {
+    minX = Math.min(points[i][0], minX);
+    maxX = Math.max(points[i][0], maxX);
+    minY = Math.min(points[i][1], minY);
+    maxY = Math.max(points[i][1], maxY);
   }
   return {minX: minX, maxX: maxX, minY: minY, maxY: maxY};
 };

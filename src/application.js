@@ -83,7 +83,6 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
       if (!$scope.$$phase) {
         $scope.$apply();
       }
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     }
 
     storageService.readModel(url, callback);
