@@ -2,16 +2,40 @@
 
 import os
 import json
+import urllib2
 from google.appengine.api import mail
 from flask import Flask, request
 
 app = Flask(__name__)
 
+MAX_MODEL_SIZE = 8192
+
+def read_model_file(url):
+  """Reads a model from the give url; if the file is too large, an exception is thrown"""
+  stream = urllib2.urlopen(url)
+  data = stream.read(MAX_MODEL_SIZE + 1)
+  if len(data) > MAX_MODEL_SIZE:
+    raise Exception("The given model file is too large (maximum is %d bytes)" % MAX_MODEL_SIZE )
+  return data
+  
+def escape_js(model):
+  return model.replace('\\', '\\\\').replace('\n', '\\n').replace('"', '\\"')
+
 @app.route('/')
 def index():
-  """Return a friendly HTTP greeting."""
+  """Returns the optimizer IDE."""
   path = os.path.join(os.path.split(__file__)[0], 'static/src/index.html')
-  return open(path).read()
+  
+  init_js = []
+  
+  if 'url' in request.args:
+    model = read_model_file(request.args['url'])
+    init_js.append('INITIAL_MODEL = "' + escape_js(model) + '";')
+
+  index_html = open(path).read()
+  index_html = index_html.replace("// placeholder", "\n".join(init_js))
+  return index_html
+  
 
 def error(message):
   return json.dumps({'error': message})

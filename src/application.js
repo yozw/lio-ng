@@ -88,11 +88,13 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
     storageService.readModel(url, callback);
   };
 
-  $scope.loadModel("/models/book/dovetail.mod");
+  if (INITIAL_MODEL === "") {
+    $scope.loadModel("/models/book/dovetail.mod");
+  }
 });
 
 app.factory('model', function () {
-  return {code: "", log: "", results: []};
+  return {code: INITIAL_MODEL, log: "", results: []};
 });
 
 app.controller('ButterBarCtrl', function ($scope, messageService) {
