@@ -1,13 +1,13 @@
 "use strict";
 
-importScripts('../../lib/glpk/glpk.js');
-importScripts('../common/table.js');
-importScripts('../common/graph.js');
-importScripts('../common/math_util.js');
-importScripts('math/adaptive_function_estimation.js');
-importScripts('math/feasible_region_graph.js');
-importScripts('math/glpk_util.js');
-importScripts('math/convex_hull.js');
+importScripts('/lib/glpk/glpk.js');
+importScripts('/src/common/table.js');
+importScripts('/src/common/graph.js');
+importScripts('/src/common/math_util.js');
+importScripts('/src/workers/math/adaptive_function_estimation.js');
+importScripts('/src/workers/math/feasible_region_graph.js');
+importScripts('/src/workers/math/glpk_util.js');
+importScripts('/src/workers/math/convex_hull.js');
 
 /**
  * Sends a table back to the main thread.
