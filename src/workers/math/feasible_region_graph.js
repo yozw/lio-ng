@@ -73,6 +73,5 @@ FeasibleRegionGraph.create = function (lp) {
   graph.setXRange(viewBounds.minX, viewBounds.maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);
 
-  console.log(JSON.stringify(graph));
   return graph;
 };

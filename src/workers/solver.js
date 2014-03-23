@@ -26,7 +26,7 @@ function postGraph(graph) {
 function actionSolve(e) {
   var code = e.data.code;
   var lp = GlpkUtil.solveGmpl(code);
-  //postTable(GlpkUtil.getPrimalSolutionTable(lp));
+  postTable(GlpkUtil.getPrimalSolutionTable(lp));
 
   if (glp_get_num_cols(lp) === 2) {
     postGraph(FeasibleRegionGraph.create(lp));
