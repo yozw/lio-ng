@@ -20,6 +20,10 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
       {name: 'Machine scheduling problem', url: '/lio-ng/models/book/scheduling.mod'},
       {name: 'Decentralization problem', url: '/lio-ng/models/book/decentral.mod'}
     ]},
+    {name: 'Two-dimensional models', url: 'none', subItems: [
+      {name: 'Dovetail', url: '/lio-ng/models/book/dovetail.mod'},
+      {name: 'Circle', url: '/lio-ng/models/circle.mod'}
+    ]},
     {name: 'Scheduling', url: 'none', subItems: [
       {name: 'Knight\'s tour', url: '/lio-ng/models/winglpk/knights.mod'},
       {name: 'Personnel assignment problem', url: '/lio-ng/models/winglpk/personnel.mod'},
