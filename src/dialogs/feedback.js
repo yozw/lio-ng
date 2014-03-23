@@ -18,7 +18,7 @@ app.factory('feedbackDialog', function ($modal, $log) {
     }};
 });
 
-app.controller("FeedbackDialogCtrl", function ($scope, $modalInstance) {
+app.controller("FeedbackDialogCtrl", function ($scope, $modalInstance, $http) {
   "use strict";
 
   $scope.feedback = Object();
@@ -27,7 +27,19 @@ app.controller("FeedbackDialogCtrl", function ($scope, $modalInstance) {
   $scope.feedback.text = "";
 
   $scope.send = function () {
-    $modalInstance.close();
+    $http
+        .post('/feedback', $scope.feedback)
+        .then(function(response) {
+          if (response.data.error) {
+            alert(response.data.error);
+          } else {
+            $modalInstance.close();
+          }
+        },
+        function(response) {
+          alert(response.data.error);
+        }
+    );
   };
 
   $scope.cancel = function () {
