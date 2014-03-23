@@ -1,13 +1,14 @@
-"""Thin lio-ng backend"""
+"""Lio-ng backend"""
 
-# Import the Flask Framework
+import os
 from flask import Flask
 app = Flask(__name__)
 
 @app.route('/')
 def hello():
   """Return a friendly HTTP greeting."""
-  return 'Hello World!'
+  path = os.path.join(os.path.split(__file__)[0], 'static/src/index.html')
+  return open(path).read()
 
 
 @app.errorhandler(404)

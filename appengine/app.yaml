@@ -16,10 +16,12 @@ threadsafe: yes
 handlers:
 - url: /src
   static_dir: static/src
+  application_readable: true
 - url: /lib
   static_dir: static/lib
 - url: /models
   static_dir: static/models
+  mime_type: text/gmpl
 
 # App Engine serves and caches static files contained in the listed directories
 # (and subdirectories). Uncomment and set the directory as needed.
