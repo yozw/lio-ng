@@ -89,7 +89,7 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
   };
 
   if (INITIAL_MODEL === "") {
-    $scope.loadModel("/models/book/dovetail.mod");
+    $scope.loadModel("/models/default.mod");
   }
 });
 
