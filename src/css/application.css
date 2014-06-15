@@ -60,7 +60,19 @@ button.btn {
 }
 
 #model-help h1 {
+  font-size: 32px;
   margin-top: 0;
+  margin-bottom: 6px;
+}
+
+#model-help h2 {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+#model-help h3 {
+  font-size: 20px;
+  margin-bottom: 6px;
 }
 
 #model-help .MathJax_Display {
