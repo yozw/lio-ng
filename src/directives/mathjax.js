@@ -7,7 +7,7 @@ module.directive("mathjaxBind", function(marked) {
       inlineMath: [['$','$'], ['\\(','\\)']],
       processEscapes: true
     },
-    skipStartupTypeset: false
+    skipStartupTypeset: true
   });
 
   marked.setOptions({
@@ -21,23 +21,14 @@ module.directive("mathjaxBind", function(marked) {
     smartypants: false
   });
 
-  function processWithMarked(value) {
-    if (value == undefined) {
-      return "";
-    } else {
-      return value;
-    }
-
-
-    value = value.replace("&", "\\&").replace("\\", "\\\\");
-    return marked(value);
-  }
-
   MathJax.Hub.Register.MessageHook("End Process", function (message) {
-    console.log("End process");
-    var element = $(message[1]);
-    element.html(marked(element.html()));
-    $(element).show();
+    try {
+      var element = $(message[1]);
+      element.html(marked(element.html()));
+      $(element).show();
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   return {

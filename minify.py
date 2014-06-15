@@ -25,7 +25,7 @@ def output_path(path):
 def yuicompress(infile, outfile):
   print "Minifying " + infile + " to " + outfile
   ensure_dir(outfile)
-  os.system('java -jar yuicompressor-2.4.8.jar --nomunge --type js %s > %s' % (infile, outfile))
+  os.system('java -jar yuicompressor-2.4.8.jar --line-break 100 --nomunge --type js %s > %s' % (infile, outfile))
 
 def cat(files, outfile):
   print "Concatenating " + str(len(files)) + " files to " + outfile

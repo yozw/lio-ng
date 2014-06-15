@@ -1,4 +1,4 @@
-## <h1>Model Dovetail</h1>
+## # Model Dovetail
 ##
 ## This model is the running example of the book.
 ## \begin{equation}
