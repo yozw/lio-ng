@@ -2,12 +2,16 @@
 <html ng-app="lio-ng">
 <head>
   <title>Linear Optimization</title>
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
   <script type="text/javascript" src="/lib/jquery/jquery-2.1.0.js"></script>
   <script type="text/javascript" src="/lib/jqplot/jquery.jqplot.js"></script>
   <script type="text/javascript" src="/lib/jqplot/plugins/jqplot.highlighter.js"></script>
   <script type="text/javascript" src="/lib/jqplot/plugins/jqplot.cursor.js"></script>
   <script type="text/javascript" src="/lib/ace/ace.js"></script>
   <script type="text/javascript" src="/lib/angular/angular.js"></script>
+  <script type="text/javascript" src="/lib/angular/angular-sanitize.js"></script>
   <script type="text/javascript" src="/lib/ui-ace/ui-ace.js"></script>
   <script type="text/javascript" src="/lib/ui-bootstrap/ui-bootstrap.js"></script>
   <script type="text/javascript" src="/lib/ui-chart/chart.js"></script>
@@ -16,6 +20,7 @@
   <script type="text/javascript" src="/src/directives/resultgraph.js"></script>
   <script type="text/javascript" src="/src/directives/resulttable.js"></script>
   <script type="text/javascript" src="/src/directives/resizable.js"></script>
+  <script type="text/javascript" src="/src/directives/mathjax.js"></script>
   <script type="text/javascript" src="/src/directives/tabs.js"></script>
   <script type="text/javascript" src="/src/application.js"></script>
   <script type="text/javascript" src="/src/common/util.js"></script>
@@ -93,9 +98,8 @@
 
 <tabs>
   <tabpane name="Information">
-    <div id="model-info" resizable
+    <div id="model-help" mathjax-bind="model.help" resizable
          style="height: {{windowHeight - 26}}px;">
-
     </div>
   </tabpane>
   <tabpane name="Model">

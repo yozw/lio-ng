@@ -16,7 +16,6 @@ app.service('storageService', function ($http, messageService) {
           helpPassed = true;
         }
       }
-      console.log(model);
       return {help: help.join("\n"), model: model.join("\n")};
     },
     readModel: function (url, callback) {

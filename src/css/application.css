@@ -53,14 +53,23 @@ button.btn {
   white-space: pre;
 }
 
-#model-info {
+#model-help {
   overflow: auto;
   padding: 8px 16px 8px 16px;
   text-align: justify;
 }
 
-#model-info h1 {
+#model-help h1 {
   margin-top: 0;
+}
+
+#model-help .MathJax_Display {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #5bc0de;
+  background-color: #f4f8fa;
+  display: block;
+  text-align: center;
 }
 
 #model-log {
@@ -198,23 +207,4 @@ table.input-table td textarea {
   -webkit-border-radius: 6px 0 6px 6px;
   -moz-border-radius: 6px 0 6px 6px;
   border-radius: 6px 0 6px 6px;
-}
-
-.display-math {
-  display: block;
-  text-align: center;
-}
-
-.display-math table {
-  display: inline-block;
-}
-
-.display-math table td {
-  text-align: left;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}
-
-.math {
-  font-family: 'Arial';
 }

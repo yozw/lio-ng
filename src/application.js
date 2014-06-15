@@ -5,10 +5,22 @@ var app = angular.module('lio-ng',
       'directives.tabs',
       'directives.resizable',
       'directives.resultgraph',
-      'directives.resulttable'
+      'directives.resulttable',
+      'directives.mathjax',
+      'ngSanitize'
     ]);
 
-app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService, solverService, storageService, messageService, aboutDialog, sensitivityDialog, feedbackDialog) {
+app.controller('AppCtrl', function (
+    $scope,
+    $compile,
+    model,
+    jqPlotRenderService,
+    solverService,
+    storageService,
+    messageService,
+    aboutDialog,
+    sensitivityDialog,
+    feedbackDialog) {
   "use strict";
 
   $scope.examples = [
@@ -83,8 +95,9 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
   };
 
   $scope.loadModel = function (url) {
-    function callback(code) {
+    function callback(code, help) {
       $scope.model.code = code;
+      $scope.model.help = help;
       if (!$scope.$$phase) {
         $scope.$apply();
       }
@@ -99,7 +112,7 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
 });
 
 app.factory('model', function () {
-  return {code: INITIAL_MODEL, log: "", results: []};
+  return {code: "", log: "", help: "blope", results: []};
 });
 
 app.controller('ButterBarCtrl', function ($scope, messageService) {

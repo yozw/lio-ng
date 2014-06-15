@@ -20,30 +20,21 @@
 ##   point exists.
 ##   Linear optimization models can be expressed in the following canonical form:</p>
 ##
-##   <div class="bs-callout bs-callout-info ng-binding">
-##     <div class="display-math">
-##     <table>
-##       <tr>
-##    <td>maximize</td><td><span class="math"><b>c</b><sup>T</sup><b>x</b></span></td>
-##       </tr>
-##       <tr>
-##    <td>subject to</td><td><span class="math"><b>A</b><b>x</b>&nbsp;&le;&nbsp;<b>b</b></span></td>
-##       </tr>
-##       <tr>
-##    <td></td><td><span class="math"><b>x</b>&nbsp;&ge;&nbsp;<b>0</b></span></td>
-##       </tr>
-##     </table>
-##     </div>
-##   </div>
-##
-## where <span class="math"><b>x</b></span> represents the vector of variables (to be determined),
-## <span class="math"><b>c</b></span> and <span class="math"><b>b</b></span> are
-## vectors of known coefficients, <span class="math"><b>A</b></span> is a known matrix of coefficients, and
-## <span class="math">(&middot;)<sup>T</sup></span> is the matrix
-## transpose. The expression to be maximized or minimized is called the objective function
-## (<span class="math"><b>c</b><sup>T</sup><b>x</b></span> in this case).
-## The inequalities <span class="math"><b>A</b><b>x</b>&nbsp;&le;&nbsp;<b>b</b></span> and
-## <span class="math"><b>x</b>&nbsp;&ge;&nbsp;<b>0</b></span> are the constraints
+## \[
+## \begin{array}{ll}
+## \max & \mathbf{c}^{\sf T}\mathbf{x} \\
+## \mbox{s.t.} & \mathbf{A}\mathbf{x} \leq \mathbf{b} \\
+##             & \mathbf{x} \geq \mathbf{0}.
+## \end{array}
+## \]
+## where $\mathbf{x}$ represents the vector of variables (to be determined),
+## $\mathbf{c}$ and $\mathbf{b}$ are
+## vectors of known coefficients, $\mathbf{A}$ is a known matrix of coefficients, and
+## $\mathbf{c}^{\sf T}$ is the tranpose of the vector $\mathbf{c}$. The expression to
+## be maximized or minimized is called the objective function
+## ($\mathbf{c}^{\sf T}\mathbf{x}$ in this case).
+## The inequalities $\mathbf{A}\mathbf{x} \leq \mathbf{b}$ and $\mathbf{x} \geq \mathbf{0}$
+## are the constraints
 ## that specify the set of points over which the objective function is to be optimized.
 
 var x1 >= 0;
