@@ -1,6 +1,6 @@
 'use strict';
 
-var DOVETAIL = "var x1 >= 0;\n"
+var INITIAL_MODEL = "var x1 >= 0;\n"
     + "var x2 >= 0;\n"
     + "maximize z: 3*x1 + 2*x2;\n"
     + "subject to c11: x1 + x2 <= 9;\n"

@@ -11,6 +11,43 @@ var DOVETAIL = "var x1 >= 0;\n"
 
 describe("GlpkUtil", function () {
 
+  it('correctly logs info', function() {
+    var msg = "";
+    GlpkUtil.setInfoLogFunction(function(message) {
+      msg = message;
+    });
+    GlpkUtil.info("HELLO");
+    expect(msg).toEqual("HELLO");
+  });
+
+  it('correctly logs errors', function() {
+    var msg = "";
+    GlpkUtil.setErrorLogFunction(function(message, data) {
+      msg = message;
+    });
+    GlpkUtil.error("HELLO");
+    expect(msg).toEqual("HELLO");
+  });
+
+  it('correctly logs GLPK parsing errors', function() {
+    var msg = "";
+    var msgData = {};
+    GlpkUtil.setErrorLogFunction(function(message, data) {
+      msg = message;
+      msgData = data;
+    });
+
+    try {
+      var workspace = glp_mpl_alloc_wksp();
+      glp_mpl_read_model_from_string(workspace, GlpkUtil.MODEL_NAME, "var x1;\nvar x[2];");
+    } catch (error) {
+      GlpkUtil.error(error);
+    }
+
+    expect(msg).toEqual("Error in line 2: syntax error in variable statement");
+  });
+
+
   it('parses variable names', function () {
   });
 

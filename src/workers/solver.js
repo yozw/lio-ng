@@ -9,6 +9,31 @@ importScripts('/src/workers/math/feasible_region_graph.js');
 importScripts('/src/workers/math/glpk_util.js');
 importScripts('/src/workers/math/convex_hull.js');
 
+function logInfo(value) {
+  "use strict";
+  var message = {};
+  message.action = 'log';
+  message.message = value;
+  self.postMessage(message);
+}
+
+function logError(value, data) {
+  "use strict";
+  var message = {};
+
+  if (data !== undefined) {
+    for (var key in data) {
+      if (data.hasOwnProperty(key)) {
+        message[key] = data[key];
+      }
+    }
+  }
+
+  message['action'] = 'error';
+  message['message'] = value;
+  self.postMessage(message);
+}
+
 /**
  * Sends a table back to the main thread.
  */
@@ -26,6 +51,9 @@ function postGraph(graph) {
 function actionSolve(e) {
   var code = e.data.code;
   var lp = GlpkUtil.solveGmpl(code);
+  if (lp === null) {
+    return;
+  }
   postTable(GlpkUtil.getPrimalSolutionTable(lp));
 
   if (glp_get_num_cols(lp) === 2) {
@@ -50,14 +78,10 @@ actions['solve'] = actionSolve;
 self.addEventListener('message', function (e) {
   "use strict";
 
-  function log(value) {
-    self.postMessage({action: 'log', message: value});
-  }
-
-  glp_set_print_func(log);
+  GlpkUtil.setInfoLogFunction(logInfo);
+  GlpkUtil.setErrorLogFunction(logError);
 
   var actionFn = getAction(e);
-
   if (actionFn === undefined) {
     console.warn('Unknown action: ', JSON.stringify(e));
   }
@@ -65,7 +89,7 @@ self.addEventListener('message', function (e) {
   try {
     actionFn(e);
   } catch (err) {
-    log(err.message);
+    logError(err.message);
   }
 }, false);
 

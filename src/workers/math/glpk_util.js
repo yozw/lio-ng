@@ -2,6 +2,48 @@
 
 var GlpkUtil = Object();
 
+GlpkUtil.MODEL_NAME = "editor.mod";
+GlpkUtil.ERROR_MSG_RE = new RegExp(GlpkUtil.MODEL_NAME.replace(".", "\\.") + ":([0-9]+):(.*)");
+
+GlpkUtil._logInfoFunction = function(message) {};
+GlpkUtil._logErrorFunction = function(message, data) {
+  GlpkUtil._logInfoFunction(message);
+};
+
+GlpkUtil.setInfoLogFunction = function(logInfoFn) {
+  GlpkUtil._logInfoFunction = logInfoFn;
+};
+
+GlpkUtil.setErrorLogFunction = function(logErrorFn) {
+  GlpkUtil._logErrorFunction = logErrorFn;
+};
+
+GlpkUtil.installLogFunction = function() {
+  glp_set_print_func(GlpkUtil.info);
+};
+
+GlpkUtil.info = function(message) {
+  GlpkUtil._logInfoFunction(message);
+};
+
+GlpkUtil.error = function(error) {
+  var message;
+
+  if (error.hasOwnProperty('message')) {
+    message = error.message;
+  } else {
+    message = error;
+  }
+
+  if (error.hasOwnProperty('line')) {
+    var match = GlpkUtil.ERROR_MSG_RE.exec(error.message);
+    if (match !== undefined && match.length >= 3) {
+      message = "Error in line " + match[1] + ": " + match[2].trim();
+    }
+  }
+  GlpkUtil._logErrorFunction(message, error);
+};
+
 GlpkUtil.parseVariableName = function (name) {
 
 };
@@ -19,7 +61,7 @@ GlpkUtil.getObjectiveVector = function (lp) {
     vector.push(glp_get_obj_coef(lp, j));
   }
   return vector;
-}
+};
 
 /**
  * Returns a row of the technology matrix of a GLPK lp model.
@@ -29,6 +71,7 @@ GlpkUtil.getObjectiveVector = function (lp) {
  */
 // TODO: Write unit test
 GlpkUtil.getRow = function (lp, i) {
+  "use strict";
   var m = glp_get_num_cols(lp);
   var row = MathUtil.zeroes(m);
   var ind = [];
@@ -46,19 +89,26 @@ GlpkUtil.getRow = function (lp, i) {
  * @returns {Object} lp-model
  */
 GlpkUtil.solveGmpl = function (code) {
+  "use strict";
   var workspace = glp_mpl_alloc_wksp();
   var lp = glp_create_prob();
 
-  glp_mpl_read_model_from_string(workspace, 'model', code);
-  glp_mpl_generate(workspace, null, null, null);
-  glp_mpl_build_prob(workspace, lp);
-  glp_scale_prob(lp, GLP_SF_AUTO);
+  GlpkUtil.installLogFunction();
 
-  var options = {presolve: GLP_ON};
+  try {
+    glp_mpl_read_model_from_string(workspace, GlpkUtil.MODEL_NAME, code);
+    glp_mpl_generate(workspace, null, null, null);
+    glp_mpl_build_prob(workspace, lp);
+    glp_scale_prob(lp, GLP_SF_AUTO);
 
-  var smcp = new SMCP(options);
-  glp_simplex(lp, smcp);
+    var options = {presolve: GLP_ON};
 
+    var smcp = new SMCP(options);
+    glp_simplex(lp, smcp);
+  } catch (error) {
+    GlpkUtil.error(error);
+    return null;
+  }
   return lp;
 };
 
@@ -69,6 +119,7 @@ GlpkUtil.solveGmpl = function (code) {
  */
 // TODO: Write unit test
 GlpkUtil.getPrimalSolutionTable = function (lp) {
+  "use strict";
   var table = new Table();
 
   var varNameColumn = table.addColumn("Variable");
@@ -117,7 +168,7 @@ GlpkUtil.getConstraints = function (lp) {
 
   // Get technology constraints
   for (var j = 1; j <= n; j++) {
-    row = GlpkUtil.getRow(lp, j)
+    row = GlpkUtil.getRow(lp, j);
     lb = glp_get_row_lb(lp, j);
     ub = glp_get_row_ub(lp, j);
     if (lb != -Number.MAX_VALUE) {

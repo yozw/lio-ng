@@ -45,6 +45,11 @@ app.controller('AppCtrl', function ($scope, $compile, model, jqPlotRenderService
       model.log += message + "\n";
       $scope.$apply();
     };
+    callback.error = function (message) {
+      messageService.set(message);
+      model.log += "ERROR: " + message + "\n";
+      $scope.$apply();
+    };
     callback.finished = function (message) {
       messageService.set("Solving finished");
     };

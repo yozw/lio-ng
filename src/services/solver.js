@@ -17,6 +17,9 @@ app.service('solverService', function (model) {
           case 'log':
             callback.log(obj.message);
             break;
+          case 'error':
+            callback.error(obj.message);
+            break;
           case 'emit-table':
             callback.emitTable(obj.table);
             break;
