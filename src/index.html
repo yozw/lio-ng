@@ -12,6 +12,8 @@
   <script type="text/javascript" src="/lib/ace/ace.js"></script>
   <script type="text/javascript" src="/lib/angular/angular.js"></script>
   <script type="text/javascript" src="/lib/angular/angular-sanitize.js"></script>
+  <script type="text/javascript" src="/lib/marked/marked.js"></script>
+  <script type="text/javascript" src="/lib/marked/angular-marked.js"></script>
   <script type="text/javascript" src="/lib/ui-ace/ui-ace.js"></script>
   <script type="text/javascript" src="/lib/ui-bootstrap/ui-bootstrap.js"></script>
   <script type="text/javascript" src="/lib/ui-chart/chart.js"></script>
@@ -36,6 +38,10 @@
   <link rel="stylesheet" type="text/css" href="/lib/jqplot/jquery.jqplot.css">
   <link rel="stylesheet" type="text/css" href="/src/css/application.css">
   <link rel="stylesheet" type="text/css" href="/src/directives/resulttable.css">
+
+  <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({skipStartupTypeset: true});
+  </script>
 </head>
 
 <body ng-controller="AppCtrl">
