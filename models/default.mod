@@ -19,7 +19,7 @@
 ## algorithm finds a point in the polyhedron where this function has the smallest (or largest) value if such a
 ## point exists.
 ##
-## Linear optimization models can be expressed in the following canonical form:
+## Linear optimization models can be expressed in the following standard form:
 ##
 ## \begin{equation}
 ## \begin{array}{ll}
@@ -29,15 +29,13 @@
 ## \end{array}
 ## \end{equation}
 ##
-## where $\mathbf{x}$ represents the vector of variables (to be determined),
-## $\mathbf{c}$ and $\mathbf{b}$ are
-## vectors of known coefficients, $\mathbf{A}$ is a known matrix of coefficients, and
-## $\mathbf{c}^{\sf T}$ is the tranpose of the vector $\mathbf{c}$. The expression to
-## be maximized or minimized is called the objective function
-## ($\mathbf{c}^{\sf T}\mathbf{x}$ in this case).
-## The inequalities $\mathbf{A}\mathbf{x} \leq \mathbf{b}$ and $\mathbf{x} \geq \mathbf{0}$
-## are the constraints
-## that specify the set of points over which the objective function is to be optimized.
+## where $\mathbf{A}$ is an $m\times n$ matrix (the *technology matrix*), $\mathbf{c}$ is an
+## $n$-vector (the *objective vector*), and $\mathbf{b}$ is an $m$-vector (the
+## *right hand side vector*). The vector $\mathbf{x}$ contains the decision variables, whose values
+## are to be determined. The expression $\mathbf{c}^{\sf T}\mathbf{x}$ to be maximized is called the
+## *objective function*. The inequalities $\mathbf{A}\mathbf{x} \leq \mathbf{b}$ and
+## $\mathbf{x} \geq \mathbf{0}$ are the *constraints* that specify the set of feasible points
+## over which the objective function is to be maximized.
 
 var x1 >= 0;
 var x2 >= 0;

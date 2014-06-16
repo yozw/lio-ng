@@ -24,6 +24,7 @@ app.controller('AppCtrl', function (
   "use strict";
 
   $scope.examples = [
+    {name: 'Home', url: '/models/default.mod'},
     {name: 'From the book', url: 'none', subItems: [
       {name: 'Dovetail', url: '/models/book/dovetail.mod'},
       {name: 'Diet problem', url: '/models/book/diet.mod'},
