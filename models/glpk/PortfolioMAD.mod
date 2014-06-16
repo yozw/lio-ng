@@ -1,15 +1,15 @@
-/* Portfolio Optimization using Mean Absolute Deviation
-
-Source: http://en.wikibooks.org/wiki/GLPK/Portfolio_Optimization
-
-Jeff Kantor 
-December 4, 2009
-Revised: December 6, 2009 to fix problem with random variate generation.
-Revised: December 7, 2009 to add a 'seeding' of the PRNG
-Revised: July 8, 2010 reformatted for GLPK Wikibook */
+## # Portfolio Optimization using Mean Absolute Deviation
+##
+## Source: http://en.wikibooks.org/wiki/GLPK/Portfolio_Optimization
+##
+## Jeff Kantor
+## December 4, 2009
+##
+## * Revised: December 6, 2009 to fix problem with random variate generation.
+## * Revised: December 7, 2009 to add a 'seeding' of the PRNG
+## * Revised: July 8, 2010 reformatted for GLPK Wikibook
 
 /* Stock Data */
-
 set S;                                              # Set of stocks
 param Rbar{S};                                      # Means of projected returns
 param Sigma{S,S};                                   # Covariance of projected returns

@@ -1,3 +1,5 @@
+## # A knapsack problem
+
 # Set of items
 set I;
 

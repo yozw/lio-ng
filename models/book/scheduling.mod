@@ -1,3 +1,5 @@
+## # A scheduling problem
+
 # Number of jobs
 param n;
 

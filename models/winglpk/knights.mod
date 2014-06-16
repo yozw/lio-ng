@@ -8,46 +8,49 @@
 # size of field
 param m;
 param n;
-# coluns
-set X := 1..m;
-# rows
-set Y := 1..n;
-# fields
-set F := X cross Y;
+
+set X := 1..m;                       # columns
+set Y := 1..n;                       # rows
+set F := X cross Y;                  # fields
+
 # moves
 set M := setof{ (x1,y1) in F, (x2,y2) in F : 
   (abs(x1-x2)==2 && abs(y1-y2)==1) || (abs(x1-x2)==1 && abs(y1-y2)==2)}
   (x1,y1,x2,y2);
-# transported remaining path length
-var v{(x1,y1,x2,y2) in M} >= 0;
-# move is chosen
-var w{(x1,y1,x2,y2) in M}, binary;
-# position of field in tour
-var p{(x,y) in F};
+
+
+var v{(x1,y1,x2,y2) in M} >= 0;      # transported remaining path length
+var w{(x1,y1,x2,y2) in M}, binary;   # move is chosen
+var p{(x,y) in F};                   # position of field in tour
 
 # start of the tour
 s.t. start :
   p[1,1]=m*n;
+
 # number of incoming moves
 s.t. win{(x2,y2) in F} :
   sum{(x1,y1,x2,y2) in M} w[x1,y1,x2,y2] = 1;
+
 # number of outgoing moves
 s.t. wout{(x1,y1) in F} :
   sum{(x1,y1,x2,y2) in M} w[x1,y1,x2,y2] = 1;
+
 # transported remaining path length
 s.t. vout{(x1,y1) in F} :
   sum{(x1,y1,x2,y2) in M} v[x1,y1,x2,y2] = p[x1,y1];
+
 # remaining path length
 s.t. vin{(x2,y2) in F} :
   sum{(x1,y1,x2,y2) in M} v[x1,y1,x2,y2] = 1 + p[x2,y2] 
    - if (x2==1 && y2==1) then m * n else 0;
+
 # remaining path length can only be transported if move is chosen
 s.t. vmax{(x1,y1,x2,y2) in M} :
   v[x1,y1,x2,y2] <= m*n*w[x1,y1,x2,y2];
 
 solve;
+
 # output the result
-# output
 printf "+";
 for { x in X } {
   printf "---+";
@@ -65,7 +68,9 @@ for {y in Y} {
   }
   printf "\n";
 }
+
 data;
+
 # size of field
 # A closed tour is not possible for m <= n if
 #   m and n are both odd, or
@@ -73,4 +78,5 @@ data;
 #   m = 3 and n = 4, 6, or 8.
 param m:= 8;
 param n:= 8;
+
 end;

@@ -1,3 +1,5 @@
+## # A portfolio optimization problem
+
 param S;
 param n;
 param lambda >= 0;
