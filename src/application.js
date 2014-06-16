@@ -107,7 +107,7 @@ app.controller('AppCtrl', function (
     storageService.readModel(url, callback);
   };
 
-  if (INITIAL_MODEL === "") {
+  if (typeof INITIAL_MODEL === "undefined") {
     $scope.loadModel("/models/default.mod");
   }
 });

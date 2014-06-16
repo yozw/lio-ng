@@ -8,6 +8,15 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+GA_CODE = """<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-46105838-4', 'online-optimizer.appspot.com');
+ga('send', 'pageview');
+</script>"""
+
 MAX_MODEL_SIZE = 8192
 
 def read_model_file(url):
@@ -27,13 +36,17 @@ def index():
   path = os.path.join(os.path.split(__file__)[0], 'static/src/index.html')
   
   init_js = []
-  
+
   if 'url' in request.args:
     model = read_model_file(request.args['url'])
+    init_js.append("<script type='text/javascript'>")
     init_js.append('INITIAL_MODEL = "' + escape_js(model) + '";')
+    init_js.append("</script>")
+
+  init_js.append(GA_CODE)
 
   index_html = open(path).read()
-  index_html = index_html.replace("// placeholder", "\n".join(init_js))
+  index_html = index_html.replace("<!-- PLACEHOLDER -->", "\n".join(init_js))
   return index_html
   
 
