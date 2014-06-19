@@ -41,21 +41,21 @@
 ## \begin{equation}
 ##   x_1 \leq 7, \mbox{ and } x_2 \leq 6.
 ## \end{equation}
-## The above inequalities are called \defn{technology constraints}.
+## The above inequalities are called *technology constraints*.
 ## Finally, we assume that only nonnegative amounts can be produced, i.e.,
 ## \[ x_1, x_2 \geq 0. \]
 ## The inequalities $x_1 \geq 0$ and $x_2 \geq 0$ are called *nonnegativity constraints*. Taking
 ## together the six expressions formulated above, we obtain Model Dovetail:
-## \begin{equation}
-## \begin{array}{lrcrcr}
-## \max        & 3x_1 & + & 2x_2 \\
-## \mbox{s.t.} &  x_1 & + &  x_2 & \leq &  9 \\
-##             & 3x_1 & + &  x_2 & \leq & 18 \\
-##             & 3x_1 &   &      & \leq & 7 \\
-##             &      &   &  x_2 & \leq & 6  \\
-##             & x_1, x_2 & \geq & 0.
-## \end{array}
-## \end{equation}
+## <div class="display">
+## <table class="lo-model">
+## <tr><td>$\max$</td><td>$3x_1$</td><td>$+$</td><td>$2x_2$</td></tr>
+## <tr><td>$\mbox{subject to}$</td><td>$x_1$</td><td>$+$</td><td>$x_2$</td><td>$\leq$</td><td>$9$</td></tr>
+## <tr><td></td><td>$3x_1$</td><td>$+$</td><td>$x_2$</td><td>$\leq$</td><td>$18$</td></tr>
+## <tr><td></td><td>$x_1$</td><td></td><td></td><td>$\leq$</td><td>$7$</td></tr>
+## <tr><td></td><td></td><td></td><td>$x_2$</td><td>$\leq$</td><td>$6$</td></tr>
+## <tr><td></td><td colspan="4">$x_1, x_2 \geq 0.$</td></tr>
+## </table>
+## </div>
 
 var x1 >= 0;
 var x2 >= 0;

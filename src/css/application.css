@@ -75,13 +75,33 @@ button.btn {
   margin-bottom: 6px;
 }
 
-#model-help .MathJax_Display {
+#model-help .MathJax_Display, div.display {
   margin: 20px 0;
   padding: 20px;
   border-left: 3px solid #5bc0de;
   background-color: #f4f8fa;
   display: block;
   text-align: center;
+}
+
+#model-help table.lo-model {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#model-help table.lo-model > tbody > tr > td {
+  text-align: right;
+  padding-left: 0.5em;
+}
+
+#model-help table.lo-model > tbody > tr:last-child > td {
+  text-align: left;
+}
+
+#model-help table.lo-model > tbody > tr > td:first-child {
+  text-align: left;
+  padding-left: 0;
+  padding-right: 0.5em;
 }
 
 #model-log {

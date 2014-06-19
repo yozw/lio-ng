@@ -19,6 +19,8 @@ handlers:
   application_readable: true
 - url: /lib
   static_dir: static/lib
+- url: /doc
+  static_dir: static/doc
 - url: /models
   static_dir: static/models
   mime_type: text/gmpl
