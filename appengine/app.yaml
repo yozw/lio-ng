@@ -14,6 +14,9 @@ threadsafe: yes
 
 # Handlers define how to route requests to your application.
 handlers:
+- url: /src
+  static_dir: static/src
+  application_readable: true
 - url: /lib
   static_dir: static/lib
 - url: /images
@@ -24,13 +27,6 @@ handlers:
   static_dir: static/models
   mime_type: text/gmpl
 
-# App Engine serves and caches static files contained in the listed directories
-# (and subdirectories). Uncomment and set the directory as needed.
-#- url: /client
-#  static_dir: client
-
-  
-  
 # This handler tells app engine how to route requests to a WSGI application.
 # The script value is in the format <path.to.module>.<wsgi_application>
 # where <wsgi_application> is a WSGI application object.

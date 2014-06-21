@@ -20,7 +20,7 @@ ga('send', 'pageview');
 MAX_MODEL_SIZE = 8192
 
 def read_model_file(url):
-  """Reads a model from the give url; if the file is too large, an exception is thrown"""
+  """Reads a model from the given url; if the file is too large, an exception is thrown"""
   stream = urllib2.urlopen(url)
   data = stream.read(MAX_MODEL_SIZE + 1)
   if len(data) > MAX_MODEL_SIZE:
@@ -30,11 +30,15 @@ def read_model_file(url):
 def escape_js(model):
   return model.replace('\\', '\\\\').replace('\n', '\\n').replace('"', '\\"')
 
+""" Reads the local file from the given path relative to this script """
+def read_file(path):
+  path = os.path.join(os.path.split(__file__)[0], 'static/src/', path)
+  return open(path).read()
+
 @app.route('/')
 def index():
   """Returns the optimizer IDE."""
-  path = os.path.join(os.path.split(__file__)[0], 'static/src/index.html')
-  
+
   init_js = []
 
   if 'url' in request.args:
@@ -45,7 +49,7 @@ def index():
 
   init_js.append(GA_CODE)
 
-  index_html = open(path).read()
+  index_html = read_file('index.html')
   index_html = index_html.replace("<!-- PLACEHOLDER -->", "\n".join(init_js))
   return index_html
   
@@ -85,9 +89,15 @@ def feedback():
               
   return ok()
 
+@app.route("/<filename>.html")
+def load_html_file(filename):
+  try:
+    return read_file(filename + ".html")
+  except Exception, e:
+    return page_not_found(e)
+
 @app.errorhandler(404)
 def page_not_found(e):
   """Return a custom 404 error."""
-  path = os.path.join(os.path.split(__file__)[0], 'static/src/404.html')
-  return open(path).read(), 404
+  return read_file('404.html'), 404
 
