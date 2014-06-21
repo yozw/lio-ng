@@ -14,9 +14,6 @@ threadsafe: yes
 
 # Handlers define how to route requests to your application.
 handlers:
-- url: /src
-  static_dir: static/src
-  application_readable: true
 - url: /lib
   static_dir: static/lib
 - url: /images

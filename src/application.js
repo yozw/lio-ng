@@ -10,9 +10,15 @@ var app = angular.module('lio-ng',
       'ngSanitize'
     ]);
 
+app.config(['$locationProvider', function ($locationProvider) {
+  $locationProvider.html5Mode(true);
+  $locationProvider.hashPrefix('!');
+}]);
+
 app.controller('AppCtrl', function (
     $scope,
     $compile,
+    $location,
     model,
     jqPlotRenderService,
     solverService,
@@ -96,6 +102,10 @@ app.controller('AppCtrl', function (
   };
 
   $scope.loadModel = function (url) {
+    $location.search('model', url);
+  };
+
+  $scope.$on('$locationChangeSuccess', function(next, current) {
     function callback(code, help) {
       $scope.model.code = code;
       $scope.model.help = help;
@@ -104,16 +114,17 @@ app.controller('AppCtrl', function (
       }
     }
 
-    storageService.readModel(url, callback);
-  };
+    var url = $location.search().model;
+    if (url === undefined || url === "") {
+      url = "/models/default.mod";
+    }
 
-  if (typeof INITIAL_MODEL === "undefined") {
-    $scope.loadModel("/models/default.mod");
-  }
+    storageService.readModel(url, callback);
+  });
 });
 
 app.factory('model', function () {
-  return {code: "", log: "", help: "blope", results: []};
+  return {code: "", log: "", help: "", results: []};
 });
 
 app.controller('ButterBarCtrl', function ($scope, messageService) {
