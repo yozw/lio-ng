@@ -19,6 +19,8 @@ handlers:
   application_readable: true
 - url: /lib
   static_dir: static/lib
+- url: /images
+  static_dir: static/images
 - url: /doc
   static_dir: static/doc
 - url: /models

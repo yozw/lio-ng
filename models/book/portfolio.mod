@@ -46,5 +46,3 @@ param R : 1 2 3 4 5:=
 param lambda := 4;
     
 end;
-
-

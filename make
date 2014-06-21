@@ -10,6 +10,7 @@ find src -name '*.css' | cpio -pdmu $ROOT/appengine/static
 find lib -name '*.min.js' | cpio -pdmu $ROOT/appengine/static
 find lib -name '*.css' | cpio -pdmu $ROOT/appengine/static
 find models -name '*.mod' | cpio -pdmu $ROOT/appengine/static
+find images -name '*.png' | cpio -pdmu $ROOT/appengine/static
 
 python minify.py 
 
