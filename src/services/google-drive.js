@@ -1,89 +1,11 @@
 // TODO: Write unit tests
-app.service('driveService', function ($compile, messageService, storageService, retryService) {
+app.service('driveService', function ($compile, messageService, googleApiService) {
   "use strict";
-
-  var developerKey = 'AIzaSyDci_n2EbZgchidWxuzkZPF9RIAzUgvw9k';
-  var clientId = '114623879330-hq1gs8ficrvt0n3ipp5s8q7u4svertt3.apps.googleusercontent.com';
-  var scope = ['https://www.googleapis.com/auth/drive.readonly'];
-
-  var authApiLoaded = false;
-  var pickerApiLoaded = false;
-  var driveApiLoaded = false;
-  var oauthToken;
-
-  function loadAuthApi() {
-    if (authApiLoaded) {
-      return;
-    }
-    window.gapi.load('auth', {'callback': function() {
-      authApiLoaded = true;
-      console.log("Google Auth API loaded");
-    }});
-  }
-
-  function loadPickerApi() {
-    if (pickerApiLoaded) {
-      return;
-    }
-    window.gapi.load('picker', {'callback': function() {
-      pickerApiLoaded = true;
-      console.log("Google Picker API loaded");
-    }});
-  }
-
-  function loadDriveApi() {
-    if (driveApiLoaded) {
-      return;
-    }
-    window.gapi.client.load('drive', 'v2', function() {
-      driveApiLoaded = true;
-      console.log("Google Drive API loaded");
-    });
-  }
-
-  function waitForApiLoaded(callback) {
-    function apiLoaded() {
-      return authApiLoaded && pickerApiLoaded && driveApiLoaded;
-    }
-    if (!apiLoaded()) {
-      console.log("Loading Google Auth, Picker and Drive APIs");
-      loadAuthApi();
-      loadPickerApi();
-      loadDriveApi();
-    }
-    retryService.retry()
-        .timeout(100)
-        .successCheck(apiLoaded)
-        .onSuccess(callback)
-        .run();
-  }
-
-  function waitForAuthenticated(callback) {
-    function onAuthResult(authResult) {
-      if (authResult && !authResult.error) {
-        oauthToken = authResult.access_token;
-        callback();
-      } else {
-        messageService.set("Google Drive authentication failed");
-      }
-    }
-
-    if (oauthToken) {
-      callback();
-    } else {
-      console.log("Starting Google Authentication");
-      window.gapi.auth.authorize({
-        'client_id': clientId,
-        'scope': scope,
-        'immediate': false
-      }, onAuthResult);
-    }
-  }
 
   function readGoogleDriveFile(url, callback) {
     var access_token = gapi.auth.getToken().access_token;
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
       if (xmlHttp.readyState == 4) {
         callback(xmlHttp.responseText);
       }
@@ -93,8 +15,7 @@ app.service('driveService', function ($compile, messageService, storageService, 
     xmlHttp.send(null);
   }
 
-
-  function openPickerWindow(modelLoadedCallback) {
+  function loadModelUsingDriveDialog(modelLoadedCallback) {
     function pickerCallback(data) {
       if (data[google.picker.Response.ACTION] != google.picker.Action.PICKED) {
         return false;
@@ -103,10 +24,11 @@ app.service('driveService', function ($compile, messageService, storageService, 
       var id = doc[google.picker.Document.ID];
       var request = gapi.client.drive.files.get({fileId: id});
       messageService.set("Loading model file ...");
-      request.execute(function(file) {
-          readGoogleDriveFile(file.downloadUrl, function (contents) {
-            messageService.clear();
-            modelLoadedCallback(contents);
+      request.execute(function (file) {
+        console.log("Loading file from url " + file.downloadUrl);
+        readGoogleDriveFile(file.downloadUrl, function (contents) {
+          messageService.clear();
+          modelLoadedCallback(contents);
         });
       });
     }
@@ -119,8 +41,8 @@ app.service('driveService', function ($compile, messageService, storageService, 
 
     var picker = new google.picker.PickerBuilder()
         .addView(docsView)
-        .setOAuthToken(oauthToken)
-        .setDeveloperKey(developerKey)
+        .setOAuthToken(googleApiService.getOauthToken())
+        .setDeveloperKey(googleApiService.getDeveloperKey())
         .setCallback(pickerCallback)
         .setTitle("Select a model file")
         .build();
@@ -129,11 +51,11 @@ app.service('driveService', function ($compile, messageService, storageService, 
 
   return {
     loadWithPicker: function (modelLoadedCallback) {
-      waitForApiLoaded(function() {
-        waitForAuthenticated(function() {
-          openPickerWindow(modelLoadedCallback);
-        });
-      });
+      googleApiService.loadGoogleApisAndCall(['auth', 'picker', 'drive'],
+          function () {
+            loadModelUsingDriveDialog(modelLoadedCallback);
+          }
+      );
     }
   }
 });
