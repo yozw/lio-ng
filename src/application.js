@@ -24,6 +24,7 @@ app.controller('AppCtrl', function (
     solverService,
     storageService,
     messageService,
+    driveService,
     aboutDialog,
     sensitivityDialog,
     feedbackDialog) {
@@ -103,6 +104,15 @@ app.controller('AppCtrl', function (
 
   $scope.loadModel = function (url) {
     $location.search('model', url);
+  };
+  
+  $scope.loadModelFromDrive = function () {
+    driveService.loadWithPicker(function(code) {
+      $scope.model.code = code;
+      if (!$scope.$$phase) {
+        $scope.$apply();
+      }
+    });
   };
 
   $scope.$on('$locationChangeSuccess', function(next, current) {

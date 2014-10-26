@@ -3,7 +3,7 @@
 <head>
   <title>Linear Optimization</title>
   <script type="text/javascript"
-          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
   <script type="text/javascript" src="/lib/jquery/jquery-2.1.0.js"></script>
   <script type="text/javascript" src="/lib/jqplot/jquery.jqplot.js"></script>
@@ -31,10 +31,16 @@
   <script type="text/javascript" src="/src/dialogs/about.js"></script>
   <script type="text/javascript" src="/src/dialogs/feedback.js"></script>
   <script type="text/javascript" src="/src/dialogs/sensitivity.js"></script>
+  <script type="text/javascript" src="/src/services/google-drive.js"></script>
   <script type="text/javascript" src="/src/services/jqplotrenderer.js"></script>
   <script type="text/javascript" src="/src/services/message.js"></script>
+  <script type="text/javascript" src="/src/services/retry.js"></script>
   <script type="text/javascript" src="/src/services/solver.js"></script>
   <script type="text/javascript" src="/src/services/storage.js"></script>
+  <script type="text/javascript"
+          src="//apis.google.com/js/client.js"></script>
+  <script type="text/javascript"
+          src="//apis.google.com/js/api.js"></script>
   <link rel="stylesheet" type="text/css" href="/lib/ui-bootstrap/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/lib/jqplot/jquery.jqplot.css">
   <link rel="stylesheet" type="text/css" href="/src/css/application.css">
@@ -50,16 +56,18 @@
 
 <div class="collapse navbar-collapse navbar-inverse">
   <ul class="nav navbar-nav">
-<!--    <li class="dropdown">
+    <li class="dropdown">
       <a class="dropdown-toggle">Model</a>
       <ul class="dropdown-menu">
-        <li><a>Language</a></li>
-        <li><a>Clear model</a></li>
-        <li><a>Save</a></li>
+        <li><a>New model</a></li>
+        <li class="divider-vertical"></li>
+        <li><a ng-click="loadModelFromDrive()">Load from Google Drive...</a></li>
+        <li><a>Save to Google Drive...</a></li>
+        <li class="divider-vertical"></li>
         <li><a>Download</a></li>
         <li><a>Print</a></li>
       </ul>
-    </li> -->
+    </li>
     <li class="dropdown">
       <a class="dropdown-toggle">Run</a>
       <ul class="dropdown-menu">

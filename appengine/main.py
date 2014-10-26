@@ -17,7 +17,7 @@ ga('create', 'UA-46105838-4', 'online-optimizer.appspot.com');
 ga('send', 'pageview');
 </script>"""
 
-MAX_MODEL_SIZE = 8192
+MAX_MODEL_SIZE = 65536
 
 def read_model_file(url):
   """Reads a model from the given url; if the file is too large, an exception is thrown"""
