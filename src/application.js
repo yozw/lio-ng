@@ -32,7 +32,7 @@ app.controller('AppCtrl', function (
 
   $scope.examples = [
     {name: 'Home', url: '/models/default.mod'},
-    {name: 'From the book', url: 'none', subItems: [
+    {name: 'From the book', subItems: [
       {name: 'Dovetail', url: '/models/book/dovetail.mod'},
       {name: 'Diet problem', url: '/models/book/diet.mod'},
       {name: 'Knapsack problem', url: '/models/book/knapsack.mod'},
@@ -40,16 +40,16 @@ app.controller('AppCtrl', function (
       {name: 'Machine scheduling problem', url: '/models/book/scheduling.mod'},
       {name: 'Decentralization problem', url: '/models/book/decentral.mod'}
     ]},
-    {name: 'Two-dimensional models', url: 'none', subItems: [
+    {name: 'Two-dimensional models', subItems: [
       {name: 'Dovetail', url: '/models/book/dovetail.mod'},
       {name: 'Circle', url: '/models/circle.mod'}
     ]},
-    {name: 'Scheduling', url: 'none', subItems: [
+    {name: 'Scheduling', subItems: [
       {name: 'Knight\'s tour', url: '/models/winglpk/knights.mod'},
       {name: 'Personnel assignment problem', url: '/models/winglpk/personnel.mod'},
       {name: 'Simple single unit dispatch', url: '/models/glpk/dispatch.mod'}
     ]},
-    {name: 'Financial', url: 'none', subItems: [
+    {name: 'Financial', subItems: [
       {name: 'Portfolio optimization using mean absolute deviation', url: '/models/glpk/PortfolioMAD.mod'}
     ]}
   ];
@@ -103,7 +103,9 @@ app.controller('AppCtrl', function (
   };
 
   $scope.loadModel = function (url) {
-    $location.search('model', url);
+    if (url !== undefined) {
+      $location.search('model', url);
+    }
   };
   
   $scope.loadModelFromDrive = function () {
