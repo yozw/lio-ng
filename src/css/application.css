@@ -22,8 +22,7 @@ body {
 }
 
 .butter-bar-inner span {
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-right: 0.5em;
 }
 
 .butter-bar-outer {
