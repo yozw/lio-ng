@@ -30,6 +30,12 @@ app.controller('AppCtrl', function (
     feedbackDialog) {
   "use strict";
 
+  function onBeforeUnload(){
+    return 'You are about to leave the online linear optimization s olver. If you leave without saving, your changes will be lost.';
+  }
+
+  window.onbeforeunload = onBeforeUnload;
+
   $scope.examples = [
     {name: 'Home', url: '/models/default.mod'},
     {name: 'From the book', subItems: [
