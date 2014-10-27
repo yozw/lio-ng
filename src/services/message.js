@@ -9,8 +9,13 @@ app.service('messageService', function ($rootScope) {
     get: function () {
       return this.status.message;
     },
-    set: function (message) {
+    set: function (message, waitingIndicatorVisible) {
+      if (arguments.length < 2) {
+        waitingIndicatorVisible = false;
+      }
+
       this.status.message = message;
+      this.status.waitingIndicatorVisible = waitingIndicatorVisible;
       if (!$rootScope.$$phase) {
         $rootScope.$apply();
       }

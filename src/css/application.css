@@ -21,6 +21,11 @@ body {
   max-width: 60%;
 }
 
+.butter-bar-inner span {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
 .butter-bar-outer {
   position: absolute;
   top: -4px;
