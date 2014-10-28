@@ -23,7 +23,6 @@ app.controller('AppCtrl', function (
     solverService,
     storageService,
     messageService,
-    googleDriveService,
     googlePickerService,
     aboutDialog,
     sensitivityDialog,

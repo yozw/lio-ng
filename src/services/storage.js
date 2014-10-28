@@ -1,5 +1,5 @@
 // TODO: Write unit tests
-app.service('storageService', function ($rootScope, $http, $location, messageService) {
+app.service('storageService', function ($rootScope, $http, $location, messageService, googleDriveService) {
   var onModelLoaded = function(code, help) {};
 
   $rootScope.$on('$locationChangeSuccess', function(next, current) {
