@@ -2,7 +2,7 @@
 app.service('googleDriveService', function ($compile, googleApiService) {
   "use strict";
 
-  function downloadDriveUrl(url, callback) {
+  function downloadDriveUrl(url, callback, errorCallback) {
     console.log("Loading file from url " + url);
     var access_token = gapi.auth.getToken().access_token;
     var xmlHttp = new XMLHttpRequest();
@@ -16,19 +16,18 @@ app.service('googleDriveService', function ($compile, googleApiService) {
     xmlHttp.send(null);
   }
 
-  function loadFileFromDrive(document, callback) {
-    var id = document[google.picker.Document.ID];
-    var request = gapi.client.drive.files.get({fileId: id});
+  function loadFileFromDrive(fileId, callback, errorCallback) {
+    var request = gapi.client.drive.files.get({fileId: fileId});
     request.execute(function (file) {
-      downloadDriveUrl(file.downloadUrl, callback);
+      downloadDriveUrl(file.downloadUrl, callback, errorCallback);
     });
   }
 
   return {
-    loadFile: function (document, callback) {
+    loadFile: function (fileId, callback, errorCallback) {
       googleApiService.loadGoogleApisAndCall(['auth', 'drive'],
           function () {
-            loadFileFromDrive(document, callback);
+            loadFileFromDrive(fileId, callback, errorCallback);
           }
       );
     }

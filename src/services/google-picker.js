@@ -7,8 +7,9 @@ app.service('googlePickerService', function ($compile, googleApiService) {
       if (data[google.picker.Response.ACTION] != google.picker.Action.PICKED) {
         return false;
       }
-      var doc = data[google.picker.Response.DOCUMENTS][0];
-      callback(doc);
+      var document = data[google.picker.Response.DOCUMENTS][0];
+      var fileId = document[google.picker.Document.ID];
+      callback(fileId);
     }
 
     var docsView = new google.picker.DocsView()

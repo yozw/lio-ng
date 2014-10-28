@@ -18,7 +18,6 @@ app.config(['$locationProvider', function ($locationProvider) {
 app.controller('AppCtrl', function (
     $scope,
     $compile,
-    $location,
     model,
     jqPlotRenderService,
     solverService,
@@ -35,27 +34,35 @@ app.controller('AppCtrl', function (
     return 'You are about to leave the online linear optimization solver. If you leave without saving, your changes will be lost.';
   };
 
+  storageService.onModelLoaded(function (code, help) {
+    $scope.model.code = code;
+    $scope.model.help = help;
+    if (!$scope.$$phase) {
+      $scope.$apply();
+    }
+  });
+
   $scope.examples = [
-    {name: 'Home', url: '/models/default.mod'},
+    {name: 'Home', url: 'model://default.mod'},
     {name: 'From the book', subItems: [
-      {name: 'Dovetail', url: '/models/book/dovetail.mod'},
-      {name: 'Diet problem', url: '/models/book/diet.mod'},
-      {name: 'Knapsack problem', url: '/models/book/knapsack.mod'},
-      {name: 'Portfolio optimization', url: '/models/book/portfolio.mod'},
-      {name: 'Machine scheduling problem', url: '/models/book/scheduling.mod'},
-      {name: 'Decentralization problem', url: '/models/book/decentral.mod'}
+      {name: 'Dovetail', url: 'model://book/dovetail.mod'},
+      {name: 'Diet problem', url: 'model://book/diet.mod'},
+      {name: 'Knapsack problem', url: 'model://book/knapsack.mod'},
+      {name: 'Portfolio optimization', url: 'model://book/portfolio.mod'},
+      {name: 'Machine scheduling problem', url: 'model://book/scheduling.mod'},
+      {name: 'Decentralization problem', url: 'model://book/decentral.mod'}
     ]},
     {name: 'Two-dimensional models', subItems: [
-      {name: 'Dovetail', url: '/models/book/dovetail.mod'},
-      {name: 'Circle', url: '/models/circle.mod'}
+      {name: 'Dovetail', url: 'model://book/dovetail.mod'},
+      {name: 'Circle', url: 'model://circle.mod'}
     ]},
     {name: 'Scheduling', subItems: [
-      {name: 'Knight\'s tour', url: '/models/winglpk/knights.mod'},
-      {name: 'Personnel assignment problem', url: '/models/winglpk/personnel.mod'},
-      {name: 'Simple single unit dispatch', url: '/models/glpk/dispatch.mod'}
+      {name: 'Knight\'s tour', url: 'model://winglpk/knights.mod'},
+      {name: 'Personnel assignment problem', url: 'model://winglpk/personnel.mod'},
+      {name: 'Simple single unit dispatch', url: 'model://glpk/dispatch.mod'}
     ]},
     {name: 'Financial', subItems: [
-      {name: 'Portfolio optimization using mean absolute deviation', url: '/models/glpk/PortfolioMAD.mod'}
+      {name: 'Portfolio optimization using mean absolute deviation', url: 'model://glpk/PortfolioMAD.mod'}
     ]}
   ];
 
@@ -109,39 +116,15 @@ app.controller('AppCtrl', function (
 
   $scope.loadModel = function (url) {
     if (url !== undefined) {
-      $location.search('model', url);
+      storageService.readModel(url);
     }
   };
-  
+
   $scope.loadModelFromDrive = function () {
-    googlePickerService.pickDriveModel(function (doc) {
-      messageService.set("Loading model file ...");
-      googleDriveService.loadFile(doc, function (code) {
-        messageService.clear();
-        $scope.model.code = code;
-        if (!$scope.$$phase) {
-          $scope.$apply();
-        }
-      })
+    googlePickerService.pickDriveModel(function (fileId) {
+      storageService.readModel('gdrive://' + fileId);
     });
   };
-
-  $scope.$on('$locationChangeSuccess', function(next, current) {
-    function callback(code, help) {
-      $scope.model.code = code;
-      $scope.model.help = help;
-      if (!$scope.$$phase) {
-        $scope.$apply();
-      }
-    }
-
-    var url = $location.search().model;
-    if (url === undefined || url === "") {
-      url = "/models/default.mod";
-    }
-
-    storageService.readModel(url, callback);
-  });
 });
 
 app.factory('model', function () {
