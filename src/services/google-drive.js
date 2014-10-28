@@ -1,8 +1,9 @@
 // TODO: Write unit tests
-app.service('driveService', function ($compile, messageService, googleApiService) {
+app.service('googleDriveService', function ($compile, googleApiService) {
   "use strict";
 
-  function readGoogleDriveFile(url, callback) {
+  function downloadDriveUrl(url, callback) {
+    console.log("Loading file from url " + url);
     var access_token = gapi.auth.getToken().access_token;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
@@ -15,45 +16,19 @@ app.service('driveService', function ($compile, messageService, googleApiService
     xmlHttp.send(null);
   }
 
-  function loadModelUsingDriveDialog(modelLoadedCallback) {
-    function pickerCallback(data) {
-      if (data[google.picker.Response.ACTION] != google.picker.Action.PICKED) {
-        return false;
-      }
-      var doc = data[google.picker.Response.DOCUMENTS][0];
-      var id = doc[google.picker.Document.ID];
-      var request = gapi.client.drive.files.get({fileId: id});
-      messageService.set("Loading model file ...");
-      request.execute(function (file) {
-        console.log("Loading file from url " + file.downloadUrl);
-        readGoogleDriveFile(file.downloadUrl, function (contents) {
-          messageService.clear();
-          modelLoadedCallback(contents);
-        });
-      });
-    }
-
-    var docsView = new google.picker.DocsView()
-        .setIncludeFolders(true)
-        .setOwnedByMe(true)
-        .setMode(google.picker.DocsViewMode.LIST)
-        .setSelectFolderEnabled(true);
-
-    var picker = new google.picker.PickerBuilder()
-        .addView(docsView)
-        .setOAuthToken(googleApiService.getOauthToken())
-        .setDeveloperKey(googleApiService.getDeveloperKey())
-        .setCallback(pickerCallback)
-        .setTitle("Select a model file")
-        .build();
-    picker.setVisible(true);
+  function loadFileFromDrive(document, callback) {
+    var id = document[google.picker.Document.ID];
+    var request = gapi.client.drive.files.get({fileId: id});
+    request.execute(function (file) {
+      downloadDriveUrl(file.downloadUrl, callback);
+    });
   }
 
   return {
-    loadWithPicker: function (modelLoadedCallback) {
-      googleApiService.loadGoogleApisAndCall(['auth', 'picker', 'drive'],
+    loadFile: function (document, callback) {
+      googleApiService.loadGoogleApisAndCall(['auth', 'drive'],
           function () {
-            loadModelUsingDriveDialog(modelLoadedCallback);
+            loadFileFromDrive(document, callback);
           }
       );
     }

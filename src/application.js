@@ -24,17 +24,16 @@ app.controller('AppCtrl', function (
     solverService,
     storageService,
     messageService,
-    driveService,
+    googleDriveService,
+    googlePickerService,
     aboutDialog,
     sensitivityDialog,
     feedbackDialog) {
   "use strict";
 
-  function onBeforeUnload(){
+  window.onbeforeunload = function() {
     return 'You are about to leave the online linear optimization solver. If you leave without saving, your changes will be lost.';
-  }
-
-  window.onbeforeunload = onBeforeUnload;
+  };
 
   $scope.examples = [
     {name: 'Home', url: '/models/default.mod'},
@@ -115,11 +114,15 @@ app.controller('AppCtrl', function (
   };
   
   $scope.loadModelFromDrive = function () {
-    driveService.loadWithPicker(function(code) {
-      $scope.model.code = code;
-      if (!$scope.$$phase) {
-        $scope.$apply();
-      }
+    googlePickerService.pickDriveModel(function (doc) {
+      messageService.set("Loading model file ...");
+      googleDriveService.loadFile(doc, function (code) {
+        messageService.clear();
+        $scope.model.code = code;
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
+      })
     });
   };
 
