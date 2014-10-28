@@ -44,6 +44,20 @@ app.service('googleApiService', function ($compile, messageService, retryService
     window.gapi.client.load('drive', 'v2', callback);
   };
 
+  // Waits for window.gapi and window.gapi.client to be ready; once they are loaded, the callback is called.
+  function waitForGapiLoaded(callback) {
+    function isGapiLoaded() {
+      return window.gapi.load && window.gapi.client.load;
+    }
+    retryService.retry()
+        .timeout(100)
+        .maxAttempts(100)
+        .successCheck(isGapiLoaded)
+        .onSuccess(callback)
+        .run();
+  }
+
+  // Waits for the given apis to be loaded; once they are loaded, the callback is called.
   function waitForApiLoaded(apis, callback) {
     function loadApi(api) {
       if (!apiLoaded[api]) {
@@ -74,12 +88,15 @@ app.service('googleApiService', function ($compile, messageService, retryService
         .onSuccess(callback)
         .run();
   }
+
   return {
     loadGoogleApisAndCall: function(apis, callback) {
       if (angular.isString(apis)) {
         apis = [apis];
       }
-      waitForApiLoaded(apis, callback)
+      waitForGapiLoaded(function() {
+        waitForApiLoaded(apis, callback);
+      });
     },
     getOauthToken: function() {
       return oauthToken;

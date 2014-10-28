@@ -37,7 +37,7 @@ app.service('storageService', function ($rootScope, $http, $location, messageSer
   }
 
   function readModel(url) {
-    var msgId = messageService.set("Loading model");
+    var msgId = -1;
 
     function modelLoaded(data) {
       $location.search('model', url);
@@ -53,11 +53,13 @@ app.service('storageService', function ($rootScope, $http, $location, messageSer
     var scheme = getScheme(url);
     var name = url.substring(scheme.length + 3);
     if (scheme == "model") {
+      msgId = messageService.set("Loading example model ...");
       loadBuiltinModel(name, modelLoaded, loadError);
     } else if (scheme == "gdrive") {
+      msgId = messageService.set("Loading model from Google Drive ...");
       loadGoogleDriveModel(name, modelLoaded, loadError);
     } else {
-      loadError("Unrecognized URL");
+      loadError("Could not load specified model: the URL was not recognized.");
     }
   }
 
