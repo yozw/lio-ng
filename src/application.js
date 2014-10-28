@@ -31,7 +31,7 @@ app.controller('AppCtrl', function (
   "use strict";
 
   function onBeforeUnload(){
-    return 'You are about to leave the online linear optimization s olver. If you leave without saving, your changes will be lost.';
+    return 'You are about to leave the online linear optimization solver. If you leave without saving, your changes will be lost.';
   }
 
   window.onbeforeunload = onBeforeUnload;
@@ -153,5 +153,21 @@ app.controller('ButterBarCtrl', function ($scope, messageService) {
   $scope.$watch('status.message', function (value) {
     $scope.isVisible = value.length > 0;
   });
+});
+
+app.controller('ResultsTabCtrl', function ($scope, uiChartRefreshService) {
+  "use strict";
+  $scope.refresh = function() {
+    console.log('Refeshing charts');
+    uiChartRefreshService.refreshAll();
+  };
+});
+
+app.controller('EditorTabCtrl', function ($scope) {
+  "use strict";
+  $scope.focusOnEditor = function() {
+    var aceEditorElement = angular.element('textarea.ace_text-input');
+    aceEditorElement.focus();
+  };
 });
 

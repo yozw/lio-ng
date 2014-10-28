@@ -122,14 +122,14 @@
          style="height: {{windowHeight - 26}}px;">
     </div>
   </tabpane>
-  <tabpane name="Model">
+  <tabpane name="Model" ng-controller="EditorTabCtrl" data-ng-activate="focusOnEditor()">
     <div id="editor"
          ui-ace="{mode: 'gmpl', theme: 'lio-ng'}"
          ng-model="model.code"
          resizable
          style="height: {{windowHeight - 26}}px; width: 100%; font-size: 14px;"></div>
   </tabpane>
-  <tabpane name="Result">
+  <tabpane name="Result" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()">
     <div id="model-results" resizable
          style="height: {{windowHeight - 26}}px;">
       <div ng-repeat="entry in model.results">

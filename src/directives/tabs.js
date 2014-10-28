@@ -1,8 +1,6 @@
 var module = angular.module('directives.tabs', ['ui.chart']);
 
-// TODO(yori): Do not inject the ui chart refresh service here!
-// TODO(yori): Make charts only update when the results tab becomes active
-module.directive('tabs', function (uiChartRefreshService) {
+module.directive('tabs', function () {
   "use strict";
   return {
     restrict: 'E',
@@ -10,32 +8,47 @@ module.directive('tabs', function (uiChartRefreshService) {
     transclude: true,
     templateUrl: '/src/directives/tabs.html',
     link: function (scope, element) {
-      scope.tabs = [];
-      scope.activeTab = 0;
+      scope.containers = [];
+      scope.activeTab = -1;
 
       var innerDivs = element.find("div");
       for (var i = 0; i < innerDivs.length; i++) {
         var child = angular.element(innerDivs[i]);
         if (child.hasClass('tab-pane')) {
-          var tab = {name: child.attr('name'), element: child};
-          scope.tabs.push(tab);
+          var tab = {
+            element: child,
+            name: child.attr('name')
+          };
+          child.removeClass("active");
+          scope.containers.push(tab);
         }
       }
       scope.setActiveTab(0);
     },
     controller: function ($scope) {
-      $scope.$watch('activeTab', function() {
-        uiChartRefreshService.refreshAll();
-      });
-      
-      $scope.setActiveTab = function (index) {
-        $scope.activeTab = index;
-        for (var i = 0; i < $scope.tabs.length; i++) {
-          if (i === index) {
-            $scope.tabs[i].element.addClass('active');
-          } else {
-            $scope.tabs[i].element.removeClass('active');
-          }
+      $scope.setActiveTab = function (newActiveTab) {
+        var element;
+        var oldActiveTab = $scope.activeTab;
+
+        // If the active tab is not changing, do nothing
+        if (newActiveTab == oldActiveTab) {
+          return;
+        }
+
+        // Deactivate current tab
+        if (oldActiveTab >= 0 && oldActiveTab < $scope.containers.length) {
+          element = $scope.containers[oldActiveTab].element;
+          element.removeClass('active');
+          element.data("onTabDeactivate")();
+        }
+
+        $scope.activeTab = newActiveTab;
+
+        // Active new current tab
+        if (newActiveTab >= 0 && newActiveTab < $scope.containers.length) {
+          element = $scope.containers[newActiveTab].element;
+          element.addClass('active');
+          element.data("onTabActivate")();
         }
       };
     }
@@ -47,9 +60,20 @@ module.directive('tabpane', function () {
   return {
     require: "^tabs",
     restrict: "E",
+    scope: {
+      onActivate: '&ngActivate',
+      onDeactivate: '&onDeactivate'
+    },
     transclude: true,
     replace: true,
-    template: '<div class="tab-pane" ng-transclude></div>'
+    template: '<div class="tab-pane" ng-transclude></div>',
+    link: function(scope, element) {
+      element.data("onTabActivate", function() {
+        scope.onActivate();
+      });
+      element.data("onTabDeactivate", function() {
+        scope.onDeactivate();
+      });
+    }
   };
 });
-
