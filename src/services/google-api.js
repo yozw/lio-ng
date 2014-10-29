@@ -1,5 +1,4 @@
-// TODO: Write unit tests
-app.service('googleApiService', function ($compile, messageService, retryService) {
+app.service('googleApiService', function (messageService, retryService) {
   "use strict";
 
   var clientId = '114623879330-hq1gs8ficrvt0n3ipp5s8q7u4svertt3.apps.googleusercontent.com';
@@ -99,6 +98,9 @@ app.service('googleApiService', function ($compile, messageService, retryService
       });
     },
     getOauthToken: function() {
+      if (!oauthToken) {
+        throw "Requested OAuth token, authorization has not finishes yet.";
+      }
       return oauthToken;
     },
     getDeveloperKey: function() {

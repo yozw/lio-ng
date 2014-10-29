@@ -1,25 +1,14 @@
-// TODO: Write unit tests
-app.service('storageService', function ($rootScope, $http, $location, messageService, googleDriveService) {
-  var onModelLoaded = function(code, help) {};
-
-  $rootScope.$on('$locationChangeSuccess', function(next, current) {
-    var url = $location.search().model;
-    if (url === undefined || url === "") {
-      url = "model://default.mod";
-    }
-    readModel(url);
-  });
-
-  function getScheme(url) {
+app.service('storageUtil', function () {
+  function splitUrl (url) {
     var index = url.indexOf("://");
     if (index < 0) {
-      return "";
+      return {scheme: "", location: url};
     } else {
-      return url.substring(0, index);
+      return {scheme: url.substring(0, index), location: url.substring(index + 3)};
     }
   }
 
-  function splitModel(data) {
+  function splitModel (data) {
     var lines = data.split("\n");
     var help = [];
     var model = [];
@@ -36,28 +25,52 @@ app.service('storageService', function ($rootScope, $http, $location, messageSer
     return {help: help.join("\n"), model: model.join("\n")};
   }
 
+  return {
+    splitUrl: splitUrl,
+    splitModel: splitModel
+  }
+});
+
+// TODO: Write unit tests
+app.service('storageService',
+    function ($rootScope, $http, $location, messageService, googleDriveService, storageUtil) {
+  var onModelLoaded = [];
+
+  $rootScope.$on('$locationChangeSuccess', function (next, current) {
+    var url = $location.search().model;
+    if (url === undefined || url === "") {
+      url = "model://default.mod";
+    }
+    readModel(url);
+  });
+
+
   function readModel(url) {
     var msgId = -1;
 
     function modelLoaded(data) {
       $location.search('model', url);
       messageService.dismiss(msgId);
-      var model = splitModel(data);
-      onModelLoaded(model.model, model.help);
+      var model = storageUtil.splitModel(data);
+      for (var i = 0; i < onModelLoaded.length; i++) {
+        onModelLoaded[i](model.model, model.help);
+      }
     }
 
     function loadError(message) {
       messageService.set(message);
     }
 
-    var scheme = getScheme(url);
-    var name = url.substring(scheme.length + 3);
-    if (scheme == "model") {
+    var splitUrl = storageUtil.splitUrl(url);
+    if (splitUrl.scheme == "model") {
       msgId = messageService.set("Loading example model ...");
-      loadBuiltinModel(name, modelLoaded, loadError);
-    } else if (scheme == "gdrive") {
+      loadBuiltinModel(splitUrl.location, modelLoaded, loadError);
+    } else if (splitUrl.scheme == "gdrive") {
       msgId = messageService.set("Loading model from Google Drive ...");
-      loadGoogleDriveModel(name, modelLoaded, loadError);
+      loadGoogleDriveModel(splitUrl.location, modelLoaded, loadError);
+    } else if (splitUrl.scheme == "http" || splitUrl.scheme == "https") {
+      msgId = messageService.set("Loading model ...");
+      loadWebModel(url, modelLoaded, loadError);
     } else {
       loadError("Could not load specified model: the URL was not recognized.");
     }
@@ -75,6 +88,29 @@ app.service('storageService', function ($rootScope, $http, $location, messageSer
         });
   }
 
+  function loadWebModel(url, modelLoaded, loadError) {
+    var data = Object();
+    data.csrf_token = CSRF_TOKEN;
+    data.url = url;
+
+    $http
+        .post('/load', data)
+        .then(function(response) {
+          console.log(response);
+          if (response.data.error) {
+            loadError(response.data.error);
+          } else if (response.data) {
+            modelLoaded(response.data);
+          } else {
+            loadError("Server did not return any data");
+          }
+        },
+        function(response) {
+          loadError(response);
+        }
+    );
+  }
+
   function loadGoogleDriveModel(fileId, modelLoaded, loadError) {
     googleDriveService.loadFile(fileId, modelLoaded, loadError);
   }
@@ -85,7 +121,7 @@ app.service('storageService', function ($rootScope, $http, $location, messageSer
       readModel(url);
     },
     onModelLoaded: function (callback) {
-      onModelLoaded = callback;
+      onModelLoaded.push(callback);
     }
   }
 });
