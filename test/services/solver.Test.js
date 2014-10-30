@@ -1,6 +1,6 @@
 'use strict';
 
-var INITIAL_MODEL = "var x1 >= 0;\n"
+var MODEL1 = "var x1 >= 0;\n"
     + "var x2 >= 0;\n"
     + "maximize z: 3*x1 + 2*x2;\n"
     + "subject to c11: x1 + x2 <= 9;\n"
@@ -12,19 +12,32 @@ var INITIAL_MODEL = "var x1 >= 0;\n"
 describe("solverService", function () {
 
   var solverService;
+  var finished;
+  var callback = Object();
+  callback.log = function() {};
+  callback.finished = function() {finished = true;};
+  callback.emitTable = function() {};
+  callback.emitGraph = function() {};
 
   beforeEach(function () {
     var $injector = angular.injector(['ng', 'lio-ng']);
     solverService = $injector.get('solverService');
+    finished = false;
   });
 
   it('solves a model',
       function () {
-        var finished = false;
-        var callback = Object();
-        callback.log = function() {};
-        callback.finished = function() {finished = true;};
-        solverService.solve(DOVETAIL, callback);
+        runs(function() {
+          solverService.solve(MODEL1, callback);
+        });
+
+        waitsFor(function() {
+          return finished;
+        }, 2000);
+
+        runs(function() {
+          expect(finished).toEqual(true);
+        })
       });
 });
 

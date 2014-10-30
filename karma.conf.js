@@ -37,7 +37,9 @@ module.exports = function(config) {
       'src/directives/*.js',
       'src/services/*.js',
       'src/workers/math/*.js',
-      'test/**/*.Test.js'
+      'test/**/*.Test.js',
+
+      { pattern: './src/**/*', included: false }
     ],
 
 
@@ -46,6 +48,10 @@ module.exports = function(config) {
       
     ],
 
+    proxies:  {
+      '/lib': 'http://localhost:9876/base/lib',
+      '/src': 'http://localhost:9876/base/src'
+    },
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
