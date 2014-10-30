@@ -67,20 +67,20 @@
     <li class="dropdown">
       <a class="dropdown-toggle">Model</a>
       <ul class="dropdown-menu">
-        <li><a>New model</a></li>
+        <li class="disabled"><a>New model</a></li>
         <li class="divider-vertical"></li>
         <li><a ng-click="loadModelFromDrive()">Load from Google Drive...</a></li>
-        <li><a>Save to Google Drive...</a></li>
+        <li class="disabled"><a>Save to Google Drive...</a></li>
         <li class="divider-vertical"></li>
-        <li><a>Download</a></li>
-        <li><a>Print</a></li>
+        <li class="disabled"><a>Download</a></li>
+        <li class="disabled"><a>Print</a></li>
       </ul>
     </li>
     <li class="dropdown">
       <a class="dropdown-toggle">Run</a>
       <ul class="dropdown-menu">
         <li><a ng-click="solveModel()">Solve</a></li>
-        <li><a ng-click="showSensitivityDialog()">Sensitivity analysis...</a></li>
+        <li class="disabled"><a ng-click="showSensitivityDialog()">Sensitivity analysis...</a></li>
       </ul>
     </li>
     <li class="dropdown">
