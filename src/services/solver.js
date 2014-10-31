@@ -4,13 +4,13 @@
 // TODO: Write unit tests
 app.service('solverService', function () {
   "use strict";
-  var worker;
+  var currentJob = {};
 
   return {
     solve: function (code, callback) {
       var stopWatch = new Stopwatch();
+      var worker = new Worker("/src/workers/solver.js");
 
-      worker = new Worker("/src/workers/solver.js");
       worker.onmessage = function (e) {
         var obj = e.data;
         switch (obj.action) {
@@ -18,6 +18,7 @@ app.service('solverService', function () {
             callback.log(obj.message);
             break;
           case 'error':
+            currentJob = {};
             callback.error(obj.message);
             break;
           case 'emit-table':
@@ -27,6 +28,7 @@ app.service('solverService', function () {
             callback.emitGraph(obj.graph);
             break;
           case 'success':
+            currentJob = {};
             stop();
             if (console) {
               console.log("Solver finished in " + stopWatch.getElapsed() + " msec");
@@ -37,7 +39,14 @@ app.service('solverService', function () {
       };
 
       stopWatch.start();
+      currentJob = {worker: worker, callback: callback};
       worker.postMessage({action: 'solve', code: code});
+    },
+    terminateWorker: function() {
+      currentJob.onmessage = function() {};
+      console.log("Terminating job");
+      currentJob.worker.terminate();
+      currentJob.callback.error("Optimization cancelled by user.");
     }
   };
 });

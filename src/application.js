@@ -69,6 +69,10 @@ app.controller('AppCtrl', function (
   $scope.isComputing = false;
 
   $scope.solveModel = function () {
+    if ($scope.isComputing) {
+      solverService.terminateWorker();
+      return;
+    }
     model.log = "";
     model.results = [];
 
@@ -81,7 +85,9 @@ app.controller('AppCtrl', function (
       $scope.isComputing = false;
       messageService.set(message);
       model.log += "ERROR: " + message + "\n";
-      $scope.$apply();
+      if (!$scope.$$phase) {
+        $scope.$apply();
+      }
     };
     callback.success = function (message) {
       $scope.isComputing = false;
