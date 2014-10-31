@@ -26,16 +26,17 @@ app.controller('AppCtrl', function (
     googlePickerService,
     aboutDialog,
     sensitivityDialog,
-    feedbackDialog) {
+    feedbackDialog,
+    unloadService) {
   "use strict";
 
-  window.onbeforeunload = function() {
-    return 'You are about to leave the online linear optimization solver. If you leave without saving, your changes will be lost.';
-  };
+
+  window.onbeforeunload = unloadService.onBeforeUnload;
 
   storageService.onModelLoaded(function (code, help) {
     $scope.model.code = code;
     $scope.model.help = help;
+    unloadService.onModelLoaded($scope.model);
     if (!$scope.$$phase) {
       $scope.$apply();
     }
