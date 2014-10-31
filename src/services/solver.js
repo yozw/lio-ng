@@ -26,12 +26,12 @@ app.service('solverService', function () {
           case 'emit-graph':
             callback.emitGraph(obj.graph);
             break;
-          case 'done':
+          case 'success':
             stop();
             if (console) {
               console.log("Solver finished in " + stopWatch.getElapsed() + " msec");
             }
-            callback.finished("Finished");
+            callback.success(obj.status);
             break;
         }
       };

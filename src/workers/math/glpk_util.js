@@ -183,3 +183,6 @@ GlpkUtil.getConstraints = function (lp) {
   return {matrix: matrix, rhs: rhs};
 };
 
+GlpkUtil.getModelStatus = function(lp) {
+  return glp_get_status(lp);
+};

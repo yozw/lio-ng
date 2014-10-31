@@ -9,7 +9,7 @@ importScripts('/src/workers/math/feasible_region_graph.js');
 importScripts('/src/workers/math/glpk_util.js');
 importScripts('/src/workers/math/convex_hull.js');
 
-function logInfo(value) {
+function postInfo(value) {
   "use strict";
   var message = {};
   message.action = 'log';
@@ -17,9 +17,15 @@ function logInfo(value) {
   self.postMessage(message);
 }
 
-function logError(value, data) {
+function postSuccess(status) {
+  self.postMessage({action: 'success', status: status, result: {}, objective: {}});
+}
+
+function postError(value, data) {
   "use strict";
   var message = {};
+
+  console.error(value);
 
   if (data !== undefined) {
     for (var key in data) {
@@ -30,7 +36,13 @@ function logError(value, data) {
   }
 
   message['action'] = 'error';
-  message['message'] = value;
+  if (value === undefined) {
+    message['message'] = "Undefined error";
+  } else if (value.hasOwnProperty("message")) {
+    message['message'] = value.message;
+  } else {
+    message['message'] = value;
+  }
   self.postMessage(message);
 }
 
@@ -54,13 +66,25 @@ function actionSolve(e) {
   if (lp === null) {
     return;
   }
-  postTable(GlpkUtil.getPrimalSolutionTable(lp));
-
-  if (glp_get_num_cols(lp) === 2) {
-    postGraph(FeasibleRegionGraph.create(lp));
+  var status = GlpkUtil.getModelStatus(lp);
+  switch (status) {
+    case GLP_OPT:
+      postTable(GlpkUtil.getPrimalSolutionTable(lp));
+      if (glp_get_num_cols(lp) === 2) {
+        postGraph(FeasibleRegionGraph.create(lp));
+      }
+      return "An optimal solution was found.";
+    case GLP_NOFEAS:
+    case GLP_UNDEF:
+    case GLP_UNBND:
+      return "The model is infeasible or unbounded.";
+    case GLP_FEAS:
+      throw new Error("GLPK solver returned GLP_FEAS");
+    case GLP_INFEAS:
+      throw new Error("GLPK solver returned GLP_INFEAS");
+    default:
+      throw new Error("GLPK solver returned undefined status (" + status + ")");
   }
-
-  self.postMessage({action: 'done', result: {}, objective: {}});
 }
 
 function getAction(e) {
@@ -78,8 +102,10 @@ actions['solve'] = actionSolve;
 self.addEventListener('message', function (e) {
   "use strict";
 
-  GlpkUtil.setInfoLogFunction(logInfo);
-  GlpkUtil.setErrorLogFunction(logError);
+  GlpkUtil.setInfoLogFunction(postInfo);
+  GlpkUtil.setErrorLogFunction(function(error) {
+    throw error;
+  });
 
   var actionFn = getAction(e);
   if (actionFn === undefined) {
@@ -87,9 +113,10 @@ self.addEventListener('message', function (e) {
   }
 
   try {
-    actionFn(e);
+    var status = actionFn(e);
+    postSuccess(status);
   } catch (err) {
-    logError(err.message);
+    postError(err);
   }
 }, false);
 

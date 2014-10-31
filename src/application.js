@@ -66,6 +66,7 @@ app.controller('AppCtrl', function (
   ];
 
   $scope.model = model;
+  $scope.isComputing = false;
 
   $scope.solveModel = function () {
     model.log = "";
@@ -77,12 +78,14 @@ app.controller('AppCtrl', function (
       $scope.$apply();
     };
     callback.error = function (message) {
+      $scope.isComputing = false;
       messageService.set(message);
       model.log += "ERROR: " + message + "\n";
       $scope.$apply();
     };
-    callback.finished = function (message) {
-      messageService.set("Solving finished");
+    callback.success = function (message) {
+      $scope.isComputing = false;
+      messageService.set("Solving finished. " + message);
     };
     callback.emitTable = function (table) {
       $scope.model.results.push(
@@ -98,6 +101,7 @@ app.controller('AppCtrl', function (
     };
 
     messageService.set("Solving model", true);
+    $scope.isComputing = true;
     solverService.solve(model.code, callback);
   };
 
