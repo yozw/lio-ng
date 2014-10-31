@@ -106,7 +106,7 @@ app.controller('AppCtrl', function (
       $scope.$apply();
     };
 
-    messageService.set("Solving model", true);
+    messageService.set("Solving model");
     $scope.isComputing = true;
     solverService.solve(model.code, callback);
   };
