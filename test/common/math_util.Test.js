@@ -92,7 +92,7 @@ describe("MathUtil", function () {
   it('expandBounds expands bounds correctly', function() {
     var bounds = {minX: 1, maxX: 3, minY: 2, maxY: 6};
     expect(MathUtil.expandBounds(bounds, 0.5, 1)).toEqual({minX: 0.5, maxX: 3.5, minY: 1, maxY: 7});
-  })
+  });
 
   it('expandBounds expands bounds correctly when a range has length zero', function() {
     var bounds = {minX: 1, maxX: 1, minY: 2, maxY: 6};
@@ -100,6 +100,27 @@ describe("MathUtil", function () {
 
     bounds = {minX: 1, maxX: 3, minY: 4, maxY: 4};
     expect(MathUtil.expandBounds(bounds, 0.5, 1)).toEqual({minX: 0.5, maxX: 3.5, minY: 3.5, maxY: 4.5});
-  })
+  });
+
+  it('isDigit works correctly', function() {
+    expect(MathUtil.isDigit('1')).toEqual(true);
+    expect(MathUtil.isDigit('0')).toEqual(true);
+    expect(MathUtil.isDigit('9')).toEqual(true);
+    expect(MathUtil.isDigit('.')).toEqual(false);
+    expect(MathUtil.isDigit(' ')).toEqual(false);
+  });
+
+  it('expandToNumber works correctly', function() {
+    expect(MathUtil.expandToNumber("hello 123", 3, 4)).toEqual({});
+    expect(MathUtil.expandToNumber("hello 123", 3, 3)).toEqual({});
+    expect(MathUtil.expandToNumber("123", 1, 1)).toEqual({text: '123', start: 0, end: 3});
+    expect(MathUtil.expandToNumber("123 ", 1, 1)).toEqual({text: '123', start: 0, end: 3});
+    expect(MathUtil.expandToNumber(" 123 ", 1, 1)).toEqual({text: '123', start: 1, end: 4});
+    expect(MathUtil.expandToNumber(" -123 ", 1, 1)).toEqual({text: '-123', start: 1, end: 5});
+    expect(MathUtil.expandToNumber("123.0", 1, 1)).toEqual({text: '123.0', start: 0, end: 5});
+    expect(MathUtil.expandToNumber("10.123.30", 1, 1)).toEqual({text: '10.123', start: 0, end: 6});
+    expect(MathUtil.expandToNumber("10.123.30", 4, 4)).toEqual({text: '10.123', start: 0, end: 6});
+    expect(MathUtil.expandToNumber("10.123.30", 7, 7)).toEqual({text: '123.30', start: 3, end: 9});
+  });
 });
 

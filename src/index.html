@@ -39,6 +39,7 @@
   <script type="text/javascript" src="/src/common/util.js"></script>
   <script type="text/javascript" src="/src/common/math_util.js"></script>
   <script type="text/javascript" src="/src/dialogs/about.js"></script>
+  <script type="text/javascript" src="/src/dialogs/error.js"></script>
   <script type="text/javascript" src="/src/dialogs/feedback.js"></script>
   <script type="text/javascript" src="/src/dialogs/sensitivity.js"></script>
   <script type="text/javascript" src="/src/services/google-api.js"></script>
@@ -50,6 +51,7 @@
   <script type="text/javascript" src="/src/services/solver.js"></script>
   <script type="text/javascript" src="/src/services/storage.js"></script>
   <script type="text/javascript" src="/src/services/unload.js"></script>
+  <script type="text/javascript" src="/src/ace/token-tooltip.js"></script>
   <link rel="stylesheet" type="text/css" href="/lib/ui-bootstrap/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/lib/jqplot/jquery.jqplot.css">
   <link rel="stylesheet" type="text/css" href="/src/css/application.css">
@@ -81,7 +83,7 @@
       <a class="dropdown-toggle">Run</a>
       <ul class="dropdown-menu">
         <li><a ng-click="solveModel()">Solve</a></li>
-        <li class="disabled"><a ng-click="showSensitivityDialog()">Sensitivity analysis...</a></li>
+        <li><a ng-click="showSensitivityDialog()">Sensitivity analysis...</a></li>
       </ul>
     </li>
     <li class="dropdown">
@@ -125,7 +127,7 @@
   </tabpane>
   <tabpane name="Model" ng-controller="EditorTabCtrl" data-ng-activate="focusOnEditor()">
     <div id="editor"
-         ui-ace="{mode: 'gmpl', theme: 'lio-ng'}"
+         ui-ace="{mode: 'gmpl', theme: 'lio-ng', animatedScroll: true, onChangeSelection: onChangeSelection}"
          ng-model="model.code"
          resizable
          style="height: {{windowHeight - 26}}px; width: 100%; font-size: 14px;"></div>

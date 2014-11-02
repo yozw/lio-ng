@@ -121,7 +121,11 @@ app.controller('AppCtrl', function (
   };
 
   $scope.showSensitivityDialog = function () {
-    sensitivityDialog.open();
+    sensitivityDialog.open($scope.model.code, $scope.selectionRange);
+  };
+
+  $scope.onChangeSelection = function(e, selection) {
+    $scope.selectionRange = selection.getRange();
   };
 
   $scope.loadModel = function (url) {

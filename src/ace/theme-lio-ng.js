@@ -25,6 +25,11 @@ color: teal;\
 .ace-lio-ng .ace_constant.ace_numeric {\
 color: #408080;\
 }\
+.ace-lio-ng .ace_numeric:hover {\
+color:black;\
+text-decoration: underline;\
+\
+}\
 .ace-lio-ng .ace_constant.ace_buildin {\
 color: #0086B3;\
 }\

@@ -195,3 +195,44 @@ MathUtil.expandBounds = function (bounds, expansionFactor, defaultRange) {
   };
 };
 
+MathUtil.isDigit = function(ch) {
+  return ch >= '0' && ch <= '9';
+};
+
+MathUtil.expandToNumber = function(text, start, end) {
+  function isValid(start, end) {
+    var str = text.substring(start, end);
+    return (str.length > 0) && (str.length == str.trim().length) && !isNaN(Number(str));
+  }
+
+  if (start !== end && !isValid(start, end)) {
+    return {};
+  }
+
+  while (true) {
+    if (start > 0 && isValid(start - 1, end)) {
+      start--;
+    } else if (start > 1 && isValid(start - 2, end)) {
+      start -= 2;
+    } else {
+      break;
+    }
+  }
+
+  while (true) {
+    if (end < text.length && isValid(start, end + 1)) {
+      end++;
+    } else if (end < text.length - 1 && isValid(start, end + 2)) {
+      end += 2;
+    } else {
+      break;
+    }
+  }
+
+  if (!isValid(start, end)) {
+    return {};
+  }
+
+  return {text: text.substring(start, end), start: start, end: end};
+};
+

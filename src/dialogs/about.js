@@ -1,28 +1,25 @@
-app.factory('aboutDialog', function ($modal, $log) {
+app.factory('aboutDialog', function ($modal) {
   "use strict";
 
   return {
     open: function () {
 
+      var modalController = function ($scope, $modalInstance) {
+        $scope.ok = function () {
+          $modalInstance.close();
+        };
+
+      };
+
       var modalInstance = $modal.open({
         templateUrl: '/src/dialogs/about.html',
-        controller: "AboutDialogCtrl"
+        controller: modalController
       });
 
       modalInstance.result.then(
           function () {
           },
           function () {
-            $log.info('Modal dismissed at: ' + new Date());
           });
     }};
-});
-
-app.controller("AboutDialogCtrl", function ($scope, $modalInstance) {
-  "use strict";
-
-  $scope.ok = function () {
-    $modalInstance.close();
-  };
-
 });

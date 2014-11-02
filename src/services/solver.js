@@ -1,7 +1,6 @@
 /**
  * Solver service
  */
-// TODO: Write unit tests
 app.service('solverService', function () {
   "use strict";
   var currentJob = {};
@@ -41,6 +40,9 @@ app.service('solverService', function () {
       stopWatch.start();
       currentJob = {worker: worker, callback: callback};
       worker.postMessage({action: 'solve', code: code});
+    },
+    performSensitvityAnalysis: function (code, callback) {
+
     },
     terminateWorker: function() {
       currentJob.onmessage = function() {};
