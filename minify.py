@@ -3,6 +3,8 @@ import re
 
 INPUTDIR="./"
 OUTPUTDIR="appengine/static/"
+MINIFY_SRC=True
+USE_UGLIFY=True
 
 def ensure_dir(f):
     d = os.path.dirname(f)
@@ -22,10 +24,13 @@ def input_path(path):
 def output_path(path):
   return relative_path(path, OUTPUTDIR)
 
-def yuicompress(infile, outfile):
+def minify(infile, outfile):
   print "Minifying " + infile + " to " + outfile
   ensure_dir(outfile)
-  os.system('java -jar yuicompressor-2.4.8.jar --line-break 100 --nomunge --type js %s > %s' % (infile, outfile))
+  if USE_UGLIFY:
+    os.system('uglifyjs %s > %s' % (infile, outfile))
+  else:
+    os.system('java -jar yuicompressor-2.4.8.jar --line-break 100 --nomunge --type js %s > %s' % (infile, outfile))
 
 def cat(files, outfile):
   print "Concatenating " + str(len(files)) + " files to " + outfile
@@ -44,13 +49,19 @@ def generate_minified(outfile, sources):
     if sources[i].startswith("/lib/"):
       sources[i] = sources[i].replace(".js", ".min.js")
 
-  minify_sources = [input_path(path) for path in sources if path.startswith("/src/")]
-  cat(minify_sources, tempfile1)
-  yuicompress(tempfile1, tempfile2)
+  if not MINIFY_SRC:
+    minify_sources = [input_path(path) for path in sources if path.startswith("/src/")]
+    cat(minify_sources, tempfile1)
+    minify(tempfile1, tempfile2)
 
-  cat_sources = [input_path(path) for path in sources if not path.startswith("/src/")]      
-  cat_sources += [tempfile2]
-  cat(cat_sources, outfile)
+    cat_sources = [input_path(path) for path in sources if not path.startswith("/src/")]      
+    cat_sources += [tempfile2]
+    cat(cat_sources, outfile)
+  else:
+    minify_sources = [input_path(path) for path in sources]
+    cat(minify_sources, tempfile1)
+    minify(tempfile1, outfile)
+  
 
 def minify_html(html_path, js_path):
   sources = []

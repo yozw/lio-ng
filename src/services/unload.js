@@ -1,7 +1,7 @@
-app.service('unloadService', function ($rootScope) {
+app.service('unloadService', function () {
   "use strict";
   var lastLoadedModel = {code: "", help: ""};
-  var model;
+  var model = lastLoadedModel;
 
   return {
     onModelLoaded: function (loadedModel) {
