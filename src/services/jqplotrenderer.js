@@ -37,6 +37,12 @@ app.service('jqPlotRenderService', function () {
       showLine: false,
       color: "#80A0FF"
     },
+    "plot": {
+      showMarker: false,
+      showLine: true,
+      lineWidth: 1,
+      color: "#808080"
+    },
     "line": {
       showMarker: false,
       showLine: true,

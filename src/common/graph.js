@@ -31,7 +31,15 @@ var Graph = function () {
       zIndex: 0
     });
   };
-  
+
+  this.addLinePlot = function (data) {
+    self.layers.push({
+      type: 'plot',
+      data: data,
+      zIndex: 0
+    });
+  };
+
   this.addLine = function (normal, rhs) {
     self.layers.push({
       type: 'line',

@@ -118,6 +118,10 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
       $scope.methods = [ADAPTIVE, EVEN_SPACED];
 
       $scope.ok = function () {
+        solverService.performSensitivityAnalysis(
+            selection.codeWithPlaceholder,
+            $scope.parameters.minimum,
+            $scope.parameters.maximum);
         $modalInstance.close();
       };
 
@@ -134,16 +138,9 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
         errorDialog.open(ERROR_MESSAGE, "Sensitivity analysis");
         return;
       }
-      var modalInstance = $modal.open({
+      $modal.open({
         template: TEMPLATE,
         controller: modalController(selection)
       });
-
-      modalInstance.result.then(
-          function () {
-            solverService.performSensitivityAnalysis(selection.codeWithPlaceholder);
-          },
-          function () {
-          });
     }};
 });
