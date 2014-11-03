@@ -7,7 +7,8 @@ app.factory('sensitivityDialog', function ($modal, errorDialog) {
   function getSelection(code, range) {
     var selection = {};
     if (angular.isUndefined(range) || range.start.row !== range.end.row) {
-      return null;
+      console.log("getSelection: Invalid range specified.");
+      return undefined;
     }
 
     var lines = code.split("\n");
@@ -15,7 +16,8 @@ app.factory('sensitivityDialog', function ($modal, errorDialog) {
     var line = lines[row];
     var expanded = MathUtil.expandToNumber(line, range.start.column, range.end.column);
     if (angular.isUndefined(expanded.text)) {
-      return null;
+      console.log("Selection '" + line.substring(range.start.column, range.end.column) + "' could not be expanded.");
+      return undefined;
     }
 
     var start = expanded.start;
@@ -25,7 +27,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog) {
     selection.value = parseFloat(selection.text);
 
     if (isNaN(selection.value)) {
-      return null;
+      return undefined;
     }
 
     selection.line = line;
@@ -35,8 +37,6 @@ app.factory('sensitivityDialog', function ($modal, errorDialog) {
 
     lines[row] = selection.lineBefore + "{{SENSITIVITY_PLACEHOLDER}}" + selection.lineAfter;
     selection.codeWithPlaceholder = lines.join("\n");
-
-    console.log(selection);
 
     return selection;
   }
@@ -83,11 +83,10 @@ app.factory('sensitivityDialog', function ($modal, errorDialog) {
   return {
     open: function (code, range) {
       var selection = getSelection(code, range);
-      if (angular.isDefined(selection)) {
+      if (angular.isUndefined(selection)) {
         errorDialog.open(ERROR_MESSAGE, "Sensitivity analysis");
         return;
       }
-      console.log(selection);
       var modalInstance = $modal.open({
         templateUrl: '/src/dialogs/sensitivity.html',
         controller: modalController(selection)
