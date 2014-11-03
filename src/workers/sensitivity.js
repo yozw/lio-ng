@@ -2,6 +2,8 @@ function actionSensitivity(e) {
 
   var PLACEHOLDER = "{{SENSITIVITY_PLACEHOLDER}}";
 
+  GlpkUtil.setInfoLogFunction(function() {});
+
   function getModelFunction(code) {
     var i = code.indexOf(PLACEHOLDER);
     if (i <= 0) {
@@ -19,8 +21,8 @@ function actionSensitivity(e) {
     var model = getModelFunction(code);
 
     return function (x) {
-      postInfo("Solving model for value " + x.toString());
       var result = GlpkUtil.solveGmpl(model(x));
+      postInfo("value = " + x.toString() + ", objective = " + result.objectiveValue);
     }
   }
 

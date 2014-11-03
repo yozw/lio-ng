@@ -270,3 +270,8 @@ pre.no-border {
   border: none;
   background: transparent;
 }
+
+.sensitivity-subject {
+  font-weight: bold;
+  color: #28f;
+}

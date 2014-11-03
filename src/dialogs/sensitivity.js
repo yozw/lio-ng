@@ -9,7 +9,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
         <div class="bs-callout bs-callout-info">\
           Please specify parameters for a sensitivity analysis with respect to the constant\
           <b>{{selection.text}}</b> in the line:\
-          <pre class="no-border">{{selection.lineBefore}}<b>{{selection.text}}</b>{{selection.lineAfter}}</pre>\
+          <pre class="no-border">{{selection.lineBefore}}<span class="sensitivity-subject">{{selection.text}}</span>{{selection.lineAfter}}</pre>\
         </div>\
         <table class="input-table">\
           <tr>\

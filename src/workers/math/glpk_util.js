@@ -105,7 +105,8 @@ GlpkUtil.solveGmpl = function (code) {
 
     var smcp = new SMCP(options);
     var status = glp_simplex(lp, smcp);
-    return {lp: lp, status: status};
+    var objValue = glp_get_obj_val(lp);
+    return {lp: lp, status: status, objectiveValue: objValue};
   } catch (error) {
     GlpkUtil.error(error);
     return null;
