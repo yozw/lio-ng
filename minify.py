@@ -1,5 +1,6 @@
 import os
 import re
+import datetime
 
 INPUTDIR="./"
 OUTPUTDIR="appengine/static/"
@@ -86,6 +87,7 @@ def minify_html(html_path, js_path):
   out = open(output_filename, 'w')
   for line in html.readlines():
     newline = re.sub('<script type="([^"]*)" src="([^"]*)"></script>', replacer, line)
+    newline = newline.replace("{{DATE}}", str(datetime.datetime.utcnow()))
     if len(newline.strip()) != 0:
       out.write(newline)
   out.close()

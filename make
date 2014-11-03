@@ -5,14 +5,16 @@ popd > /dev/null
 
 pushd $ROOT > /dev/null
 
+CPIO_OPT="--quiet -pdmu"
+
 echo "Copying files ..."
-find src -name '*.html' | cpio -pdmu $ROOT/appengine/static 
-find src -name '*.css' | cpio -pdmu $ROOT/appengine/static
-find lib -name '*.min.js' | cpio -pdmu $ROOT/appengine/static
-find lib -name '*.css' | cpio -pdmu $ROOT/appengine/static
-find models -name '*.mod' | cpio -pdmu $ROOT/appengine/static
-find images -name '*.png' | cpio -pdmu $ROOT/appengine/static
-find images -name '*.gif' | cpio -pdmu $ROOT/appengine/static
+find src -name '*.html' | cpio $CPIO_OPT $ROOT/appengine/static 
+find src -name '*.css' | cpio $CPIO_OPT $ROOT/appengine/static
+find lib -name '*.min.js' | cpio $CPIO_OPT $ROOT/appengine/static
+find lib -name '*.css' | cpio $CPIO_OPT $ROOT/appengine/static
+find models -name '*.mod' | cpio $CPIO_OPT $ROOT/appengine/static
+find images -name '*.png' | cpio $CPIO_OPT $ROOT/appengine/static
+find images -name '*.gif' | cpio $CPIO_OPT $ROOT/appengine/static
 
 python minify.py 
 
