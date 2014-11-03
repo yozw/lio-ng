@@ -26,7 +26,7 @@ function actionSensitivity(e) {
 
   var f = evalFn(e.data.code);
 
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 100; i++) {
     f(i);
   }
 

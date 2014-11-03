@@ -11,6 +11,9 @@ importScripts('/src/workers/math/convex_hull.js');
 importScripts('/src/workers/solve.js');
 importScripts('/src/workers/sensitivity.js');
 
+/**
+ * Sends an information message back to the main thread.
+ */
 function postInfo(value) {
   "use strict";
   var message = {};
@@ -19,10 +22,16 @@ function postInfo(value) {
   self.postMessage(message);
 }
 
+/**
+ * Sends a "success" message back to the main thread.
+ */
 function postSuccess(status) {
   self.postMessage({action: 'success', status: status, result: {}, objective: {}});
 }
 
+/**
+ * Sends an error message back to the main thread.
+ */
 function postError(value, data) {
   "use strict";
   var message = {};
@@ -62,7 +71,15 @@ function postGraph(graph) {
   self.postMessage({action: 'emit-graph', graph: graph.serialize()});
 }
 
+/**
+ * Determine which action (subroutine) the worker should execute.
+ */
 function getAction(e) {
+  var actions = {
+    solve: actionSolve,
+    sensitivity: actionSensitivity
+  };
+
   var action = e.data.action;
   if (typeof action === 'string' || action instanceof String) {
     return actions[action];
@@ -71,13 +88,10 @@ function getAction(e) {
   }
 }
 
-var actions = {};
-actions['solve'] = actionSolve;
-actions['sensitivity'] = actionSensitivity;
-
-self.addEventListener('message', function (e) {
-  "use strict";
-
+/*
+ * Callback for messages from the main thread.
+ */
+function onMessage(e) {
   GlpkUtil.setInfoLogFunction(postInfo);
   GlpkUtil.setErrorLogFunction(function(error) {
     throw error;
@@ -94,5 +108,7 @@ self.addEventListener('message', function (e) {
   } catch (err) {
     postError(err);
   }
-}, false);
+}
 
+// Install message callback
+self.addEventListener('message', onMessage, false);
