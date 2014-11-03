@@ -29,11 +29,13 @@ describe("solverService", function () {
 
   var solverService;
   var finished;
+  var started;
   var tables;
   var graphs;
   var errors;
   var successMessages;
   var callback = Object();
+  callback.start = function() { started = true; };
   callback.log = function() {};
   callback.success = function(message) { finished = true; successMessages.push(message)};
   callback.emitTable = function(table) { tables.push(table); };
@@ -44,6 +46,7 @@ describe("solverService", function () {
     var $injector = angular.injector(['ng', 'lio-ng']);
     solverService = $injector.get('solverService');
     finished = false;
+    started = false;
     tables = [];
     graphs = [];
     errors = [];

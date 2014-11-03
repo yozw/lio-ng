@@ -1,4 +1,4 @@
-app.factory('sensitivityDialog', function ($modal, errorDialog) {
+app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
   "use strict";
 
   var TEMPLATE =
@@ -141,6 +141,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog) {
 
       modalInstance.result.then(
           function () {
+            solverService.performSensitivityAnalysis(selection.codeWithPlaceholder);
           },
           function () {
           });

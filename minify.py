@@ -124,6 +124,6 @@ def minify_worker(worker_path):
 
   
 minify_html('/src/index.html', '/src/index.js')
-minify_worker('/src/workers/solver.js')
+minify_worker('/src/workers/worker.js')
 
 

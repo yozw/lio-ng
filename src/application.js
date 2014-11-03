@@ -19,6 +19,7 @@ app.controller('AppCtrl', function (
     $scope,
     $compile,
     model,
+    examples,
     jqPlotRenderService,
     solverService,
     storageService,
@@ -30,9 +31,10 @@ app.controller('AppCtrl', function (
     unloadService) {
   "use strict";
 
-
+  // Bind unload service to onBeforeUnload event
   window.onbeforeunload = unloadService.onBeforeUnload;
 
+  // Bind storage service callback
   storageService.onModelLoaded(function (code, help) {
     $scope.model.code = code;
     $scope.model.help = help;
@@ -42,74 +44,56 @@ app.controller('AppCtrl', function (
     }
   });
 
-  $scope.examples = [
-    {name: 'Home', url: 'model://default.mod'},
-    {name: 'From the book', subItems: [
-      {name: 'Dovetail', url: 'model://book/dovetail.mod'},
-      {name: 'Diet problem', url: 'model://book/diet.mod'},
-      {name: 'Knapsack problem', url: 'model://book/knapsack.mod'},
-      {name: 'Portfolio optimization', url: 'model://book/portfolio.mod'},
-      {name: 'Machine scheduling problem', url: 'model://book/scheduling.mod'},
-      {name: 'Decentralization problem', url: 'model://book/decentral.mod'}
-    ]},
-    {name: 'Two-dimensional models', subItems: [
-      {name: 'Dovetail', url: 'model://book/dovetail.mod'},
-      {name: 'Circle', url: 'model://circle.mod'}
-    ]},
-    {name: 'Scheduling', subItems: [
-      {name: 'Knight\'s tour', url: 'model://winglpk/knights.mod'},
-      {name: 'Personnel assignment problem', url: 'model://winglpk/personnel.mod'},
-      {name: 'Simple single unit dispatch', url: 'model://glpk/dispatch.mod'}
-    ]},
-    {name: 'Financial', subItems: [
-      {name: 'Portfolio optimization using mean absolute deviation', url: 'model://glpk/PortfolioMAD.mod'}
-    ]}
-  ];
-
-  $scope.model = model;
-  $scope.isComputing = false;
-
-  $scope.solveModel = function () {
-    if ($scope.isComputing) {
-      solverService.terminateWorker();
-      return;
-    }
-    model.log = "";
-    model.results = [];
-
-    var callback = Object();
-    callback.log = function (message) {
+  // Bind solver service callback
+  solverService.setCallback({
+    start: function() {
+      model.log = "";
+      model.results = [];
+      $scope.isComputing = true;
+    },
+    log: function (message) {
       model.log += message + "\n";
       $scope.$apply();
-    };
-    callback.error = function (message) {
+    },
+    error: function (message) {
       $scope.isComputing = false;
       messageService.set(message);
       model.log += "ERROR: " + message + "\n";
       if (!$scope.$$phase) {
         $scope.$apply();
       }
-    };
-    callback.success = function (message) {
+    },
+    success: function (message) {
       $scope.isComputing = false;
       messageService.set("Solving finished. " + message);
-    };
-    callback.emitTable = function (table) {
+    },
+    emitTable: function (table) {
       $scope.model.results.push(
           {type: 'table', table: table}
       );
       $scope.$apply();
-    };
-    callback.emitGraph = function (graph) {
+    },
+    emitGraph: function (graph) {
       $scope.model.results.push(
           {type: 'graph', graph: jqPlotRenderService.render(graph)}
       );
       $scope.$apply();
-    };
+    }
+  });
 
+  // Initialize scope variables
+  $scope.examples = examples;
+  $scope.model = model;
+  $scope.isComputing = false;
+
+  // Initialize scope functions
+  $scope.solveModel = function () {
+    if ($scope.isComputing) {
+      solverService.terminateWorker();
+      return;
+    }
     messageService.set("Solving model");
-    $scope.isComputing = true;
-    solverService.solve(model.code, callback);
+    solverService.solve(model.code);
   };
 
   $scope.showAbout = function () {
