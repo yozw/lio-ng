@@ -4,6 +4,9 @@
 var Graph = function () {
 
   var self = this;
+  this.title = "";
+  this.xlabel = "x";
+  this.ylabel = "y";
   this.layers = [];
   this.xrange = {min: 0, max: 10};
   this.yrange = {min: 0, max: 10};
@@ -49,9 +52,24 @@ var Graph = function () {
     });
   };
 
+  this.setXlabel = function (label) {
+    self.xlabel = label;
+  };
+
+  this.setYlabel = function (label) {
+    self.ylabel = label;
+  };
+
+  this.setTitle = function (title) {
+    self.title = title;
+  };
+
   this.serialize = function () {
     var i;
     var object = {};
+    object.xlabel = self.xlabel;
+    object.ylabel = self.ylabel;
+    object.title = self.title;
     object.xrange = self.xrange;
     object.yrange = self.yrange;
     object.layers = [];

@@ -2,10 +2,10 @@ app.service('jqPlotRenderService', function () {
   "use strict";
 
    var defaultOptions = {
-     title: 'Feasible region',
+     title: '',
      axes: {
-       xaxis: {min: 0, max: 1, label: 'x1'},
-       yaxis: {min: 0, max: 1, label: 'x2'}
+       xaxis: {min: 0, max: 1, label: ''},
+       yaxis: {min: 0, max: 1, label: ''}
      },
      sortData: false,
      highlighter: {
@@ -100,6 +100,9 @@ app.service('jqPlotRenderService', function () {
       jqPlot.data = seriesData;
       jqPlot.options = jQuery.extend(true, {}, defaultOptions);
 
+      jqPlot.options.title = graph.title;
+      jqPlot.options.axes.xaxis.label = graph.xlabel;
+      jqPlot.options.axes.yaxis.label = graph.ylabel;
       jqPlot.options.axes.xaxis.min = graph.xrange.min;
       jqPlot.options.axes.xaxis.max = graph.xrange.max;
       jqPlot.options.axes.yaxis.min = graph.yrange.min;

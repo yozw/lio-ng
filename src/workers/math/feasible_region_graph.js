@@ -68,6 +68,9 @@ FeasibleRegionGraph.create = function (lp) {
     graph.addPolygon(data);
   }
 
+  graph.setTitle("Feasible region");
+  graph.setXlabel("x1");
+  graph.setYlabel("x2");
   graph.addScatterPlot(vertices);
 
   graph.setXRange(viewBounds.minX, viewBounds.maxX);

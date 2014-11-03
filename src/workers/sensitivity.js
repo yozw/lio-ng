@@ -44,6 +44,9 @@ function actionSensitivity(e) {
   var viewBounds = MathUtil.expandBounds(vertexBounds, 0.5, 1.0);
 
   var graph = new Graph();
+  graph.setTitle("Perturbation function");
+  graph.setXlabel("x");
+  graph.setYlabel("objective value");
   graph.addLinePlot(data);
   graph.setXRange(minX, maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);

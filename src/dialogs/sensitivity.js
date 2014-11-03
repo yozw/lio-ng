@@ -3,7 +3,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
 
   var TEMPLATE =
      '<div class="modal-header">\
-      <h3>Sensitivity analysis</h3>\
+      <h3>Sensitivity analysis (beta)</h3>\
       </div>\
       <div class="modal-body">\
         <div class="bs-callout bs-callout-info">\
