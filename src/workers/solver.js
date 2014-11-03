@@ -62,10 +62,20 @@ function postGraph(graph) {
 
 function actionSolve(e) {
   var code = e.data.code;
-  var lp = GlpkUtil.solveGmpl(code);
-  if (lp === null) {
+  var result = GlpkUtil.solveGmpl(code);
+  if (result === null) {
     return;
   }
+
+  if (result.status == GLP_ENOPFS) {
+    return "The model is infeasible.";
+  } else if (result.status == GLP_ENODFS) {
+    return "The model is unbounded.";
+  } else if (result.status != 0) {
+    return "An error occurred while solving (status code = " + result.status + ")";
+  }
+
+  var lp = result.lp;
   var status = GlpkUtil.getModelStatus(lp);
   switch (status) {
     case GLP_OPT:

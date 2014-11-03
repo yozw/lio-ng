@@ -50,33 +50,34 @@ var HORIZONTAL_LINE = "var x1;\n"
 describe("FeasibleRegionGraph", function () {
 
   it('creates a feasible region graph', function () {
-    var lp = GlpkUtil.solveGmpl(DOVETAIL);
+    var lp = GlpkUtil.solveGmpl(DOVETAIL).lp;
     var graph = FeasibleRegionGraph.create(lp);
   });
 
   it('creates an unbounded feasible region graph', function () {
-    var lp = GlpkUtil.solveGmpl(DOVETAIL_UNBOUNDED);
+    var lp = GlpkUtil.solveGmpl(DOVETAIL_UNBOUNDED).lp;
     var graph = FeasibleRegionGraph.create(lp);
   });
 
   it('creates an line segment feasible region graph', function () {
-    var lp = GlpkUtil.solveGmpl(LINE_SEGMENT);
+    var lp = GlpkUtil.solveGmpl(LINE_SEGMENT).lp;
     var graph = FeasibleRegionGraph.create(lp);
   });
 
   it('creates a single point feasible region graph', function () {
-    var lp = GlpkUtil.solveGmpl(ONE_POINT);
+    var lp = GlpkUtil.solveGmpl(ONE_POINT).lp;
     var graph = FeasibleRegionGraph.create(lp);
   });
 
   it('creates a feasible region graph that is a vertical line', function () {
-    var lp = GlpkUtil.solveGmpl(VERTICAL_LINE);
+    var lp = GlpkUtil.solveGmpl(VERTICAL_LINE).lp;
     var graph = FeasibleRegionGraph.create(lp);
   });
 
   it('creates a feasible region graph that is a horizontal line', function () {
     var lp = GlpkUtil.solveGmpl(HORIZONTAL_LINE);
     var graph = FeasibleRegionGraph.create(lp);
+    console.log(graph);
   });
 });
 

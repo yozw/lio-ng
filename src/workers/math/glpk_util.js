@@ -104,12 +104,12 @@ GlpkUtil.solveGmpl = function (code) {
     var options = {presolve: GLP_ON};
 
     var smcp = new SMCP(options);
-    glp_simplex(lp, smcp);
+    var status = glp_simplex(lp, smcp);
+    return {lp: lp, status: status};
   } catch (error) {
     GlpkUtil.error(error);
     return null;
   }
-  return lp;
 };
 
 /**

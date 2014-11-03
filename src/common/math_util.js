@@ -144,7 +144,7 @@ MathUtil.getLineEndpoints = function(normal, rhs, minX, maxX, minY, maxY) {
     x2 = (rhs - b * y2) / a;
   }
   return [ [x1, y1], [x2, y2] ];
-}
+};
 
 /**
  * Takes a list of 2d points and calculates the minimum and maximum x and y values.
