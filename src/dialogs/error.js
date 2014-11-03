@@ -1,6 +1,16 @@
 app.factory('errorDialog', function ($modal) {
   "use strict";
 
+  var TEMPLATE = '<div class="modal-header">\
+    <h3><p>{{title}}</p></h3>\
+    </div>\
+    <div class="modal-body">\
+    <p>{{errorMessage}}</p>\
+    </div>\
+    <div class="modal-footer">\
+    <button class="btn btn-primary" ng-click="ok()">OK</button>\
+    </div>';
+
   return {
     open: function (errorMessage, title) {
       if (angular.isUndefined(title)) {
@@ -17,7 +27,7 @@ app.factory('errorDialog', function ($modal) {
       };
 
       var modalInstance = $modal.open({
-        templateUrl: '/src/dialogs/error.html',
+        template: TEMPLATE,
         controller: modalController
       });
 

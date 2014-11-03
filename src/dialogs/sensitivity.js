@@ -1,6 +1,53 @@
 app.factory('sensitivityDialog', function ($modal, errorDialog) {
   "use strict";
 
+  var TEMPLATE =
+     '<div class="modal-header">\
+      <h3>Sensitivity analysis</h3>\
+      </div>\
+      <div class="modal-body">\
+        <div class="bs-callout bs-callout-info">\
+          Please specify parameters for a sensitivity analysis with respect to the constant\
+          <b>{{selection.text}}</b> in the line:\
+          <pre class="no-border">{{selection.lineBefore}}<b>{{selection.text}}</b>{{selection.lineAfter}}</pre>\
+        </div>\
+        <table class="input-table">\
+          <tr>\
+            <td style="width: 12em;">\
+              Parameter value range\
+            </td>\
+            <td style="display: flex; align-items: center;">\
+              <input class="form-control input-range" type="number" ng-model="parameters.minimum">\
+             <span class="input-range-to">to</span>\
+              <input class="form-control input-range" type="number" ng-model="parameters.maximum">\
+            </td>\
+          </tr>\
+          <tr>\
+            <td>\
+              Variable of interest\
+            </td>\
+            <td>\
+              <select class="form-control" ng-model="parameters.variable" \
+              ng-options="variable.name for variable in variables"></select>\
+            </td>\
+          </tr>\
+          <tr>\
+            <td>Method</td>\
+            <td>\
+              <select class="form-control" ng-model="parameters.method"\
+              ng-options="method.name for method in methods"></select>\
+              <div class="bs-callout bs-callout-warning">\
+                {{parameters.method.description}}\
+              </div>\
+            </td>\
+          </tr>\
+        </table>\
+      </div>\
+        <div class="modal-footer">\
+        <button class="btn btn-primary" ng-click="ok()">OK</button>\
+        <button class="btn" ng-click="cancel()">Cancel</button>\
+      </div>';
+
   var ERROR_MESSAGE = "To perform a sensitivity analysis, select a number in the model code, and then choose Run > "
       + "Sensitivity Analysis";
 
@@ -88,7 +135,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog) {
         return;
       }
       var modalInstance = $modal.open({
-        templateUrl: '/src/dialogs/sensitivity.html',
+        template: TEMPLATE,
         controller: modalController(selection)
       });
 
