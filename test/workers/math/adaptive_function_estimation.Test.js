@@ -100,7 +100,9 @@ describe("AdaptiveFunctionEstimation", function () {
 
     afe.estimate(f, a, b);
     var g = afe.linearInterpolant();
-    expect(avgSqrDifference(f, g, a, b)).toBeLessThan(1e-8);
+    var error = avgSqrDifference(f, g, a, b);
+    console.log("Error = " + error);
+    expect(error).toBeLessThan(1e-8);
   });
 
   it('estimates a quadratic function', function () {
@@ -113,7 +115,10 @@ describe("AdaptiveFunctionEstimation", function () {
     var b = 5;
     afe.estimate(f, a, b);
     var g = afe.linearInterpolant();
-    expect(avgSqrDifference(f, g, a, b)).toBeLessThan(1e-6);
+
+    var error = avgSqrDifference(f, g, a, b);
+    console.log("Error = " + error);
+    expect(error).toBeLessThan(1e-6);
   });
 
   it('estimates a sine function', function () {
@@ -126,6 +131,8 @@ describe("AdaptiveFunctionEstimation", function () {
     var b = 10;
     afe.estimate(f, a, b);
     var g = afe.linearInterpolant();
-    expect(avgSqrDifference(f, g, a, b)).toBeLessThan(1e-8);
+    var error = avgSqrDifference(f, g, a, b);
+    console.log("Error = " + error);
+    expect(error).toBeLessThan(1e-8);
   });
 });

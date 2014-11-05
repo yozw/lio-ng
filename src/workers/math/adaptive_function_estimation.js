@@ -1,5 +1,6 @@
 "use strict";
 
+var START_SUBDIVISIONS = 4;
 var MAXITER = 300;
 var PRECISION = 1e-6;
 var SIMPLIFY_PRECISION = 1e-5;
@@ -76,6 +77,26 @@ var AdaptiveFunctionEstimation = function () {
   }
 
   /**
+   * Subdivides a give interval {@code subdivisions} times.
+   * @param interval {Interval}
+   * @param subdivisions {Number}
+   * @returns {Array}
+   */
+  function subdivideInterval(interval, subdivisions) {
+    var list = [interval];
+    for (var i = 0; i < subdivisions; i++) {
+      var newList = [];
+      for (var k = 0; k < list.length; k++) {
+        var newIntervals = list[k].subdivide();
+        newList.push(newIntervals.left);
+        newList.push(newIntervals.right);
+      }
+      list = newList;
+    }
+    return list;
+  }
+
+  /**
    * Runs the adaptive function estimation algorithm for the given oracle function on the interval [start, end]
    * @param oracle {function}
    * @param start {number}
@@ -84,8 +105,7 @@ var AdaptiveFunctionEstimation = function () {
    */
   this.estimate = function (oracle, start, end) {
     var f = oracle.memoize();
-    var rootInterval = new Interval(start, end);
-    var minimumIntervalLength = rootInterval.length * PRECISION;
+    var minimumIntervalLength = Math.abs(end - start) * PRECISION;
 
     if (PriorityQueue === undefined) {
       throw new Error("PriorityQueue is not defined.")
@@ -96,7 +116,10 @@ var AdaptiveFunctionEstimation = function () {
         return priority(f, interval2) - priority(f, interval1);
       }});
 
-    intervalQueue.queue(rootInterval);
+    var startIntervals = subdivideInterval(new Interval(start, end), START_SUBDIVISIONS);
+    for (var i = 0; i < startIntervals.length; i++) {
+      intervalQueue.queue(startIntervals[i]);
+    }
 
     var iterations = 0;
     var stopWatch = new Stopwatch();
@@ -132,7 +155,7 @@ var AdaptiveFunctionEstimation = function () {
     var sortedValues = [];
     for (var key in f.cache) {
       if (f.cache.hasOwnProperty(key)) {
-        sortedValues.push([parseFloat(key), f.cache[key]]);
+        sortedValues.push([parseFloat(key), f.cache[key], f(parseFloat(key))]);
       }
     }
     sortedValues.sort(function (a, b) {
@@ -154,8 +177,10 @@ var AdaptiveFunctionEstimation = function () {
     var minX = data[0][0];
     var maxX = data[data.length - 1][0];
     return function (x) {
-      if ((x < minX) || (x > maxX)) {
-        return NaN;
+      if (x < minX) {
+        return data[0][1];
+      } else if (x > maxX) {
+        return data[data.length - 1][1];
       }
       var a = 0;
       var b = data.length - 1;
