@@ -29,7 +29,7 @@ def minify(infile, outfile):
   print "Minifying " + infile + " to " + outfile
   ensure_dir(outfile)
   if USE_UGLIFY:
-    os.system('uglifyjs %s > %s' % (infile, outfile))
+    os.system('uglifyjs %s -c > %s' % (infile, outfile))
   else:
     os.system('java -jar yuicompressor-2.4.8.jar --line-break 100 --nomunge --type js %s > %s' % (infile, outfile))
 
