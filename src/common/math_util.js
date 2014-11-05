@@ -202,7 +202,7 @@ MathUtil.isDigit = function(ch) {
 MathUtil.expandToNumber = function(text, start, end) {
   function isValid(start, end) {
     var str = text.substring(start, end);
-    return (str.length > 0) && (str.length == str.trim().length) && !isNaN(Number(str));
+    return (str.length > 0) && (str.length === str.trim().length) && !isNaN(Number(str));
   }
 
   if (start !== end && !isValid(start, end)) {

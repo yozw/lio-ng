@@ -1,6 +1,5 @@
 "use strict";
 
-// TODO: implement serialization/deserialization
 var Graph = function () {
 
   var self = this;

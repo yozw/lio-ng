@@ -7,7 +7,7 @@ app.service('googleDriveService', function ($compile, googleApiService) {
     var access_token = gapi.auth.getToken().access_token;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
-      if (xmlHttp.readyState == 4) {
+      if (xmlHttp.readyState === 4) {
         callback(xmlHttp.responseText);
       }
     };

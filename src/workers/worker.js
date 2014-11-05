@@ -4,6 +4,8 @@ importScripts('/lib/glpk/glpk.js');
 importScripts('/src/common/table.js');
 importScripts('/src/common/graph.js');
 importScripts('/src/common/math_util.js');
+importScripts('/src/common/priority-queue.js');
+importScripts('/src/common/util.js');
 importScripts('/src/workers/math/adaptive_function_estimation.js');
 importScripts('/src/workers/math/feasible_region_graph.js');
 importScripts('/src/workers/math/glpk_util.js');

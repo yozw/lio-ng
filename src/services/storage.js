@@ -62,13 +62,13 @@ app.service('storageService',
     }
 
     var splitUrl = storageUtil.splitUrl(url);
-    if (splitUrl.scheme == "model") {
+    if (splitUrl.scheme === "model") {
       msgId = messageService.set("Loading example model ...");
       loadBuiltinModel(splitUrl.location, modelLoaded, loadError);
-    } else if (splitUrl.scheme == "gdrive") {
+    } else if (splitUrl.scheme === "gdrive") {
       msgId = messageService.set("Loading model from Google Drive ...");
       loadGoogleDriveModel(splitUrl.location, modelLoaded, loadError);
-    } else if (splitUrl.scheme == "http" || splitUrl.scheme == "https") {
+    } else if (splitUrl.scheme === "http" || splitUrl.scheme === "https") {
       msgId = messageService.set("Loading model ...");
       loadWebModel(url, modelLoaded, loadError);
     } else {

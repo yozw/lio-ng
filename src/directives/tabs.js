@@ -31,7 +31,7 @@ module.directive('tabs', function () {
         var oldActiveTab = $scope.activeTab;
 
         // If the active tab is not changing, do nothing
-        if (newActiveTab == oldActiveTab) {
+        if (newActiveTab === oldActiveTab) {
           return;
         }
 

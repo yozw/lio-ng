@@ -5,9 +5,9 @@ function actionSolve(e) {
     return;
   }
 
-  if (result.status == GLP_ENOPFS) {
+  if (result.status === GLP_ENOPFS) {
     return "The model is infeasible.";
-  } else if (result.status == GLP_ENODFS) {
+  } else if (result.status === GLP_ENODFS) {
     return "The model is unbounded.";
   } else if (result.status != 0) {
     return "An error occurred while solving (status code = " + result.status + ")";

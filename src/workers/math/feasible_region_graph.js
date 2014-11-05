@@ -49,9 +49,9 @@ FeasibleRegionGraph.create = function (lp) {
     viewBounds = MathUtil.expandBounds(MathUtil.getBounds(vertices), 0, 1);
   }
 
-  if (vertices.length == 0) {
+  if (vertices.length === 0) {
     // TODO: decide what to do if the feasible region is empty
-  } else if (vertices.length == 2) {
+  } else if (vertices.length === 2) {
     graph.addPolygon(vertices);
   } else if (vertices.length > 2) {
     var hull = new ConvexHull();

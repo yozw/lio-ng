@@ -38,7 +38,7 @@ module.directive("mathjaxBind", function(marked) {
         $scope.$watch($attrs.mathjaxBind, function(value) {
           // Clear content
           $element.html("");
-          if (value == undefined) {
+          if (angular.isUndefined(value)) {
             return;
           }
 

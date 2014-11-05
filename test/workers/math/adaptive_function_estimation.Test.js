@@ -61,6 +61,28 @@ describe("Interval", function () {
 
 describe("AdaptiveFunctionEstimation", function () {
 
+  function sqr(x) {
+    return x * x;
+  }
+
+  /**
+   * Calculates the average square difference between two functions on the interval [a, b].
+   * @param f1 {function}
+   * @param f2 {function}
+   * @param a {number}
+   * @param b {number}
+   * @returns {number}
+   */
+  function avgSqrDifference(f1, f2, a, b) {
+    var steps = 1000;
+    var diffL2 = 0;
+    for (var i = 0; i < steps; i++) {
+      var x = Math.min(b, a + (b - a) * (i / (steps-1)));
+      diffL2 += sqr(f1(x) - f2(x));
+    }
+    return diffL2 / steps;
+  }
+
   it('creates an interval', function () {
     var interval = new Interval(1, 2);
     expect(interval.start).toEqual(1);
@@ -73,7 +95,12 @@ describe("AdaptiveFunctionEstimation", function () {
       return 30 + x * 5;
     };
 
-    afe.estimate(f, 0, 10);
+    var a = 0;
+    var b = 10;
+
+    afe.estimate(f, a, b);
+    var g = afe.linearInterpolant();
+    expect(avgSqrDifference(f, g, a, b)).toBeLessThan(1e-8);
   });
 
   it('estimates a quadratic function', function () {
@@ -82,7 +109,11 @@ describe("AdaptiveFunctionEstimation", function () {
       return 30 + x * x * 5;
     };
 
-    afe.estimate(f, 0, 10);
+    var a = 0;
+    var b = 5;
+    afe.estimate(f, a, b);
+    var g = afe.linearInterpolant();
+    expect(avgSqrDifference(f, g, a, b)).toBeLessThan(1e-6);
   });
 
   it('estimates a sine function', function () {
@@ -91,6 +122,10 @@ describe("AdaptiveFunctionEstimation", function () {
       return Math.sin(x);
     };
 
-    afe.estimate(f, 0, 10);
+    var a = 0;
+    var b = 10;
+    afe.estimate(f, a, b);
+    var g = afe.linearInterpolant();
+    expect(avgSqrDifference(f, g, a, b)).toBeLessThan(1e-8);
   });
 });

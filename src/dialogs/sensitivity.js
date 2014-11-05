@@ -98,7 +98,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
         + '(i.e., non-linear) parts of the sensitivity function. This usually leads to better results.'};
       var EVEN_SPACED = {
         name: 'Evenly spaced',
-        value: 'spaced',
+        value: 'uniform',
         description: 'The even spacing algorithm chooses parameter values that are evenly spaced in the chosen parameter '
         + 'range, and solves the model for these parameter values.'};
 
@@ -121,7 +121,8 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
         solverService.performSensitivityAnalysis(
             selection.codeWithPlaceholder,
             $scope.parameters.minimum,
-            $scope.parameters.maximum);
+            $scope.parameters.maximum,
+            $scope.parameters.method.value);
         $modalInstance.close();
       };
 
