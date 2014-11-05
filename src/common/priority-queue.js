@@ -1,3 +1,10 @@
+/**
+ * Fork of priority-queue.js from bananu7's priority queue, see
+ * https://github.com/bananu7/js-priority-queue/blob/master/priority-queue.js.
+ *
+ * The latter is itself a cleaned up version of Adam Hooper's priority queue implementation:
+ * https://github.com/adamhooper/js-priority-queue.
+ */
 
 // Abstract
 /////////////////////////////////

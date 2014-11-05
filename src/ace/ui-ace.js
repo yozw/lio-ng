@@ -1,3 +1,8 @@
+/**
+ * Fork of Douglas Duteil's ui-ace; see
+ * https://github.com/angular-ui/ui-ace
+ */
+
 'use strict';
 
 /**
