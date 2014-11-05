@@ -90,7 +90,6 @@ app.service('storageService',
 
   function loadWebModel(url, modelLoaded, loadError) {
     var data = Object();
-    data.csrf_token = CSRF_TOKEN;
     data.url = url;
 
     $http

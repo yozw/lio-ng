@@ -59,7 +59,6 @@ app.controller("FeedbackDialogCtrl", function ($scope, $modalInstance, $http) {
   $scope.feedback.name = "";
   $scope.feedback.email = "";
   $scope.feedback.text = "";
-  $scope.feedback.csrf_token = CSRF_TOKEN;
 
   $scope.send = function () {
     $http

@@ -11,11 +11,6 @@ from google.appengine.api import mail
 from json_lib import ok, error, json_request
 from time import gmtime, strftime
 
-def generate_csrf_token():
-  size = 32
-  chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
-  return ''.join(random.choice(chars) for _ in range(size))
-
 app = Flask(__name__)
 
 GA_CODE = """
@@ -36,19 +31,15 @@ def read_file(path):
 def index():
   """Returns the optimizer IDE."""
 
-  csrf_token = generate_csrf_token()
-
   init_js = []
   init_js.append("<script type='text/javascript'>")
   init_js.append(GA_CODE)
-  init_js.append("var CSRF_TOKEN = '" + csrf_token + "';")
   init_js.append("</script>")
 
   index_html = read_file('index.html')
   index_html = index_html.replace("<!-- PLACEHOLDER -->", "\n".join(init_js))
 
   response = make_response(index_html)
-  response.set_cookie('csrf_token', csrf_token)
   return response
 
 @app.route('/feedback', methods=['POST'])
