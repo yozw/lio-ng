@@ -53,7 +53,7 @@ button.btn {
 }
 
 .log {
-  font-family: "Courier New", monospace;
+  font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
   white-space: pre;
 }
 
@@ -98,6 +98,10 @@ button.btn {
   padding-left: 0.5em;
 }
 
+#model-help table.lo-model.align-left > tbody > tr > td {
+  text-align: left;
+}
+
 #model-help table.lo-model > tbody > tr:last-child > td {
   text-align: left;
 }
@@ -116,6 +120,10 @@ button.btn {
 #model-results {
   overflow: auto;
   padding: 8px 8px 8px 16px;
+}
+
+#model-results .verbatim {
+  font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
 }
 
 .close-btn {

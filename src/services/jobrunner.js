@@ -21,6 +21,9 @@ app.service('jobRunnerService', function () {
         case 'log':
           callback.log(obj.message);
           break;
+        case 'output':
+          callback.output(obj.message);
+          break;
         case 'error':
           onJobStopped(job);
           callback.error(obj.message);

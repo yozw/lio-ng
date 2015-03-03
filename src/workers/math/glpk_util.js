@@ -5,9 +5,14 @@ var GlpkUtil = Object();
 GlpkUtil.MODEL_NAME = "editor.mod";
 GlpkUtil.ERROR_MSG_RE = new RegExp(GlpkUtil.MODEL_NAME.replace(".", "\\.") + ":([0-9]+):(.*)");
 
+GlpkUtil._logOutputFunction = function(message) {};
 GlpkUtil._logInfoFunction = function(message) {};
 GlpkUtil._logErrorFunction = function(message, data) {
   GlpkUtil._logInfoFunction(message);
+};
+
+GlpkUtil.setOutputLogFunction = function(logOutputFn) {
+  GlpkUtil._logOutputFunction = logOutputFn;
 };
 
 GlpkUtil.setInfoLogFunction = function(logInfoFn) {
@@ -20,6 +25,10 @@ GlpkUtil.setErrorLogFunction = function(logErrorFn) {
 
 GlpkUtil.installLogFunction = function() {
   glp_set_print_func(GlpkUtil.info);
+};
+
+GlpkUtil.output = function(message) {
+  GlpkUtil._logOutputFunction(message);
 };
 
 GlpkUtil.info = function(message) {
@@ -97,15 +106,22 @@ GlpkUtil.solveGmpl = function (code) {
 
   try {
     glp_mpl_read_model_from_string(workspace, GlpkUtil.MODEL_NAME, code);
-    glp_mpl_generate(workspace, null, null, null);
+    glp_mpl_generate(workspace, GlpkUtil.MODEL_NAME, GlpkUtil.output, null);
     glp_mpl_build_prob(workspace, lp);
     glp_scale_prob(lp, GLP_SF_AUTO);
 
-    var options = {presolve: GLP_ON};
-
-    var smcp = new SMCP(options);
-    var status = glp_simplex(lp, smcp);
+    var status;
+    if (glp_get_num_int(lp) == 0) {
+      GlpkUtil.info("Solving the model using the simplex optimizer");
+      var smcp = new SMCP({presolve: GLP_ON});
+      status = glp_simplex(lp, smcp);
+    } else {
+      GlpkUtil.info("The model has integer variables: solving the model using the mixed-integer optimizer");
+      var iocp = new IOCP({presolve: GLP_ON});
+      status = glp_intopt(lp, iocp);
+    }
     var objValue = glp_get_obj_val(lp);
+    mpl_postsolve(workspace);
     return {lp: lp, status: status, objectiveValue: objValue};
   } catch (error) {
     GlpkUtil.error(error);

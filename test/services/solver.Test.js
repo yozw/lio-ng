@@ -25,6 +25,8 @@ var INFEASIBLE_MODEL = "var x1 >= 0;\n"
     + "subject to c12: x1 + x2 >= 10;\n"
     + "end;";
 
+var PRINTF_MODEL = "var x >= 1; printf 'hello\\n'; minimize z: x; solve; printf 'x=%d\\n', x; end;\n";
+
 describe("solverService", function () {
 
   var solverService;
@@ -33,10 +35,13 @@ describe("solverService", function () {
   var tables;
   var graphs;
   var errors;
+  var output;
+  var logMessages;
   var successMessages;
   var callback = Object();
   callback.start = function() { started = true; };
-  callback.log = function() {};
+  callback.output = function(message) { output.push(message); };
+  callback.log = function(message) { logMessages.push(message); };
   callback.success = function(message) { finished = true; successMessages.push(message)};
   callback.emitTable = function(table) { tables.push(table); };
   callback.emitGraph = function(graph) { graphs.push(graph); };
@@ -50,6 +55,8 @@ describe("solverService", function () {
     tables = [];
     graphs = [];
     errors = [];
+    output = [];
+    logMessages = [];
     successMessages = [];
   });
 
@@ -135,6 +142,22 @@ describe("solverService", function () {
           expect(finished).toEqual(true);
           expect(errors).toEqual(["Error in line 0: empty model section not allowed"]);
           expect(successMessages).toEqual([]);
+        })
+      });
+
+  it('logs printf statements',
+      function () {
+        runs(function() {
+          solverService.solve(PRINTF_MODEL, callback);
+        });
+
+        waitsFor(function() {
+          return finished;
+        }, 2000);
+
+        runs(function() {
+          expect(finished).toEqual(true);
+          expect(output).toEqual(["hello", "x=0"]);
         })
       });
 });

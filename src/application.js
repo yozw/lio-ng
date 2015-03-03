@@ -6,6 +6,7 @@ var app = angular.module('lio-ng',
       'directives.resizable',
       'directives.resultgraph',
       'directives.resulttable',
+      'directives.resultverbatim',
       'directives.mathjax',
       'ngSanitize'
     ]);
@@ -50,6 +51,12 @@ app.controller('AppCtrl', function (
       model.log = "";
       model.results = [];
       $scope.isComputing = true;
+    },
+    output: function(message) {
+      $scope.model.results.push(
+          {type: 'verbatim', text: message}
+      );
+      $scope.$apply();
     },
     log: function (message) {
       model.log += message + "\n";

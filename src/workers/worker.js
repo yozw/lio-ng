@@ -25,6 +25,17 @@ function postInfo(value) {
 }
 
 /**
+ * Send an output message back to the main thread.
+ */
+function postOutput(value) {
+  "use strict";
+  var message = {};
+  message.action = 'output';
+  message.message = value;
+  self.postMessage(message);
+}
+
+/**
  * Sends a "success" message back to the main thread.
  */
 function postSuccess(status) {
@@ -95,6 +106,7 @@ function getAction(e) {
  */
 function onMessage(e) {
   GlpkUtil.setInfoLogFunction(postInfo);
+  GlpkUtil.setOutputLogFunction(postOutput);
   GlpkUtil.setErrorLogFunction(function(error) {
     throw error;
   });
