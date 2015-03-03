@@ -17,6 +17,7 @@ function actionSolve(e) {
   var status = GlpkUtil.getModelStatus(lp);
   switch (status) {
     case GLP_OPT:
+      postOutput("The optimal objective value is " + result.objectiveValue + ".");
       postTable(GlpkUtil.getPrimalSolutionTable(lp));
       if (glp_get_num_cols(lp) === 2) {
         postGraph(FeasibleRegionGraph.create(lp));

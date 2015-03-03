@@ -74,6 +74,7 @@ describe("solverService", function () {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
           expect(successMessages).toEqual(["An optimal solution was found."]);
+          expect(output).toEqual(["The optimal objective value is 22.5."]);
         })
       });
 
@@ -157,7 +158,7 @@ describe("solverService", function () {
 
         runs(function() {
           expect(finished).toEqual(true);
-          expect(output).toEqual(["hello", "x=0"]);
+          expect(output).toEqual(["hello", "x=0", "The optimal objective value is 1."]);
         })
       });
 });
