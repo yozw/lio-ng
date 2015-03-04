@@ -20,6 +20,7 @@ app.factory('examples', function () {
     ]},
     {name: 'Financial', subItems: [
       {name: 'Portfolio optimization using mean absolute deviation', url: 'model://glpk/PortfolioMAD.mod'}
-    ]}
+    ]},
+    {name: 'A puzzle', url: 'model://puzzle.mod'}
   ];
 });
