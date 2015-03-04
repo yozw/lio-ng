@@ -73,6 +73,15 @@ GlpkUtil.getObjectiveVector = function (lp) {
 };
 
 /**
+ * Determines whether the given model has integer variables.
+ * @param lp
+ * @returns {boolean} true if the model has at least one integer variable.
+ */
+GlpkUtil.isMip = function(lp) {
+  return glp_get_num_int(lp) + glp_get_num_bin(lp) > 0;
+};
+
+/**
  * Returns a row of the technology matrix of a GLPK lp model.
  * @param lp
  * @param i
@@ -104,25 +113,95 @@ GlpkUtil.solveGmpl = function (code) {
 
   GlpkUtil.installLogFunction();
 
+  function getSolverStatus(glpStatus, lp) {
+    var isMinimizing;
+
+    if (glp_get_obj_dir(lp) == GLP_MIN) {
+      isMinimizing = true;
+    } else if (glp_get_obj_dir(lp) == GLP_MAX) {
+      isMinimizing = false;
+    } else {
+      throw "Invalid optimization direction";
+    }
+
+    var status;
+    var objectiveValue;
+
+    switch (glpStatus) {
+      case GLP_ENOPFS:
+        status = "infeasible";
+        objectiveValue = isMinimizing ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+        break;
+      case GLP_ENODFS:
+        status = "unbounded";
+        objectiveValue = isMinimizing ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+        break;
+      case 0:
+        status = "optimal";
+        objectiveValue = GlpkUtil.isMip(lp) ? glp_mip_obj_val(lp) : glp_get_obj_val(lp);
+        break;
+      case GLP_EBADB:
+        throw "Invalid basis.";
+      case GLP_ESING:
+        throw "Singular matrix.";
+      case GLP_ECOND:
+        throw "Ill-conditioned matrix.";
+      case GLP_EBOUND:
+        throw "The model contains one or more variables with invalid bounds.";
+      case GLP_EFAIL:
+        throw "Solver failed";
+      case GLP_EOBJLL:
+        throw "Objective lower limit reached.";
+      case GLP_EOBJUL:
+        throw "Objective upper limit reached.";
+      case GLP_EITLIM:
+        throw "Iteration limit exceeded.";
+      case GLP_ETMLIM:
+        throw "Time limit exceeded.";
+      case GLP_EROOT:
+        throw "Root LP optimum not provided.";
+      case GLP_ESTOP:
+        throw "Search terminated by application.";
+      case GLP_EMIPGAP:
+        throw "Search terminated by application.";
+      case GLP_ENOFEAS:
+        throw "No primal/dual feasible solution.";
+      case GLP_ENOCVG:
+        throw "No convergence.";
+      case GLP_EINSTAB:
+        throw "Numerical instability.";
+      case GLP_EDATA:
+        throw "Invalid data.";
+      case GLP_ERANGE:
+        throw "Result out of range.";
+      default:
+        throw "Simplex algorithm returned unknown status (" + glpStatus + ")";
+    }
+
+    return {lp: lp, status: status, objectiveValue: objectiveValue};
+  }
+
   try {
     glp_mpl_read_model_from_string(workspace, GlpkUtil.MODEL_NAME, code);
     glp_mpl_generate(workspace, GlpkUtil.MODEL_NAME, GlpkUtil.output, null);
     glp_mpl_build_prob(workspace, lp);
     glp_scale_prob(lp, GLP_SF_AUTO);
 
-    var status;
-    if (glp_get_num_int(lp) == 0) {
+    var info;
+    if (!GlpkUtil.isMip(lp)) {
       GlpkUtil.info("Solving the model using the simplex optimizer");
       var smcp = new SMCP({presolve: GLP_ON});
-      status = glp_simplex(lp, smcp);
+      var simplexStatus = glp_simplex(lp, smcp);
+      info = getSolverStatus(simplexStatus, lp);
+      glp_mpl_postsolve(workspace, lp, GLP_SOL);
     } else {
       GlpkUtil.info("The model has integer variables: solving the model using the mixed-integer optimizer");
       var iocp = new IOCP({presolve: GLP_ON});
-      status = glp_intopt(lp, iocp);
+      var intOptStatus = glp_intopt(lp, iocp);
+      info = getSolverStatus(intOptStatus, lp);
+      glp_mpl_postsolve(workspace, lp, GLP_MIP);
     }
-    var objValue = glp_get_obj_val(lp);
-    mpl_postsolve(workspace);
-    return {lp: lp, status: status, objectiveValue: objValue};
+    return info;
   } catch (error) {
     GlpkUtil.error(error);
     return null;
