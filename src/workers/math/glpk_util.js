@@ -213,18 +213,23 @@ GlpkUtil.solveGmpl = function (code) {
  * @param lp
  * @returns {Table}
  */
-// TODO: Write unit test
+// TODO: Write unit test -- test LP/IP
 GlpkUtil.getPrimalSolutionTable = function (lp) {
   "use strict";
   var table = new Table();
 
   var varNameColumn = table.addColumn("Variable");
   var valueColumn = table.addColumn("Value");
+  var isMip = GlpkUtil.isMip(lp);
 
   for (var i = 1; i <= glp_get_num_cols(lp); i++) {
     var row = table.addRow();
     row.setValue(varNameColumn, glp_get_col_name(lp, i));
-    row.setValue(valueColumn, glp_get_col_prim(lp, i));
+    if (isMip) {
+      row.setValue(valueColumn, glp_mip_col_val(lp, i));
+    } else {
+      row.setValue(valueColumn, glp_get_col_prim(lp, i));
+    }
   }
 
   return table;
