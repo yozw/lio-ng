@@ -90,7 +90,7 @@ for {j in 1..N} {
 data;
 
 param N := 14;
-param W := 1;
+param W := 3;
 
 param p := 
   1 5
