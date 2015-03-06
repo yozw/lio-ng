@@ -15,6 +15,7 @@ app.factory('examples', function () {
     ]},
     {name: 'Scheduling', subItems: [
       {name: 'Knight\'s tour', url: 'model://winglpk/knights.mod'},
+      {name: 'Parallel machines', url: 'model://parallel_machines.mod'},
       {name: 'Personnel assignment problem', url: 'model://winglpk/personnel.mod'},
       {name: 'Simple single unit dispatch', url: 'model://glpk/dispatch.mod'}
     ]},
