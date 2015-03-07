@@ -29,17 +29,16 @@ app.controller('AppCtrl', function (
     aboutDialog,
     sensitivityDialog,
     feedbackDialog,
-    unloadService) {
+    autosaveService) {
   "use strict";
 
-  // Bind unload service to onBeforeUnload event
-  window.onbeforeunload = unloadService.onBeforeUnload;
+  // Bind autosave service to onBeforeUnload event
+  window.onbeforeunload = autosaveService.onBeforeUnload;
 
   // Bind storage service callback
-  storageService.onModelLoaded(function (code, help) {
-    $scope.model.code = code;
-    $scope.model.help = help;
-    unloadService.onModelLoaded($scope.model);
+  storageService.onModelLoaded(function (model) {
+    $scope.model.code = model.code;
+    $scope.model.help = model.help;
     if (!$scope.$$phase) {
       $scope.$apply();
     }
@@ -127,7 +126,7 @@ app.controller('AppCtrl', function (
 
   $scope.loadModelFromDrive = function () {
     googlePickerService.pickDriveModel(function (fileId) {
-      storageService.readModel('gdrive://' + fileId);
+      storageService.readModel('gdrive:' + fileId);
     });
   };
 });

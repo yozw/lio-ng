@@ -10,7 +10,7 @@ describe("storageUtil.splitUrl", function () {
 
   it('works correctly for a full url',
       function () {
-        var url = "gdrive://1/2";
+        var url = "gdrive:1/2";
         var splitUrl = storageUtil.splitUrl(url);
         expect(splitUrl.scheme).toEqual("gdrive");
         expect(splitUrl.location).toEqual("1/2");
@@ -26,7 +26,7 @@ describe("storageUtil.splitUrl", function () {
 
   it('works correctly for a url with no location',
       function () {
-        var url = "http://";
+        var url = "http:";
         var splitUrl = storageUtil.splitUrl(url);
         expect(splitUrl.scheme).toEqual("http");
         expect(splitUrl.location).toEqual("");
@@ -54,7 +54,7 @@ describe("storageUtil.splitModel", function () {
         var model = "## doc\n## doc2\n\n\nmodel";
         var splitModel = storageUtil.splitModel(model);
         expect(splitModel.help).toEqual(" doc\n doc2")
-        expect(splitModel.model).toEqual("model")
+        expect(splitModel.code).toEqual("model")
       }
   );
 
@@ -63,7 +63,7 @@ describe("storageUtil.splitModel", function () {
         var model = "\n\n\nmodel";
         var splitModel = storageUtil.splitModel(model);
         expect(splitModel.help).toEqual("");
-        expect(splitModel.model).toEqual("model")
+        expect(splitModel.code).toEqual("model")
       }
   );
 
@@ -72,7 +72,7 @@ describe("storageUtil.splitModel", function () {
         var model = "## doc\n\n\n\nmodel\n\n## model";
         var splitModel = storageUtil.splitModel(model);
         expect(splitModel.help).toEqual(" doc");
-        expect(splitModel.model).toEqual("model\n\n## model");
+        expect(splitModel.code).toEqual("model\n\n## model");
       }
   );
 

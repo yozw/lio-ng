@@ -1,12 +1,16 @@
+from datetime import datetime
 import random
 import string
 from google.appengine.ext import db
 
 KEY_LENGTH = 32
-KEY_ALPHABET = string.ascii_uppercase + string.digits
+KEY_ALPHABET = string.ascii_uppercase + string.ascii_lowercase + string.digits
 
 class ModelStorage(db.Model):
-  code = db.StringProperty()
+  code = db.TextProperty()
+  created = db.DateTimeProperty()
+  modified = db.DateTimeProperty()
+  retrieved = db.DateTimeProperty()
 
   @classmethod
   def read(clazz, key):
@@ -15,19 +19,22 @@ class ModelStorage(db.Model):
     entity = clazz.get_by_key_name(key)
     if not entity:
       raise ValueError("Unknown key")
+    entity.retrieved = datetime.now()
+    entity.put()
     return entity.code
 
   @classmethod
   def write(clazz, key, code):
-    if not ModelStorage.isValidKey(key):
-      raise ValueError("Invalid key")
-    if not clazz.get_by_key_name(key):
-      raise ValueError("Unknown key")
-
     if len(code) > 64 * 1024:
       raise ValueError("Too much code")
+    if not ModelStorage.isValidKey(key):
+      raise ValueError("Invalid key")
+    entity = clazz.get_by_key_name(key)
+    if not entity:
+      raise ValueError("Unknown key")
 
-    entity = clazz(key_name = key, code = code)
+    entity.code = code
+    entity.modified = datetime.now()
     entity.put()
     return code
 
@@ -44,7 +51,7 @@ class ModelStorage(db.Model):
   @classmethod
   def generateKey(clazz):
     key = ''.join(random.SystemRandom().choice(KEY_ALPHABET) for _ in range(KEY_LENGTH))
-    entity = clazz(key_name = key, code = "code!")
+    entity = clazz(key_name = key, code = "code!", created = datetime.now())
     entity.put()
     return key
 
