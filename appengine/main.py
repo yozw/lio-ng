@@ -10,6 +10,7 @@ from flask import Flask, request, make_response
 from google.appengine.api import mail
 from json_lib import ok, error, json_request
 from time import gmtime, strftime
+from modelstorage import ModelStorage
 
 app = Flask(__name__)
 
@@ -22,10 +23,12 @@ ga('create', 'UA-46105838-4', 'online-optimizer.appspot.com');
 ga('send', 'pageview');
 """
 
+
 """ Reads the local file from the given path relative to this script """
 def read_file(path):
   path = os.path.join(os.path.split(__file__)[0], 'static/src/', path)
   return open(path).read()
+
 
 @app.route('/')
 def index():
@@ -41,6 +44,7 @@ def index():
 
   response = make_response(index_html)
   return response
+
 
 @app.route('/feedback', methods=['POST'])
 @json_request
@@ -61,6 +65,25 @@ def feedback(name, email, text):
               
   return ok()
 
+
+@app.route("/<filename>.html")
+def load_html_file(filename):
+  try:
+    return read_file(filename + ".html")
+  except Exception, e:
+    logging.exception(e)
+    return page_not_found(e)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+  """Return a custom 404 error."""
+  return read_file('404.html'), 404
+
+
+#------------------------------------------------------------------------------
+# STORAGE
+#------------------------------------------------------------------------------
 @app.route('/load', methods=['POST'])
 @json_request
 def read_model_file(url):
@@ -75,15 +98,29 @@ def read_model_file(url):
   logging.info(data)
   return data
 
-@app.route("/<filename>.html")
-def load_html_file(filename):
-  try:
-    return read_file(filename + ".html")
-  except Exception, e:
-    return page_not_found(e)
 
-@app.errorhandler(404)
-def page_not_found(e):
-  """Return a custom 404 error."""
-  return read_file('404.html'), 404
+@app.route('/storage/key', methods=['GET'])
+@json_request
+def storage_key():
+  """Generates a random new storage key"""
+  key = ModelStorage.generateKey()
+  logging.info("Generated new key: %s" % key)
+  return key
 
+
+@app.route('/storage/read/<key>', methods=['GET'])
+@json_request
+def storage_read(key):
+  """Reads the model code with the given storage key"""
+  code = ModelStorage.read(key)
+  logging.info("Load model code with key: %s" % key)
+  return code
+
+
+@app.route('/storage/write/<key>', methods=['POST'])
+@json_request
+def storage_write(key, code):
+  """Reads the model code with the given storage key"""
+  code = ModelStorage.write(key, code)
+  logging.info("Written model code with key: %s" % key)
+  return "OK"

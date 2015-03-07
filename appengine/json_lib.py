@@ -1,40 +1,46 @@
+import logging
 import inspect
 import json
 import sys
-import traceback
 
 from flask import request
+
 
 def error(message):
   return json.dumps({'error': message})
 
+
 def ok():
   return json.dumps({'message': 'OK'})
 
-def json_request(func):
-  def wrapper():
-    if request.method != 'POST':
-      print "Only POST requests are supported"
-      return error("Invalid request")
 
-    if len(request.data) > 64 * 1024:
-      print "POSTed too much data"
-      return error("Invalid request")
-
+def json_request(func, methods = []):
+  def wrapper(**kwargs):
     try:
-      data = json.loads(request.data)
+      # Check request data
+      if request.method == 'POST':
+        if len(request.data) > 64 * 1024:
+          raise ValueError("POSTed too much data")
 
-      kwargs = dict()
+        # Read request data
+        data = json.loads(request.data)
+      else:
+        data = {}
+
+      # Populate arguments for wrapped function
+      wrapped_kwargs = dict()
       for arg in inspect.getargspec(func)[0]:
-        kwargs[arg] = data[arg]
+        if arg in kwargs:
+          wrapped_kwargs[arg] = kwargs[arg]
+        else:
+          wrapped_kwargs[arg] = data[arg]
 
-      return func(**kwargs)
+      # Call wrapped function
+      return func(**wrapped_kwargs)
     except Exception as e:
-      print e.message
-      traceback.print_exc(file=sys.stdout)
+      logging.exception(e)
       return error("Internal error")
 
   wrapped_function = wrapper
   wrapped_function.__name__ = func.__name__
   return wrapped_function
-
