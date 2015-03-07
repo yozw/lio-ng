@@ -12,6 +12,8 @@ from json_lib import ok, error, json_request
 from time import gmtime, strftime
 from modelstorage import ModelStorage
 
+import config
+
 app = Flask(__name__)
 
 GA_CODE = """
@@ -88,12 +90,11 @@ def page_not_found(e):
 @json_request
 def read_model_file(url):
   """Reads a model from the given url; if the file is too large, an exception is thrown"""
-  MAX_MODEL_SIZE = 65536
   logging.info("Loading model from %s" % url)
   stream = urllib2.urlopen(url)
-  data = stream.read(MAX_MODEL_SIZE + 1)
-  if len(data) > MAX_MODEL_SIZE:
-    raise Exception("The given model file is too large (maximum is %d bytes)" % MAX_MODEL_SIZE )
+  data = stream.read(config.MAX_MODEL_SIZE + 1)
+  if len(data) > config.MAX_MODEL_SIZE:
+    raise Exception("The given model file is too large (maximum is %d bytes)" % config.MAX_MODEL_SIZE)
   logging.info("Loaded %d bytes" % len(data))
   logging.info(data)
   return data

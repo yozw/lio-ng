@@ -2,6 +2,7 @@ import logging
 import inspect
 import json
 import sys
+import config
 
 from flask import request
 
@@ -19,7 +20,7 @@ def json_request(func, methods = []):
     try:
       # Check request data
       if request.method == 'POST':
-        if len(request.data) > 64 * 1024:
+        if len(request.data) > config.MAX_JSON_DATA_SIZE:
           raise ValueError("POSTed too much data")
 
         # Read request data
