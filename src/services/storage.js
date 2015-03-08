@@ -66,7 +66,6 @@ app.service('storageService',
   var onModelSaved = [];
 
   $rootScope.$on('$locationChangeSuccess', function (next, current) {
-    console.log("LocationChangeSuccess event");
     var url = $location.search().model;
     if (url === undefined || url === "") {
       url = "builtin:default.mod";

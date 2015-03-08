@@ -10,8 +10,16 @@ module.directive("mathjaxBind", function(marked) {
     skipStartupTypeset: true
   });
 
+  var markedRenderer = new marked.Renderer();
+
+  markedRenderer.link = function(href, title, text) {
+    var html = marked.Renderer.prototype.link.call(this, href, title, text);
+    return "<a target='_blank' " + html.substring(3);
+  };
+
+
   marked.setOptions({
-    renderer: new marked.Renderer(),
+    renderer: markedRenderer,
     gfm: true,
     tables: true,
     breaks: false,
