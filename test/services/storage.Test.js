@@ -53,7 +53,7 @@ describe("storageUtil.splitModel", function () {
       function () {
         var model = "## doc\n## doc2\n\n\nmodel";
         var splitModel = storageUtil.splitModel(model);
-        expect(splitModel.help).toEqual(" doc\n doc2")
+        expect(splitModel.doc).toEqual(" doc\n doc2")
         expect(splitModel.code).toEqual("model")
       }
   );
@@ -62,7 +62,7 @@ describe("storageUtil.splitModel", function () {
       function () {
         var model = "\n\n\nmodel";
         var splitModel = storageUtil.splitModel(model);
-        expect(splitModel.help).toEqual("");
+        expect(splitModel.doc).toEqual("");
         expect(splitModel.code).toEqual("model")
       }
   );
@@ -71,7 +71,7 @@ describe("storageUtil.splitModel", function () {
       function () {
         var model = "## doc\n\n\n\nmodel\n\n## model";
         var splitModel = storageUtil.splitModel(model);
-        expect(splitModel.help).toEqual(" doc");
+        expect(splitModel.doc).toEqual(" doc");
         expect(splitModel.code).toEqual("model\n\n## model");
       }
   );
@@ -88,14 +88,14 @@ describe("storageUtil.combineModel", function () {
 
   it('works correctly for model with doc',
       function () {
-        var model = storageUtil.combineModel({code: "\n\n\nmodel", help: " doc\n doc2"});
+        var model = storageUtil.combineModel({code: "\n\n\nmodel", doc: " doc\n doc2"});
         expect(model).toEqual("## doc\n## doc2\n\nmodel");
       }
   );
 
   it('works correctly for model without doc',
       function () {
-        var model = storageUtil.combineModel({code: "\n\n\nmodel", help: ""});
+        var model = storageUtil.combineModel({code: "\n\n\nmodel", doc: ""});
         expect(model).toEqual("model");
       }
   );

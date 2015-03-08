@@ -57,29 +57,29 @@ button.btn {
   white-space: pre;
 }
 
-#model-help {
+#model-doc {
   overflow: auto;
   padding: 8px 16px 8px 16px;
   text-align: justify;
 }
 
-#model-help h1 {
+#model-doc h1 {
   font-size: 32px;
   margin-top: 0;
   margin-bottom: 6px;
 }
 
-#model-help h2 {
+#model-doc h2 {
   font-size: 24px;
   margin-bottom: 6px;
 }
 
-#model-help h3 {
+#model-doc h3 {
   font-size: 20px;
   margin-bottom: 6px;
 }
 
-#model-help .MathJax_Display, div.display {
+#model-doc .MathJax_Display, div.display {
   margin: 20px 0;
   padding: 20px;
   border-left: 3px solid #5bc0de;
@@ -88,25 +88,25 @@ button.btn {
   text-align: center;
 }
 
-#model-help table.lo-model {
+#model-doc table.lo-model {
   margin-left:auto;
   margin-right:auto;
 }
 
-#model-help table.lo-model > tbody > tr > td {
+#model-doc table.lo-model > tbody > tr > td {
   text-align: right;
   padding-left: 0.5em;
 }
 
-#model-help table.lo-model.align-left > tbody > tr > td {
+#model-doc table.lo-model.align-left > tbody > tr > td {
   text-align: left;
 }
 
-#model-help table.lo-model > tbody > tr:last-child > td {
+#model-doc table.lo-model > tbody > tr:last-child > td {
   text-align: left;
 }
 
-#model-help table.lo-model > tbody > tr > td:first-child {
+#model-doc table.lo-model > tbody > tr > td:first-child {
   text-align: left;
   padding-left: 0;
   padding-right: 0.5em;

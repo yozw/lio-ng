@@ -1,20 +1,20 @@
 app.service('autosaveService', function (model, $interval, storageService) {
   "use strict";
-  var lastSavedModel = {code: "", help: ""};
+  var lastSavedModel = {code: "", doc: ""};
 
   storageService.onModelLoaded(function (model) {
     lastSavedModel.code = model.code;
-    lastSavedModel.help = model.help;
+    lastSavedModel.doc = model.doc;
   });
 
   storageService.onModelSaved(function (model) {
     lastSavedModel.code = model.code;
-    lastSavedModel.help = model.help;
+    lastSavedModel.doc = model.doc;
   });
 
   function modelHasChanged() {
     return (model.code !== lastSavedModel.code)
-        ||( model.help !== lastSavedModel.help);
+        ||( model.doc !== lastSavedModel.doc);
   }
 
   function autoSave() {

@@ -12,28 +12,28 @@ app.service('storageUtil', function () {
 
   function splitModel (data) {
     var lines = data.split("\n");
-    var help = [];
+    var doc = [];
     var model = [];
-    var helpPassed = false;
+    var docPassed = false;
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
-      if (!helpPassed && line.substring(0, 2) === "##") {
-        help.push(line.substring(2));
+      if (!docPassed && line.substring(0, 2) === "##") {
+        doc.push(line.substring(2));
       } else if (model.length > 0 || line.trim().length !== 0) {
         model.push(line);
-        helpPassed = true;
+        docPassed = true;
       }
     }
-    return {help: help.join("\n"), code: model.join("\n")};
+    return {doc: doc.join("\n"), code: model.join("\n")};
   }
 
   function combineModel (model) {
     var output = [];
     var i;
-    if (model.help.trim().length > 0) {
-      var helpLines = model.help.split("\n");
-      for (i = 0; i < helpLines.length; i++) {
-        output.push("##" + helpLines[i]);
+    if (model.doc.trim().length > 0) {
+      var docLines = model.doc.split("\n");
+      for (i = 0; i < docLines.length; i++) {
+        output.push("##" + docLines[i]);
       }
       output.push("");
     }

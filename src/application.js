@@ -38,7 +38,7 @@ app.controller('AppCtrl', function (
   // Bind storage service callback
   storageService.onModelLoaded(function (model) {
     $scope.model.code = model.code;
-    $scope.model.help = model.help;
+    $scope.model.doc = model.doc;
     if (!$scope.$$phase) {
       $scope.$apply();
     }
@@ -132,7 +132,7 @@ app.controller('AppCtrl', function (
 });
 
 app.factory('model', function () {
-  return {code: "", log: "", help: "", results: []};
+  return {code: "", log: "", doc: "", results: []};
 });
 
 app.controller('ButterBarCtrl', function ($scope, messageService) {
