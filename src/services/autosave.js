@@ -1,6 +1,7 @@
 app.service('autosaveService', function (model, $interval, storageService) {
   "use strict";
   var lastSavedModel = {code: "", doc: ""};
+  var AUTOSAVE_INTERVAL_MS = 5000;
 
   storageService.onModelLoaded(function (model) {
     lastSavedModel.code = model.code;
@@ -24,7 +25,7 @@ app.service('autosaveService', function (model, $interval, storageService) {
     }
   }
 
-  $interval(autoSave, 1000);
+  $interval(autoSave, AUTOSAVE_INTERVAL_MS);
 
   return {
     onBeforeUnload: function () {
