@@ -15,8 +15,11 @@ app.factory('aboutDialog', function ($modal) {
     <li><a target="_blank" href="http://ace.c9.io/">Ace</a>: high performance code editor for the web</li>\
     <li><a target="_blank" href="http://angularjs.org/">AngularJS</a>: HTML enhanced for web apps</li>\
     <li><a target="_blank" href="http://getbootstrap.com/">Bootstrap</a>: front-end framework</li>\
-    <li><a target="_blank" href="http://www.jquery.com//">jQuery</a>: write less, do more</li>\
-    <li><a target="_blank" href="http://www.jqplot.com//">jqPlot</a>: graphing component</li>\
+    <li><a target="_blank" href="https://github.com/mgomes/ConvexHull">convex_hull.js</a>: Javascript implementation of Andrew\'s Monotone Chain convex hull algorithm</li>\
+    <li><a target="_blank" href="http://www.jquery.com/">jQuery</a>: write less, do more</li>\
+    <li><a target="_blank" href="http://www.jqplot.com/">jqPlot</a>: graphing component</li>\
+    <li><a target="_blank" href="https://github.com/chjj/marked">Marked</a>: JavaScript markdown parser and compiler</li>\
+    <li><a target="_blank" href="https://www.mathjax.org/">MathJax</a>: Beautiful math in all browsers</li>\
     </ul>\
     </div>\
     <div class="modal-footer">\

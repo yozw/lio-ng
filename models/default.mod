@@ -1,7 +1,7 @@
 ## # Linear Optimization Solver
 ##  
 ## This is an online solver for linear optimization models, primarily developed for the book
-## <a href="http://www.lio.yoriz.co.uk/">Linear and Integer Optimization: Theory and Practice</a>.
+## [Linear and Integer Optimization: Theory and Practice](http://www.lio.yoriz.co.uk/).
 ##   
 ## ## Getting started
 ## Choose any of the examples in the top menu to start with an example from the book, or create a

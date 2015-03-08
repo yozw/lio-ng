@@ -76,7 +76,7 @@ app.service('storageService',
   function saveModelWithKey(model, key) {
     var data = Object();
     data.code = storageUtil.combineModel(model);
-    cache['ms:' + key] = model.code;
+    cache['ms:' + key] = data.code;
 
     $http
         .post('/storage/write/' + key, data)
