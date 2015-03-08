@@ -27,9 +27,33 @@ app.service('storageUtil', function () {
     return {help: help.join("\n"), code: model.join("\n")};
   }
 
+  function combineModel (model) {
+    var output = [];
+    var i;
+    if (model.help.trim().length > 0) {
+      var helpLines = model.help.split("\n");
+      for (i = 0; i < helpLines.length; i++) {
+        output.push("##" + helpLines[i]);
+      }
+      output.push("");
+    }
+
+    var codeLines = model.code.split("\n");
+    var seenNonEmptyLine = false;
+    for (i = 0; i < codeLines.length; i++) {
+      var line = codeLines[i];
+      if (seenNonEmptyLine || line.trim().length > 0) {
+        output.push(line);
+        seenNonEmptyLine = true;
+      }
+    }
+    return output.join("\n");
+  }
+
   return {
     splitUrl: splitUrl,
-    splitModel: splitModel
+    splitModel: splitModel,
+    combineModel: combineModel
   }
 });
 
@@ -52,7 +76,7 @@ app.service('storageService',
 
   function saveModelWithKey(model, key) {
     var data = Object();
-    data.code = model.code;
+    data.code = storageUtil.combineModel(model);
     cache['ms:' + key] = model.code;
 
     $http

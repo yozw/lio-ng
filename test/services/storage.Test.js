@@ -78,3 +78,35 @@ describe("storageUtil.splitModel", function () {
 
 });
 
+describe("storageUtil.combineModel", function () {
+  var storageUtil;
+
+  beforeEach(function () {
+    var $injector = angular.injector(['ng', 'lio-ng']);
+    storageUtil = $injector.get('storageUtil');
+  });
+
+  it('works correctly for model with doc',
+      function () {
+        var model = storageUtil.combineModel({code: "\n\n\nmodel", help: " doc\n doc2"});
+        expect(model).toEqual("## doc\n## doc2\n\nmodel");
+      }
+  );
+
+  it('works correctly for model without doc',
+      function () {
+        var model = storageUtil.combineModel({code: "\n\n\nmodel", help: ""});
+        expect(model).toEqual("model");
+      }
+  );
+
+  it('repeatedly splitting and combines is stable',
+      function () {
+        var model = "## doc\n## doc2\n\nmodel\n";
+        var splitModel = storageUtil.splitModel(model);
+        var newModel = storageUtil.combineModel(splitModel);
+        expect(newModel).toEqual(model);
+      }
+  );
+
+});
