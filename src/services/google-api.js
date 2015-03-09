@@ -1,4 +1,4 @@
-app.service('googleApiService', function (messageService, retryService) {
+app.service('googleApiService', function ($log, messageService, retryService) {
   "use strict";
 
   var clientId = '114623879330-hq1gs8ficrvt0n3ipp5s8q7u4svertt3.apps.googleusercontent.com';
@@ -61,7 +61,7 @@ app.service('googleApiService', function (messageService, retryService) {
     function loadApi(api) {
       if (!apiLoaded[api]) {
         apiLoaders[api](function() {
-          console.log("Google " + api + " API loaded.");
+          $log.info("Google " + api + " API loaded.");
           apiLoaded[api] = true;
         });
       }

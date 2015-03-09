@@ -1,9 +1,9 @@
 // TODO: Write unit tests
-app.service('googleDriveService', function ($compile, googleApiService) {
+app.service('googleDriveService', function ($log, $compile, googleApiService) {
   "use strict";
 
   function downloadDriveUrl(url, callback, errorCallback) {
-    console.log("Loading file from url " + url);
+    $log.info("Loading file from url " + url);
     var access_token = gapi.auth.getToken().access_token;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {

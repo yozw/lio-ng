@@ -1,6 +1,6 @@
 var module = angular.module('directives.mathjax', ['hc.marked']);
 
-module.directive("mathjaxBind", function(marked) {
+module.directive("mathjaxBind", function($log, marked) {
 
   MathJax.Hub.Config({
     tex2jax: {
@@ -35,7 +35,7 @@ module.directive("mathjaxBind", function(marked) {
       element.html(marked(element.html()));
       $(element).show();
     } catch (error) {
-      console.log(error);
+      $log.error(error);
     }
   });
 

@@ -59,7 +59,7 @@ app.service('storageUtil', function () {
 
 // TODO: Write unit tests
 app.service('storageService',
-    function ($rootScope, $http, $location, messageService, googleDriveService, storageUtil) {
+    function ($log, $rootScope, $http, $location, messageService, googleDriveService, storageUtil) {
   "use strict";
   var cache = {};
   var onModelLoaded = [];
@@ -84,7 +84,7 @@ app.service('storageService',
           if (response.data.error) {
             messageService.set("Could not save model: " + response.data.error);
           } else if (response.data) {
-            console.log("Save model with key " + key + " to model storage");
+            $log.info("Save model with key " + key + " to model storage");
             for (var i = 0; i < onModelSaved.length; i++) {
               onModelSaved[i](model);
             }
@@ -166,7 +166,7 @@ app.service('storageService',
   }
 
   function loadBuiltinModel(url, modelLoaded, loadError) {
-    console.log("Loading built-in model: " + url);
+    $log.info("Loading built-in model: " + url);
     $http.get("/models/" + url)
         .success(function (data, status) {
           if (data && status === 200) {
@@ -179,14 +179,13 @@ app.service('storageService',
   }
 
   function loadWebModel(url, modelLoaded, loadError) {
-    console.log("Loading remote model: " + url);
+    $log.info("Loading remote model: " + url);
     var data = Object();
     data.url = url;
 
     $http
         .post('/load', data)
         .then(function(response) {
-          console.log(response);
           if (response.data.error) {
             loadError(response.data.error);
           } else if (response.data) {
@@ -202,7 +201,7 @@ app.service('storageService',
   }
 
   function loadModelStorageModel(key, modelLoaded, loadError) {
-    console.log("Loading model with key " + key + " from model storage");
+    $log.info("Loading model with key " + key + " from model storage");
     $http
         .get('/storage/read/' + key)
         .then(function(response) {
@@ -221,7 +220,7 @@ app.service('storageService',
   }
 
   function loadGoogleDriveModel(fileId, modelLoaded, loadError) {
-    console.log("Loading model from Google Drive: " + fileId);
+    $log.info("Loading model from Google Drive: " + fileId);
     googleDriveService.loadFile(fileId, modelLoaded, loadError);
   }
 

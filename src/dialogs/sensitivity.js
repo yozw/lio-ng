@@ -51,10 +51,10 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
   var ERROR_MESSAGE = "To perform a sensitivity analysis, select a number in the model code, and then choose Run > "
       + "Sensitivity Analysis";
 
-  function getSelection(code, range) {
+  function getSelection(code, range, $log) {
     var selection = {};
     if (angular.isUndefined(range) || range.start.row !== range.end.row) {
-      console.log("getSelection: Invalid range specified.");
+      $log.warn("getSelection: Invalid range specified.");
       return undefined;
     }
 
@@ -63,7 +63,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
     var line = lines[row];
     var expanded = MathUtil.expandToNumber(line, range.start.column, range.end.column);
     if (angular.isUndefined(expanded.text)) {
-      console.log("Selection '" + line.substring(range.start.column, range.end.column) + "' could not be expanded.");
+      $log.warn("Selection '" + line.substring(range.start.column, range.end.column) + "' could not be expanded.");
       return undefined;
     }
 

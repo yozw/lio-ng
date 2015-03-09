@@ -145,10 +145,10 @@ app.controller('ButterBarCtrl', function ($scope, messageService) {
   });
 });
 
-app.controller('ResultsTabCtrl', function ($scope, uiChartRefreshService) {
+app.controller('ResultsTabCtrl', function ($scope, uiChartRefreshService, $log) {
   "use strict";
   $scope.refresh = function() {
-    console.log('Refeshing charts');
+    $log.debug('Refeshing charts');
     uiChartRefreshService.refreshAll();
   };
 });

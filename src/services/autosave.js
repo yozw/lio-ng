@@ -1,4 +1,4 @@
-app.service('autosaveService', function (model, $interval, storageService) {
+app.service('autosaveService', function (model, $interval, storageService, $log) {
   "use strict";
   var lastSavedModel = {code: "", doc: ""};
   var AUTOSAVE_INTERVAL_MS = 5000;
@@ -20,7 +20,7 @@ app.service('autosaveService', function (model, $interval, storageService) {
 
   function autoSave() {
     if (modelHasChanged()) {
-      console.log("Model has changed. Autosaving.");
+      $log.info("Model has changed. Autosaving.");
       storageService.saveModelToModelStorage(model);
     }
   }

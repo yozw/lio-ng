@@ -1,12 +1,12 @@
 /**
  * Job runner service
  */
-app.service('jobRunnerService', function () {
+app.service('jobRunnerService', function ($log) {
   "use strict";
   var currentJob = {};
 
   function onJobStopped(job) {
-    console.log("Job finished in " + job.stopWatch.getElapsed() + " msec");
+    $log.info("Job finished in " + job.stopWatch.getElapsed() + " msec");
     currentJob = {};
   }
 
@@ -51,7 +51,7 @@ app.service('jobRunnerService', function () {
   function terminateJob(job) {
     job.worker.onmessage = function () {};
     job.worker.terminate();
-    console.log("Terminating job");
+    $log.info("Terminating job");
     job.callback.error("Cancelled by user.");
   }
 
