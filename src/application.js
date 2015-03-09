@@ -27,6 +27,7 @@ app.controller('AppCtrl', function (
     messageService,
     googlePickerService,
     aboutDialog,
+    exportDialog,
     sensitivityDialog,
     feedbackDialog,
     autosaveService) {
@@ -122,6 +123,10 @@ app.controller('AppCtrl', function (
     if (url !== undefined) {
       storageService.readModel(url);
     }
+  };
+
+  $scope.exportModel = function () {
+    exportDialog.open(model);
   };
 
   $scope.loadModelFromDrive = function () {

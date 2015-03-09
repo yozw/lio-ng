@@ -1,4 +1,4 @@
-app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
+app.factory('sensitivityDialog', function ($modal, $log, errorDialog, solverService) {
   "use strict";
 
   var TEMPLATE =
@@ -51,7 +51,7 @@ app.factory('sensitivityDialog', function ($modal, errorDialog, solverService) {
   var ERROR_MESSAGE = "To perform a sensitivity analysis, select a number in the model code, and then choose Run > "
       + "Sensitivity Analysis";
 
-  function getSelection(code, range, $log) {
+  function getSelection(code, range) {
     var selection = {};
     if (angular.isUndefined(range) || range.start.row !== range.end.row) {
       $log.warn("getSelection: Invalid range specified.");
