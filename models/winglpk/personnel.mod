@@ -1,26 +1,29 @@
-## # Personnel assignment problem
-## This example deals with scheduling the workforce for a production plant.
-## In a production plant every day a certain number of personnel is needed. Given personnel can be be
-## hired for a minimum up to a maximum number of days in a row, requiring a minimum number of leave days
-## before they can be employed again. The task is to find the work schedule minimizing total wages to be paid.
-##
-## Determine cheapest shift schedule, given:
-##
-## * A workload per day
-## * Available workers with:
-##
-##   * Minimum working days in a row
-##   * Maximum working days in a row
-##   * Minimum leave days in a row
-##   * Daily wage
-##
-##
-## Source: http://winglpk.sourceforge.net/examples/workforce/
-##
-## Author: Xypron, 2009 (inspired by CADI Abdelahd)
-##
-## This example is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY. Feel free to copy or modify.
+/**
+# Personnel assignment problem
+
+This example deals with scheduling the workforce for a production plant.
+In a production plant every day a certain number of personnel is needed. Given personnel can be be
+hired for a minimum up to a maximum number of days in a row, requiring a minimum number of leave days
+before they can be employed again. The task is to find the work schedule minimizing total wages to be paid.
+
+Determine cheapest shift schedule, given:
+
+* A workload per day
+* Available workers with:
+
+  * Minimum working days in a row
+  * Maximum working days in a row
+  * Minimum leave days in a row
+  * Daily wage
+
+
+Source: http://winglpk.sourceforge.net/examples/workforce/
+
+Author: Xypron, 2009 (inspired by CADI Abdelahd)
+
+This example is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY. Feel free to copy or modify.
+*/
 
 # workload (day, workload)
 set L, dimen 2;

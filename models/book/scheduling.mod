@@ -1,4 +1,4 @@
-## # A scheduling problem
+/** # A scheduling problem */
 
 # Number of jobs
 param n;

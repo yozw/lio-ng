@@ -1,9 +1,10 @@
-## # Knight's tour
-##
-## Source: http://winglpk.sourceforge.net/examples/knightstour/
-##
-## Determine a closed path a knight can travel
-## on a chess board covering all fields.
+/**
+# Knight's tour
+
+Source: http://winglpk.sourceforge.net/examples/knightstour/
+
+Determine a closed path a knight can travel on a chess board covering all fields.
+*/
 
 # size of field
 param m;

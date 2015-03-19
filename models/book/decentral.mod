@@ -1,4 +1,6 @@
-## # A decentralization problem
+/**
+ # A decentralization problem
+*/
 
 set DC;
 set CITY;

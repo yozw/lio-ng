@@ -11,43 +11,46 @@ app.service('storageUtil', function () {
   }
 
   function splitModel (data) {
-    var lines = data.split("\n");
-    var doc = [];
-    var model = [];
-    var docPassed = false;
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      if (!docPassed && line.substring(0, 2) === "##") {
-        doc.push(line.substring(2));
-      } else if (model.length > 0 || line.trim().length !== 0) {
-        model.push(line);
-        docPassed = true;
+    // This regex matches a javadoc-style comment of the form "/** <comment> */"
+    // and any whitespace surrounding it.
+    var regex = /^\s*((?:\/\*\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:\/\/.*))\s*/;
+
+    var match = data.match(regex);
+    if (match == null) {
+      return {doc: "", code: data.trim() + "\n"};
+    } else {
+      // determine the contents of the /** <contents> */
+      var doc = match[1];  // the full comment, without trailing spaces
+      var start = 1;
+      var end = doc.length - 2;
+
+      // note that these loops are guaranteed to end because of the
+      // leading and trailing slashes
+      while (doc[start] == '*') {
+        start++;
       }
+      while (doc[end] == '*') {
+        end--;
+      }
+
+      if (start < end) {
+        doc = doc.substring(start, end + 1);
+      } else {
+        doc = "";
+      }
+
+      var code = data.substring(match[0].length).trim() + "\n";
+
+      return {doc: doc, code: code}
     }
-    return {doc: doc.join("\n"), code: model.join("\n")};
   }
 
   function combineModel (model) {
-    var output = [];
-    var i;
-    if (model.doc.trim().length > 0) {
-      var docLines = model.doc.split("\n");
-      for (i = 0; i < docLines.length; i++) {
-        output.push("##" + docLines[i]);
-      }
-      output.push("");
+    if (model.doc.trim().length == 0) {
+      return model.code.trim() + "\n";
+    } else {
+      return "/**" + model.doc + "*/\n\n" + model.code.trim() + "\n";
     }
-
-    var codeLines = model.code.split("\n");
-    var seenNonEmptyLine = false;
-    for (i = 0; i < codeLines.length; i++) {
-      var line = codeLines[i];
-      if (seenNonEmptyLine || line.trim().length > 0) {
-        output.push(line);
-        seenNonEmptyLine = true;
-      }
-    }
-    return output.join("\n");
   }
 
   return {

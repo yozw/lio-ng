@@ -1,52 +1,54 @@
-## # Scheduling jobs on parallel machines with precedence constraints
-## Source: Nicky van Foreest (http://nicky.vanforeest.com/scheduling/projectSchedulingWithWorkforceConstraints/parallelMachines.html)
-## 
-## Let's consider Example 4.2.3 of [APin08], but now such that tasks has to be
-## carried out by a number of parallel and identical machines. The aim is to
-## compute the makespan as a function of the number of machines. This problem is
-## much more difficult than the critical path problem as discussed in Section 4.2 of
-## [APin08], but a bit simpler than the project scheduling problem with machine 
-## constraints of Section 4.6, as now all machines are identical.
-##
-## ## Problem formulation
-## Let $N$ be the number of jobs and let $W$ be the number of machines. For each job $j$, let $p_j$
-## be its processing time.
-## Let $E$ be a set of pairs $(j, k)$ of jobs such that job $j$ should be completed before job
-## $k$ can be started. For example $(1, 2)$ means that we have to complete job $1$ before we can start
-## executing job $2$. The pairs in the set $E$ represent the *precedence constraints*.
-## Our goal is to execute the jobs on the $W$ machines in a minimum amount of time, while respecting the
-## precedence constraints.
-##
-## ## Model formulation
-## Finally, let $T$ be the maximum amount of time it may take to process the jobs (e.g., choose
-## $T = \sum_{j=1}^N p_j$).
-## The decision variables are (with $j=1, \ldots, N$ and $t = 1, \ldots, T$):
-## \[ 
-## \begin{array}{ll}
-## x_{jt} & = \begin{cases} 1 & \mbox{if task $j$ finishes at time $t$} \\ 0 & \mbox{else,} \end{cases} \\
-## C_j & = \mbox{the completion time of task $j$}, \\
-## C_{\rm max} & = \mbox{the completion time of the last task}.
-## \end{array}
-## \]
-## The completion time of task $j$ in terms of $x_{jt}$ is:
-## \[ C_j  = \sum_{j=1}^T t x_{jt}, \mbox{ for } j = 1,\ldots,N. \]
-## The completion time $C_{\rm max}$ of the last task $j$ should satisfy:
-## \[ C_{\rm max} \geq C_{j}, \mbox{ for } j = 1,\ldots,N. \]
-## Each job has to be scheduled precisely once:
-## \[ \sum_{t=1}^T x_{jt} = 1, \mbox{ for } j = 1,\ldots,N. \]
-## A job's completion time must be at least equal to its processing time:
-## \[ C_j \geq p_j, \mbox{ for } j = 1,\ldots,N. \]
-## A job $j$ can only finish when its predecessors are finished:
-## \[ C_j \geq C_k + p_j, \mbox{ for } (k, j) \in E. \]
-## Finally, overlapping processing times of jobs are not allowed to exceed the number of parallel machines $W$. 
-## For this purpose we define the function $p(j,t)$ such that $p(j,t)=1$ if task $j$ finishes between time $t$
-## and $t+p_j$, and $0$ elsewhere:
-## \[ p(j, t) = \sum_{u=t}^{\min(T, t+p_j+1)} x_{ju}, \mbox{ for } j=1,\ldots,N \mbox{ and } t = 1,\ldots,T. \]
-## With this, it follows straightaway that:
-## \[ \sum_{j=1}^N p(j, t) \leq W, \mbox{ for } t = 1,\ldots,T. \]
-##
-## ## References
-## [APin08]	M.L. Pinedo. *Planning and Scheduling in Manufacturing and Services*. Springer, 2nd edition, 2008.
+/**
+# Scheduling jobs on parallel machines with precedence constraints
+Source: Nicky van Foreest (http://nicky.vanforeest.com/scheduling/projectSchedulingWithWorkforceConstraints/parallelMachines.html)
+
+Let's consider Example 4.2.3 of [APin08], but now such that tasks has to be
+carried out by a number of parallel and identical machines. The aim is to
+compute the makespan as a function of the number of machines. This problem is
+much more difficult than the critical path problem as discussed in Section 4.2 of
+[APin08], but a bit simpler than the project scheduling problem with machine 
+constraints of Section 4.6, as now all machines are identical.
+
+## Problem formulation
+Let $N$ be the number of jobs and let $W$ be the number of machines. For each job $j$, let $p_j$
+be its processing time.
+Let $E$ be a set of pairs $(j, k)$ of jobs such that job $j$ should be completed before job
+$k$ can be started. For example $(1, 2)$ means that we have to complete job $1$ before we can start
+executing job $2$. The pairs in the set $E$ represent the *precedence constraints*.
+Our goal is to execute the jobs on the $W$ machines in a minimum amount of time, while respecting the
+precedence constraints.
+
+## Model formulation
+Finally, let $T$ be the maximum amount of time it may take to process the jobs (e.g., choose
+$T = \sum_{j=1}^N p_j$).
+The decision variables are (with $j=1, \ldots, N$ and $t = 1, \ldots, T$):
+\[ 
+\begin{array}{ll}
+x_{jt} & = \begin{cases} 1 & \mbox{if task $j$ finishes at time $t$} \\ 0 & \mbox{else,} \end{cases} \\
+C_j & = \mbox{the completion time of task $j$}, \\
+C_{\rm max} & = \mbox{the completion time of the last task}.
+\end{array}
+\]
+The completion time of task $j$ in terms of $x_{jt}$ is:
+\[ C_j  = \sum_{j=1}^T t x_{jt}, \mbox{ for } j = 1,\ldots,N. \]
+The completion time $C_{\rm max}$ of the last task $j$ should satisfy:
+\[ C_{\rm max} \geq C_{j}, \mbox{ for } j = 1,\ldots,N. \]
+Each job has to be scheduled precisely once:
+\[ \sum_{t=1}^T x_{jt} = 1, \mbox{ for } j = 1,\ldots,N. \]
+A job's completion time must be at least equal to its processing time:
+\[ C_j \geq p_j, \mbox{ for } j = 1,\ldots,N. \]
+A job $j$ can only finish when its predecessors are finished:
+\[ C_j \geq C_k + p_j, \mbox{ for } (k, j) \in E. \]
+Finally, overlapping processing times of jobs are not allowed to exceed the number of parallel machines $W$. 
+For this purpose we define the function $p(j,t)$ such that $p(j,t)=1$ if task $j$ finishes between time $t$
+and $t+p_j$, and $0$ elsewhere:
+\[ p(j, t) = \sum_{u=t}^{\min(T, t+p_j+1)} x_{ju}, \mbox{ for } j=1,\ldots,N \mbox{ and } t = 1,\ldots,T. \]
+With this, it follows straightaway that:
+\[ \sum_{j=1}^N p(j, t) \leq W, \mbox{ for } t = 1,\ldots,T. \]
+
+## References
+[APin08]	M.L. Pinedo. *Planning and Scheduling in Manufacturing and Services*. Springer, 2nd edition, 2008.
+*/
 
 param N;   # number of jobs
 param W;   # number of machines

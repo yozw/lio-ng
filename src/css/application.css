@@ -124,6 +124,7 @@ button.btn {
 
 #model-results .verbatim {
   font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
+  white-space: pre;
 }
 
 .close-btn {

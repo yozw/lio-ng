@@ -1,8 +1,10 @@
-## # Simple single unit dispatch
-##
-## Source: http://en.wikibooks.org/wiki/GLPK/Electricity_markets
-##
-## Dr. H J Mackenzie, HARD software, hjm@hardsoftware.com, 2010-03-24
+/**
+# Simple single unit dispatch
+
+Source: http://en.wikibooks.org/wiki/GLPK/Electricity_markets
+
+Dr. H J Mackenzie, HARD software, hjm@hardsoftware.com, 2010-03-24
+*/
 
 # set of dispatch intervals
 set I;

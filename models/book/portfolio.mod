@@ -1,4 +1,4 @@
-## # A portfolio optimization problem
+/** # A portfolio optimization problem */
 
 param S;
 param n;
