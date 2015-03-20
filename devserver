@@ -1,9 +1,0 @@
-#!/bin/bash
-
-pushd `dirname $0` > /dev/null
-ROOT=`pwd`
-popd > /dev/null
-
-./make
-~/google_appengine/dev_appserver.py appengine
-

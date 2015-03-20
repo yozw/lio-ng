@@ -1,9 +1,0 @@
-#!/bin/bash
-
-pushd `dirname $0` > /dev/null
-ROOT=`pwd`
-popd > /dev/null
-
-./make
-~/google_appengine/appcfg.py --oauth2 -A online-optimizer update $ROOT/appengine
-
