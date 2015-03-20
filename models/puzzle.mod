@@ -1,3 +1,4 @@
+/**
 # A puzzle
 Source: Nicky van Foreest (http://nicky.vanforeest.com/misc/numberPuzzle/puzzle.html)
 
@@ -106,6 +107,7 @@ any inequality between two fields.
     <td style="width:40px; border: 1px solid black; background-color: #6af;"></td>
   </tr>
 </table>
+*/
 
 ## The decision variables
 As decision variables we use $x_{r,c,k}$ such that $x_{r,c,k}=1$ if $k$ appears in the field
