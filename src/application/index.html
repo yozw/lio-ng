@@ -149,7 +149,7 @@
   </tabpane> -->
   <tabpane name="Results" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()">
     <div id="results-overview" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h2>Model overview</h2>
+      <h1>Model overview</h1>
       <div ng-repeat="entry in model.results.overview">
         <div ng-switch on="entry.type">
           <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
@@ -161,7 +161,7 @@
   </tabpane>
   <tabpane name="Output" level="2">
     <div id="results-output" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h2>Model output</h2>
+      <h1>Model output</h1>
       <div ng-repeat="entry in model.results.output">
         <div ng-switch on="entry.type">
           <result-verbatim ng-switch-when="verbatim" ng-model="entry"></result-verbatim>
@@ -172,7 +172,7 @@
   </tabpane>
   <tabpane name="Variables" level="2">
     <div id="results-primal" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h2>Variables</h2>
+      <h1>Variables</h1>
       <div ng-repeat="entry in model.results.primal">
         <div ng-switch on="entry.type">
           <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
@@ -182,7 +182,7 @@
   </tabpane>
   <tabpane name="Constraints" level="2">
     <div id="results-dual" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h2>Constraints</h2>
+      <h1>Constraints</h1>
       <div ng-repeat="entry in model.results.dual">
         <div ng-switch on="entry.type">
           <result-table ng-switch-when="table" ng-model="entry.table"></result-table>

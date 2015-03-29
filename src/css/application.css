@@ -117,6 +117,12 @@ button.btn {
   padding: 8px 8px 8px 16px;
 }
 
+.tab-content h1 {
+  font-size: 32px;
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
 .output-verbatim {
   font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
   white-space: pre;
