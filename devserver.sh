@@ -5,4 +5,7 @@ ROOT=$(cd "$(dirname "$0")"; pwd)
 source ${ROOT}/common.sh || exit 1
 cd ${ROOT} || error "Could not change to directory $ROOT"
 
+checkDeps gae
+
+log "Starting development server"
 ~/google_appengine/dev_appserver.py src/app.yaml || error "Could not start development server locally"

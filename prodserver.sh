@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
-# Do a full build and start the production server locally.
-# The code is minified and served from the appengine/ directory.
+# Start the production server locally. The code is served from the appengine/ directory.
+# Usage:
+#   prodserver.sh [--build]
+# Specifying the --build flag builds the server before starting it.
 
 ROOT=$(cd "$(dirname "$0")"; pwd)
 source ${ROOT}/common.sh || exit 1
 cd ${ROOT} || error "Could not change to directory $ROOT"
 
-./make.sh || error "Make failed"
+checkDeps gae
 
+if [ "$1" == "--build" ]; then
+  ./make.sh || error "Make failed"
+fi
+
+log "Starting production server"
 ~/google_appengine/dev_appserver.py appengine/app.yaml || error "Could not start production server locally"

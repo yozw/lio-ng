@@ -101,7 +101,7 @@ def minify_worker(worker_path):
   
   def replacer(match):
     src = match.group(1)
-    if src.startswith("/src/"):
+    if src.startswith("/application/"):
       sources.append(src)
       return ""
     elif src.startswith("/lib/"):
