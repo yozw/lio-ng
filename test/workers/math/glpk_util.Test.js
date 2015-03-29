@@ -9,6 +9,15 @@ var DOVETAIL = "var x1 >= 0;\n"
     + "subject to c14: x2 <=  6;\n"
     + "end;";
 
+var DOVETAIL_MIP = "var x1 >= 0 integer;\n"
+    + "var x2 >= 0 integer;\n"
+    + "maximize z: 3*x1 + 2*x2;\n"
+    + "subject to c11: x1 + x2 <= 9;\n"
+    + "subject to c12: 3*x1 + x2 <= 18;\n"
+    + "subject to c13: x1 <=  7;\n"
+    + "subject to c14: x2 <=  6;\n"
+    + "end;";
+
 describe("GlpkUtil", function () {
 
   it('correctly logs info', function() {
@@ -65,5 +74,52 @@ describe("GlpkUtil", function () {
     expect(constraints.rhs).toEqual(expectedRhs);
   });
 
+  it('getPrimalSolutionTable generates a valid table', function () {
+    var lp = GlpkUtil.solveGmpl(DOVETAIL).lp;
+    var table = GlpkUtil.getPrimalSolutionTable(lp);
+    var nameColumn = table.getColumnByName("Variable");
+    var valueColumn = table.getColumnByName("Value");
+    var statusColumn = table.getColumnByName("Status");
+
+    expect(table.getColumns().length).toEqual(7);
+    expect(table.getRows().length).toEqual(2);
+    expect(table.getRow(0).getValue(nameColumn)).toEqual("x1");
+    expect(table.getRow(0).getValue(valueColumn)).toEqual(4.5);
+    expect(table.getRow(0).getValue(statusColumn)).toEqual("Basic");
+    expect(table.getRow(1).getValue(nameColumn)).toEqual("x2");
+    expect(table.getRow(1).getValue(valueColumn)).toEqual(4.5);
+    expect(table.getRow(1).getValue(statusColumn)).toEqual("Basic");
+  });
+
+  it('getPrimalSolutionTable generates a valid table for MIP', function () {
+    var lp = GlpkUtil.solveGmpl(DOVETAIL_MIP).lp;
+    var table = GlpkUtil.getPrimalSolutionTable(lp);
+    var nameColumn = table.getColumnByName("Variable");
+    var valueColumn = table.getColumnByName("Value");
+    var statusColumn = table.getColumnByName("Status");
+
+    expect(table.getColumns().length).toEqual(6);
+    expect(table.getRows().length).toEqual(2);
+    expect(table.getRow(0).getValue(nameColumn)).toEqual("x1");
+    expect(table.getRow(0).getValue(valueColumn)).toEqual(4);
+    expect(table.getRow(0).getValue(statusColumn)).toEqual("Basic");
+    expect(table.getRow(1).getValue(nameColumn)).toEqual("x2");
+    expect(table.getRow(1).getValue(valueColumn)).toEqual(6);
+    expect(table.getRow(1).getValue(statusColumn)).toEqual("Basic");
+  });
+
+  it('getConstraintsTable generates a valid table', function () {
+    var lp = GlpkUtil.solveGmpl(DOVETAIL).lp;
+    var table = GlpkUtil.getConstraintsTable(lp);
+    var nameColumn = table.getColumnByName("Name");
+
+    expect(table.getColumns().length).toEqual(5);
+    expect(table.getRows().length).toEqual(5);
+    expect(table.getRow(0).getValue(nameColumn)).toEqual("z");
+    expect(table.getRow(1).getValue(nameColumn)).toEqual("c11");
+    expect(table.getRow(2).getValue(nameColumn)).toEqual("c12");
+    expect(table.getRow(3).getValue(nameColumn)).toEqual("c13");
+    expect(table.getRow(4).getValue(nameColumn)).toEqual("c14");
+  });
 });
 

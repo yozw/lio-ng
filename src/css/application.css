@@ -112,17 +112,12 @@ button.btn {
   padding-right: 0.5em;
 }
 
-#model-log {
+.tab-content .scrollable {
   overflow: auto;
   padding: 8px 8px 8px 16px;
 }
 
-#model-results {
-  overflow: auto;
-  padding: 8px 8px 8px 16px;
-}
-
-#model-results .verbatim {
+.output-verbatim {
   font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
   white-space: pre;
 }
@@ -283,4 +278,20 @@ pre.no-border {
 .sensitivity-subject {
   font-weight: bold;
   color: #28f;
+}
+
+.nav-pills > li > a.level-1 {
+  padding-left: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 2px;
+  font-weight: bold;
+}
+
+.nav-pills > li > a.level-2 {
+  padding-left: 24px;
+  padding-top: 2px;
+  padding-right: 2px;
+  padding-bottom: 2px;
+  font-size: 13px;
 }

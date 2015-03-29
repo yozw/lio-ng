@@ -45,17 +45,26 @@ app.controller('AppCtrl', function (
     }
   });
 
+  function pushResult(target, item) {
+    if (!$scope.model.results.hasOwnProperty(target)) {
+      console.error("Unknown target: " + target);
+    }
+    $scope.model.results[target].push(item);
+  }
+
   // Bind solver service callback
   solverService.setCallback({
     start: function() {
       model.log = "";
-      model.results = [];
+      model.results = {};
+      model.results.overview = [];
+      model.results.output = [];
+      model.results.primal = [];
+      model.results.dual = [];
       $scope.isComputing = true;
     },
     output: function(message) {
-      $scope.model.results.push(
-          {type: 'verbatim', text: message}
-      );
+      pushResult('output', {type: 'verbatim', text: message});
       $scope.$apply();
     },
     log: function (message) {
@@ -74,16 +83,12 @@ app.controller('AppCtrl', function (
       $scope.isComputing = false;
       messageService.set("Solving finished. " + message);
     },
-    emitTable: function (table) {
-      $scope.model.results.push(
-          {type: 'table', table: table}
-      );
+    emitTable: function (message, target) {
+      pushResult(target, {type: 'table', table: message});
       $scope.$apply();
     },
-    emitGraph: function (graph) {
-      $scope.model.results.push(
-          {type: 'graph', graph: jqPlotRenderService.render(graph)}
-      );
+    emitGraph: function (message, target) {
+      pushResult(target, {type: 'graph', graph: jqPlotRenderService.render(message)});
       $scope.$apply();
     }
   });

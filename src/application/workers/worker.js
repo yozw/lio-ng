@@ -30,6 +30,7 @@ function postInfo(value) {
 function postOutput(value) {
   "use strict";
   var message = {};
+  message.target = 'output';
   message.action = 'output';
   message.message = value;
   self.postMessage(message);
@@ -73,15 +74,15 @@ function postError(value, data) {
 /**
  * Sends a table back to the main thread.
  */
-function postTable(table) {
-  self.postMessage({action: 'emit-table', table: table.serialize()});
+function postTable(target, table) {
+  self.postMessage({action: 'emit-table', target: target, table: table.serialize()});
 }
 
 /**
  * Sends a graph back to the main thread.
  */
-function postGraph(graph) {
-  self.postMessage({action: 'emit-graph', graph: graph.serialize()});
+function postGraph(target, graph) {
+  self.postMessage({action: 'emit-graph', target: target, graph: graph.serialize()});
 }
 
 /**

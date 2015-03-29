@@ -129,7 +129,7 @@ describe("solverService", function () {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
           expect(successMessages).toEqual(["An optimal solution was found."]);
-          expect(output).toEqual(["The optimal objective value is 22.5."]);
+          expect(output).toEqual([]);
         })
       });
 
@@ -181,7 +181,7 @@ describe("solverService", function () {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
           expect(successMessages).toEqual(["An optimal solution was found."]);
-          expect(output).toEqual(["The optimal objective value is 22."]);
+          expect(output).toEqual([]);
         })
       });
 
@@ -266,7 +266,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["z=22.50", "x1=4.50", "x2=4.50", "The optimal objective value is 22.5."]);
+          expect(output).toEqual(["z=22.50", "x1=4.50", "x2=4.50"]);
         })
       });
 
@@ -283,7 +283,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["hello", "x=1", "The optimal objective value is 1."]);
+          expect(output).toEqual(["hello", "x=1"]);
         })
       });
 
@@ -300,7 +300,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["z=22.00", "x1=4.00", "x2=5.00", "The optimal objective value is 22."]);
+          expect(output).toEqual(["z=22.00", "x1=4.00", "x2=5.00"]);
         })
       });
 
@@ -317,7 +317,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["hello", "x=2.00", "The optimal objective value is 2."]);
+          expect(output).toEqual(["hello", "x=2.00"]);
         })
       });
 

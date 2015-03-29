@@ -17,8 +17,12 @@ module.directive('tabs', function () {
         if (child.hasClass('tab-pane')) {
           var tab = {
             element: child,
-            name: child.attr('name')
+            name: child.attr('name'),
+            level: parseInt(child.attr('level'))
           };
+          if (isNaN(tab.level)) {
+            tab.level = 1;
+          }
           child.removeClass("active");
           scope.containers.push(tab);
         }

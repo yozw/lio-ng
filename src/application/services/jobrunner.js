@@ -29,10 +29,10 @@ app.service('jobRunnerService', function ($log) {
           callback.error(obj.message);
           break;
         case 'emit-table':
-          callback.emitTable(obj.table);
+          callback.emitTable(obj.table, obj.target);
           break;
         case 'emit-graph':
-          callback.emitGraph(obj.graph);
+          callback.emitGraph(obj.graph, obj.target);
           break;
         case 'success':
           onJobStopped(job);

@@ -132,7 +132,7 @@ function actionSensitivity(e) {
   graph.addLinePlot(data);
   graph.setXRange(minX, maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);
-  postGraph(graph);
+  postGraph('output', graph);
 
   return "";
 }

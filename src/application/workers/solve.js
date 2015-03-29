@@ -11,10 +11,11 @@ function actionSolve(e) {
     return "The model is unbounded.";
   } else if (result.status === "optimal") {
     var lp = result.lp;
-    postOutput("The optimal objective value is " + result.objectiveValue + ".");
-    postTable(GlpkUtil.getPrimalSolutionTable(lp));
+    postTable('overview', GlpkUtil.getOverviewTable(lp));
+    postTable('primal', GlpkUtil.getPrimalSolutionTable(lp));
+    postTable('dual', GlpkUtil.getConstraintsTable(lp));
     if (glp_get_num_cols(lp) === 2) {
-      postGraph(FeasibleRegionGraph.create(lp));
+      postGraph('overview', FeasibleRegionGraph.create(lp));
     }
     return "An optimal solution was found.";
   } else {

@@ -41,6 +41,27 @@ var Table = function () {
     return column;
   };
 
+  this.getColumns = function() {
+    return columns;
+  };
+
+  this.getColumnByName = function(name) {
+    for (var i = 0; i < columns.length; i++) {
+      if (columns[i].name == name) {
+        return columns[i];
+      }
+    }
+    return null;
+  };
+
+  this.getRows = function() {
+    return rows;
+  };
+
+  this.getRow = function(index) {
+    return rows[index];
+  };
+
   this.addRow = function () {
     var row = new Row();
     rows.push(row);

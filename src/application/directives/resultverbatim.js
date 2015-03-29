@@ -10,7 +10,7 @@ module.directive('resultVerbatim', function () {
     scope: {
       ngModel: '='
     },
-    template: '<div class="verbatim">{{ngModel.text}}</div>'
+    template: '<div class="output-verbatim">{{ngModel.text}}</div>'
   };
 });
 
