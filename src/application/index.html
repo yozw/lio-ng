@@ -1,0 +1,176 @@
+<!doctype html>
+<html ng-app="lio-ng">
+<!-- version {{DATE}} -->
+<head>
+  <title>Linear Optimization</title>
+  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+  <script type="text/javascript"
+          src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script type="text/javascript"
+      src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script type="text/javascript"
+          src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+  <script type="text/javascript"
+          src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  <script type="text/javascript"
+          src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-sanitize.min.js"></script>
+  <script type="text/javascript"
+          src="//apis.google.com/js/client.js"></script>
+  <script type="text/javascript"
+          src="//apis.google.com/js/api.js"></script>
+
+  <script type="text/javascript" src="/lib/jqplot/jquery.jqplot.js"></script>
+  <script type="text/javascript" src="/lib/jqplot/plugins/jqplot.highlighter.js"></script>
+  <script type="text/javascript" src="/lib/jqplot/plugins/jqplot.cursor.js"></script>
+  <script type="text/javascript" src="/lib/marked/marked.js"></script>
+  <script type="text/javascript" src="/lib/marked/angular-marked.js"></script>
+  <script type="text/javascript" src="/lib/ui-bootstrap/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="/lib/ui-chart/chart.js"></script>
+  <script type="text/javascript" src="/application/boot.js"></script>
+  <script type="text/javascript" src="/application/ace/mode-gmpl.js"></script>
+  <script type="text/javascript" src="/application/ace/theme-lio-ng.js"></script>
+  <script type="text/javascript" src="/application/ace/ui-ace.js"></script>
+  <script type="text/javascript" src="/application/directives/resultgraph.js"></script>
+  <script type="text/javascript" src="/application/directives/resulttable.js"></script>
+  <script type="text/javascript" src="/application/directives/resultverbatim.js"></script>
+  <script type="text/javascript" src="/application/directives/resizable.js"></script>
+  <script type="text/javascript" src="/application/directives/mathjax.js"></script>
+  <script type="text/javascript" src="/application/directives/tabs.js"></script>
+  <script type="text/javascript" src="/application/application.js"></script>
+  <script type="text/javascript" src="/application/common/util.js"></script>
+  <script type="text/javascript" src="/application/common/math_util.js"></script>
+  <script type="text/javascript" src="/application/dialogs/about.js"></script>
+  <script type="text/javascript" src="/application/dialogs/error.js"></script>
+  <script type="text/javascript" src="/application/dialogs/export.js"></script>
+  <script type="text/javascript" src="/application/dialogs/feedback.js"></script>
+  <script type="text/javascript" src="/application/dialogs/sensitivity.js"></script>
+  <script type="text/javascript" src="/application/services/examples.js"></script>
+  <script type="text/javascript" src="/application/services/google-api.js"></script>
+  <script type="text/javascript" src="/application/services/google-drive.js"></script>
+  <script type="text/javascript" src="/application/services/google-picker.js"></script>
+  <script type="text/javascript" src="/application/services/jqplotrenderer.js"></script>
+  <script type="text/javascript" src="/application/services/message.js"></script>
+  <script type="text/javascript" src="/application/services/jobrunner.js"></script>
+  <script type="text/javascript" src="/application/services/retry.js"></script>
+  <script type="text/javascript" src="/application/services/solver.js"></script>
+  <script type="text/javascript" src="/application/services/storage.js"></script>
+  <script type="text/javascript" src="/application/services/autosave.js"></script>
+  <script type="text/javascript" src="/application/ace/token-tooltip.js"></script>
+  <link rel="stylesheet" type="text/css" href="/lib/ui-bootstrap/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/lib/jqplot/jquery.jqplot.css">
+  <link rel="stylesheet" type="text/css" href="/css/application.css">
+  <link rel="stylesheet" type="text/css" href="/application/directives/resulttable.css">
+
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+  <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({skipStartupTypeset: true});
+  </script>
+</head>
+
+<body ng-controller="AppCtrl">
+<!-- PLACEHOLDER -->
+
+<div class="collapse navbar-collapse navbar-inverse">
+  <ul class="nav navbar-nav">
+    <li class="dropdown">
+      <a class="dropdown-toggle">Model</a>
+      <ul class="dropdown-menu">
+        <li class="disabled"><a>New model</a></li>
+        <li class="divider-vertical"></li>
+        <li><a ng-click="loadModelFromDrive()">Load from Google Drive...</a></li>
+        <li class="disabled"><a>Save to Google Drive...</a></li>
+        <li class="divider-vertical"></li>
+        <li class="disabled"><a>Download</a></li>
+        <li class="disabled"><a ng-click="exportModel()">Export</a></li>
+        <li class="disabled"><a>Print</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle">Run</a>
+      <ul class="dropdown-menu">
+        <li><a ng-click="solveModel()">Solve</a></li>
+        <li><a ng-click="showSensitivityDialog()">Sensitivity analysis...</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle">Examples</a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="item in examples" ng-class="{'dropdown-submenu': item.hasOwnProperty('subItems')}">
+          <a ng-click="loadModel(item.url)">{{item.name}}</a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="subItem in item.subItems">
+              <a ng-click="loadModel(subItem.url)">{{subItem.name}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle">Help</a>
+      <ul class="dropdown-menu">
+        <li><a target="_blank" href="http://www.lio.yoriz.co.uk/">Book website</a></li>
+        <li><a target="_blank" href="/doc/gmpl/index.html">GNU MathProg language reference</a></li>
+        <li class="divider-vertical"></li>
+        <li><a ng-click="showFeedback()">Leave feedback...</a></li>
+        <li><a ng-click="showAbout()">About...</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="butter-bar-outer">
+  <div class="butter-bar-inner" ng-controller="ButterBarCtrl" ng-show="isVisible">
+    {{status.message}}
+    <div class="close-btn" ng-click="clear()">&#10006;</div>
+  </div>
+</div>
+
+<tabs>
+  <tabpane name="Information">
+    <div id="model-doc" mathjax-bind="model.doc" resizable
+         style="height: {{windowHeight - 26}}px;">
+    </div>
+  </tabpane>
+  <tabpane name="Model" ng-controller="EditorTabCtrl" data-ng-activate="focusOnEditor()">
+    <div id="editor"
+         ui-ace="{mode: 'gmpl', theme: 'lio-ng', animatedScroll: true, onChangeSelection: onChangeSelection}"
+         ng-model="model.code"
+         resizable
+         style="height: {{windowHeight - 26}}px; width: 100%; font-size: 14px;"></div>
+  </tabpane>
+  <tabpane name="Result" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()">
+    <div id="model-results" resizable
+         style="height: {{windowHeight - 26}}px;">
+      <div ng-repeat="entry in model.results">
+        <div ng-switch on="entry.type">
+          <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
+          <result-graph ng-switch-when="graph" ng-model="entry.graph"></result-graph>
+          <result-verbatim ng-switch-when="verbatim" ng-model="entry"></result-verbatim>
+        </div>
+      </div>
+    </div>
+  </tabpane>
+  <tabpane name="Log messages">
+    <div id="model-log"
+         class="log"
+         resizable
+         style="height: {{windowHeight - 26}}px;">{{model.log}}
+    </div>
+  </tabpane>
+</tabs>
+
+<button style="position: absolute; bottom: 0; left: 0; height: 48px; width: 140px;"
+        ng-click="solveModel()"
+        class="btn btn-success">
+  <div ng-switch on="isComputing">
+    {{working}}
+    <span ng-switch-when="true"><img src="/images/working-green.gif"> Cancel</span>
+    <span ng-switch-when="false">Solve model</span>
+  </div>
+</button>
+
+</body>
+
+</html>

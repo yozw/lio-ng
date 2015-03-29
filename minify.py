@@ -2,8 +2,8 @@ import os
 import re
 import datetime
 
-INPUTDIR="./"
-OUTPUTDIR="appengine/static/"
+INPUTDIR="./src/"
+OUTPUTDIR="./appengine/"
 MINIFY_SRC=True
 USE_UGLIFY=True
 
@@ -125,7 +125,7 @@ def minify_worker(worker_path):
 
 
   
-minify_html('/src/index.html', '/src/index.js')
-minify_worker('/src/workers/worker.js')
+minify_html('/application/index.html', '/application/index.js')
+minify_worker('/application/workers/worker.js')
 
 

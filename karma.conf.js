@@ -22,21 +22,21 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'lib/jquery/jquery-2.1.0.min.js',
-      'lib/angular/angular.js',
-      'lib/angular/angular-mocks.js',
-      'lib/angular/angular-sanitize.js',
-      'lib/marked/angular-marked.js',
-      'lib/glpk/glpk.js',
-      'lib/ace/ace.js',
-      'lib/ui-bootstrap/ui-bootstrap.js',
-      'lib/ui-chart/chart.js',
-      'src/application.js',
-      'src/ace/*.js',
-      'src/common/*.js',
-      'src/directives/*.js',
-      'src/services/*.js',
-      'src/workers/math/*.js',
+      'src/lib/jquery/jquery-2.1.0.min.js',
+      'src/lib/angular/angular.js',
+      'src/lib/angular/angular-mocks.js',
+      'src/lib/angular/angular-sanitize.js',
+      'src/lib/marked/angular-marked.js',
+      'src/lib/glpk/glpk.js',
+      'src/lib/ace/ace.js',
+      'src/lib/ui-bootstrap/ui-bootstrap.js',
+      'src/lib/ui-chart/chart.js',
+      'src/application/application.js',
+      'src/application/ace/*.js',
+      'src/application/common/*.js',
+      'src/application/directives/*.js',
+      'src/application/services/*.js',
+      'src/application/workers/math/*.js',
       'test/**/*.Test.js',
 
       { pattern: './src/**/*', included: false }
@@ -49,8 +49,8 @@ module.exports = function(config) {
     ],
 
     proxies:  {
-      '/lib': 'http://localhost:9876/base/lib',
-      '/src': 'http://localhost:9876/base/src'
+      '/lib': 'http://localhost:9876/base/src/lib',
+      '/application': 'http://localhost:9876/base/src/application'
     },
 
     // preprocess matching files before serving them to the browser
