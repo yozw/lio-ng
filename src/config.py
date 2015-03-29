@@ -10,13 +10,6 @@ def getBaseDir():
   return os.path.dirname(__file__)
 
 
-def getAppEngineDir():
-  if PRODUCTION:
-    return getBaseDir()
-  else:
-    return os.path.normpath(os.path.join(getBaseDir(), "../appengine/"))
-
-
 def getSourceDirectory():
   return os.path.join(BASE_DIR, 'application/')
 
