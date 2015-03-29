@@ -159,7 +159,7 @@
       </div>
     </div>
   </tabpane>
-  <tabpane name="Output" level="2">
+  <tabpane name="Output" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <div id="results-output" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
       <h1>Model output</h1>
       <div ng-repeat="entry in model.results.output">
