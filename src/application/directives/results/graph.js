@@ -1,7 +1,7 @@
-var module = angular.module('directives.resultgraph', []);
+var module = angular.module('directives.results.graph', []);
 
 // TODO: Write unit tests
-module.directive('resultGraph', function () {
+module.directive('resultsGraph', function () {
   "use strict";
   return {
     restrict: "E",

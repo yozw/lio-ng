@@ -1,7 +1,7 @@
-var module = angular.module('directives.resultverbatim', []);
+var module = angular.module('directives.results.verbatim', []);
 
 // TODO: Write unit tests
-module.directive('resultVerbatim', function () {
+module.directive('resultsVerbatim', function () {
   "use strict";
   return {
     restrict: "E",

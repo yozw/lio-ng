@@ -5,9 +5,10 @@ var app = angular.module('lio-ng',
       'ui.grid',
       'directives.tabs',
       'directives.resizable',
-      'directives.resultgraph',
-      'directives.resulttable',
-      'directives.resultverbatim',
+      'directives.results.container',
+      'directives.results.graph',
+      'directives.results.table',
+      'directives.results.verbatim',
       'directives.mathjax',
       'ngSanitize'
     ]);

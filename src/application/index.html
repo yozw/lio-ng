@@ -32,9 +32,10 @@
   <script type="text/javascript" src="/application/ace/mode-gmpl.js"></script>
   <script type="text/javascript" src="/application/ace/theme-lio-ng.js"></script>
   <script type="text/javascript" src="/application/ace/ui-ace.js"></script>
-  <script type="text/javascript" src="/application/directives/resultgraph.js"></script>
-  <script type="text/javascript" src="/application/directives/resulttable.js"></script>
-  <script type="text/javascript" src="/application/directives/resultverbatim.js"></script>
+  <script type="text/javascript" src="/application/directives/results/container.js"></script>
+  <script type="text/javascript" src="/application/directives/results/graph.js"></script>
+  <script type="text/javascript" src="/application/directives/results/table.js"></script>
+  <script type="text/javascript" src="/application/directives/results/verbatim.js"></script>
   <script type="text/javascript" src="/application/directives/resizable.js"></script>
   <script type="text/javascript" src="/application/directives/mathjax.js"></script>
   <script type="text/javascript" src="/application/directives/tabs.js"></script>
@@ -62,7 +63,6 @@
   <link rel="stylesheet" type="text/css" href="/lib/jqplot/jquery.jqplot.css">
   <link rel="stylesheet" type="text/css" href="/lib/ui-grid/ui-grid-stable.css">
   <link rel="stylesheet" type="text/css" href="/css/application.css">
-  <link rel="stylesheet" type="text/css" href="/application/directives/resulttable.css">
 
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 
@@ -150,47 +150,24 @@
          style="height: {{windowHeight - 26}}px; width: 100%; font-size: 14px;"></div>
   </tabpane> -->
   <tabpane name="Results" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()">
-    <div id="results-overview" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h1>Model overview</h1>
-      <div ng-repeat="entry in model.results.overview">
-        <div ng-switch on="entry.type">
-          <result-table ng-switch-when="table" data="entry.table"></result-table>
-          <result-verbatim ng-switch-when="verbatim" ng-model="entry"></result-verbatim>
-          <result-graph ng-switch-when="graph" ng-model="entry.graph"></result-graph>
-        </div>
-      </div>
-    </div>
+    <results-container resizable style="height: {{windowHeight - 26}}px;"
+                       entries="model.results.overview"
+                       title="Model overview"></results-container>
   </tabpane>
   <tabpane name="Output" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
-    <div id="results-output" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h1>Output</h1>
-      <div ng-repeat="entry in model.results.output">
-        <div ng-switch on="entry.type">
-          <result-verbatim ng-switch-when="verbatim" ng-model="entry"></result-verbatim>
-          <result-graph ng-switch-when="graph" ng-model="entry.graph"></result-graph>
-        </div>
-      </div>
-    </div>
+    <results-container resizable style="height: {{windowHeight - 26}}px;"
+                       entries="model.results.output"
+                       title="Output"></results-container>
   </tabpane>
   <tabpane name="Variables" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
-    <div id="results-primal" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h1>Variables</h1>
-      <div ng-repeat="entry in model.results.primal">
-        <div ng-switch on="entry.type">
-          <result-table ng-switch-when="table" data="entry.table"></result-table>
-        </div>
-      </div>
-    </div>
+    <results-container resizable style="height: {{windowHeight - 26}}px;"
+                       entries="model.results.primal"
+                       title="Variables"></results-container>
   </tabpane>
   <tabpane name="Constraints" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
-    <div id="results-dual" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h1>Constraints</h1>
-      <div ng-repeat="entry in model.results.dual">
-        <div ng-switch on="entry.type">
-          <result-table ng-switch-when="table" data="entry.table"></result-table>
-        </div>
-      </div>
-    </div>
+    <results-container resizable style="height: {{windowHeight - 26}}px;"
+                       entries="model.results.dual"
+                       title="Constraints"></results-container>
   </tabpane>
   <tabpane name="Log messages">
     <div id="model-log"

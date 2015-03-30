@@ -1,7 +1,7 @@
-var module = angular.module('directives.resulttable', []);
+var module = angular.module('directives.results.table', []);
 
 // TODO: Write unit tests
-module.directive('resultTable', function () {
+module.directive('resultsTable', function () {
   "use strict";
 
   var options = {};
@@ -12,7 +12,7 @@ module.directive('resultTable', function () {
     scope: {
       data: '='
     },
-    templateUrl: '/application/directives/resulttable.html',
+    template: '<div><div ui-grid="options" class="grid"></div></div>',
     controller: controller
   };
 
