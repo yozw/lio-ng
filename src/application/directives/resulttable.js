@@ -45,9 +45,6 @@ module.directive('resultTable', function () {
     };
 
     var defaultOptions = {
-      selectedItems         : $scope.selectedItems,
-      showSelectionCheckbox : true,
-      showFooter            : true,
       filterOptions         : {
         filterText        : '',
         useExternalFilter : false
