@@ -6,16 +6,6 @@ module.directive('resultTable', function () {
 
   var options = {};
 
-  function formatNumber(value) {
-    if (value > 1e308) {
-      return "Inf";
-    } else if (value < -1e308) {
-      return "-Inf";
-    } else {
-      return parseFloat(value.toFixed(7));
-    }
-  }
-
   return {
     restrict: "E",
     replace: true,
@@ -29,7 +19,7 @@ module.directive('resultTable', function () {
   function getColumnDefs(columns) {
     var columnDefs = [];
     for (var i = 0; i < columns.length; i++) {
-      columnDefs.push({field: "" + i, displayName: columns[i].name});
+      columnDefs.push({field: "" + i, displayName: columns[i].name, cellFilter: 'formatValue'});
     }
     return columnDefs;
   }
@@ -70,4 +60,18 @@ module.directive('resultTable', function () {
   }
 });
 
-
+module.filter('formatValue', function () {
+  return function (value) {
+    if (typeof value === "number") {
+      if (value > 1e308) {
+        return "Inf";
+      } else if (value < -1e308) {
+        return "-Inf";
+      } else {
+        return parseFloat(value.toFixed(7));
+      }
+    } else {
+      return value;
+    }
+  };
+});
