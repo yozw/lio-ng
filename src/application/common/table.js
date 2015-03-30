@@ -34,6 +34,10 @@ var Table = function () {
 
   var columns = [];
   var rows = [];
+  var self = this;
+  self.options = {
+    showHeader: true
+  };
 
   this.addColumn = function (name) {
     var column = new Column(name);
@@ -71,6 +75,7 @@ var Table = function () {
   this.serialize = function () {
     var c, r;
     var object = {};
+    object.options = self.options;
     object.columns = [];
     object.rows = [];
     for (c = 0; c < columns.length; c++) {
@@ -84,7 +89,6 @@ var Table = function () {
       object.rows.push(row);
     }
     return object;
-  }
-
+  };
 };
 

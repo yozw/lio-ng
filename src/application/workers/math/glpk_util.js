@@ -16,15 +16,15 @@ GlpkUtil.GLP_COL_KIND[GLP_BV] = 'Binary';
 
 GlpkUtil.GLP_COL_STATUS = {};
 GlpkUtil.GLP_COL_STATUS[GLP_BS] = 'Basic';
-GlpkUtil.GLP_COL_STATUS[GLP_NL] = 'Lower bound';
-GlpkUtil.GLP_COL_STATUS[GLP_NU] = 'Upper bound';
+GlpkUtil.GLP_COL_STATUS[GLP_NL] = 'At lower bound';
+GlpkUtil.GLP_COL_STATUS[GLP_NU] = 'At upper bound';
 GlpkUtil.GLP_COL_STATUS[GLP_NF] = 'Free';
 GlpkUtil.GLP_COL_STATUS[GLP_NS] = 'Fixed';
 
 GlpkUtil.GLP_ROW_STATUS = {};
 GlpkUtil.GLP_ROW_STATUS[GLP_BS] = 'Basic';
-GlpkUtil.GLP_ROW_STATUS[GLP_NL] = 'LoBnd';
-GlpkUtil.GLP_ROW_STATUS[GLP_NU] = 'UpBnd';
+GlpkUtil.GLP_ROW_STATUS[GLP_NL] = 'At lower bound';
+GlpkUtil.GLP_ROW_STATUS[GLP_NU] = 'At upper bound';
 GlpkUtil.GLP_ROW_STATUS[GLP_NF] = 'Free';
 GlpkUtil.GLP_ROW_STATUS[GLP_NS] = 'Fixed';
 
@@ -395,6 +395,7 @@ GlpkUtil.getOverviewTable = function (lp) {
   row.setValue(labelColumn, "Non-binary nonzero coefficients");
   row.setValue(valueColumn, glp_get_num_nz(lp));
 
+  table.options.showHeader = false;
   return table;
 };
 

@@ -27,8 +27,6 @@ module.directive('resultsTable', function () {
   function controller($scope) {
     $scope.selectedItems = [];
 
-    var customOptions = $scope.customOptions;
-
     var fixedOptions = {
       columnDefs  : getColumnDefs($scope.data.columns),
       data        : $scope.data.rows
@@ -41,13 +39,11 @@ module.directive('resultsTable', function () {
       }
     };
 
-    options = {};
+    $scope.options = {};
 
-    angular.extend(options, defaultOptions);
-    angular.extend(options, customOptions);
-    angular.extend(options, fixedOptions);
-
-    $scope.options = options;
+    angular.extend($scope.options, defaultOptions);
+    angular.extend($scope.options, $scope.customOptions);
+    angular.extend($scope.options, fixedOptions);
 
     $scope.$watch('search', function(value) {
       $scope.options.filterOptions.filterText = value;
@@ -56,6 +52,8 @@ module.directive('resultsTable', function () {
     $scope.$watch('data', function(data) {
       $scope.options.columnDefs = getColumnDefs(data.columns);
       $scope.options.data = data.rows;
+      $scope.options.showHeader = data.options.showHeader;
+      //$scope.gridApi.core.refresh();
     });
   }
 });

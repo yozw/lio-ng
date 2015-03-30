@@ -89,6 +89,7 @@ describe("GlpkUtil", function () {
     expect(table.getRow(1).getValue(nameColumn)).toEqual("x2");
     expect(table.getRow(1).getValue(valueColumn)).toEqual(4.5);
     expect(table.getRow(1).getValue(statusColumn)).toEqual("Basic");
+    expect(table.options.showHeader).toEqual(false);
   });
 
   it('getPrimalSolutionTable generates a valid table for MIP', function () {
@@ -106,6 +107,7 @@ describe("GlpkUtil", function () {
     expect(table.getRow(1).getValue(nameColumn)).toEqual("x2");
     expect(table.getRow(1).getValue(valueColumn)).toEqual(6);
     expect(table.getRow(1).getValue(statusColumn)).toEqual("Basic");
+    expect(table.options.showHeader).toEqual(true);
   });
 
   it('getConstraintsTable generates a valid table', function () {
@@ -120,6 +122,7 @@ describe("GlpkUtil", function () {
     expect(table.getRow(2).getValue(nameColumn)).toEqual("c12");
     expect(table.getRow(3).getValue(nameColumn)).toEqual("c13");
     expect(table.getRow(4).getValue(nameColumn)).toEqual("c14");
+    expect(table.options.showHeader).toEqual(true);
   });
 });
 
