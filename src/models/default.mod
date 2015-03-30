@@ -22,7 +22,7 @@ point exists.
 
 Linear optimization models can be expressed in the following standard form:
 
-begin{equation}
+\begin{equation}
 \begin{array}{ll}
 \max & \mathbf{c}^{\sf T}\mathbf{x} \\
 \mbox{s.t.} & \mathbf{A}\mathbf{x} \leq \mathbf{b} \\
