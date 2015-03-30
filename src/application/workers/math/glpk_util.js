@@ -359,11 +359,11 @@ GlpkUtil.getOverviewTable = function (lp) {
     row = table.addRow();
     row.setValue(labelColumn, "Objective");
     row.setValue(valueColumn, direction + ' ' + glp_get_obj_name(lp));
-  }
 
-  row = table.addRow();
-  row.setValue(labelColumn, "Optimal objective value");
-  row.setValue(valueColumn,  GlpkUtil.getObjectiveValue(lp));
+    row = table.addRow();
+    row.setValue(labelColumn, "Optimal objective value");
+    row.setValue(valueColumn,  GlpkUtil.getObjectiveValue(lp));
+  }
 
   row = table.addRow();
   row.setValue(labelColumn, "Total number of variables");
