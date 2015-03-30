@@ -1,8 +1,8 @@
-# Linear and Integer Optimization App
+## Linear and Integer Optimization App
 
 This is the source code for the app at http://online-optimizer.appspot.com.
 
-## Getting started
+### Getting started
 First install the prerequisites:
 
 * [Git](http://git-scm.com/downloads)
@@ -24,7 +24,7 @@ into subdirectories of `lio-ng`)
     ./setup.sh
 
 
-## Scripts
+### Scripts
 The main source directory contains several useful scripts:
 
 * `devserver.sh` starts a local development server for the app at http://localhost:8080.
@@ -35,7 +35,7 @@ locally at http://localhost:8080.
 * `deploy-test.sh` builds the application for deployment, and deploys it to the test server.
 
 
-## Directory structure
+### Directory structure
 The directory structure is as follows:
 
 * `src/` contains the source code for the app.
