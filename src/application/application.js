@@ -2,6 +2,7 @@ var app = angular.module('lio-ng',
     [ 'ui.bootstrap',
       'ui.ace',
       'ui.chart',
+      'ui.grid',
       'directives.tabs',
       'directives.resizable',
       'directives.resultgraph',
@@ -158,8 +159,11 @@ app.controller('ButterBarCtrl', function ($scope, messageService) {
 app.controller('ResultsTabCtrl', function ($scope, uiChartRefreshService, $log) {
   "use strict";
   $scope.refresh = function() {
-    $log.debug('Refeshing charts');
     uiChartRefreshService.refreshAll();
+    window.setTimeout(function(){
+      // Slightly hacky way to make ui-grid tables refresh
+      $(window).resize();
+    }, 50);
   };
 });
 

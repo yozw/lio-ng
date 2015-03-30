@@ -27,6 +27,7 @@
   <script type="text/javascript" src="/lib/marked/angular-marked.js"></script>
   <script type="text/javascript" src="/lib/ui-bootstrap/ui-bootstrap.js"></script>
   <script type="text/javascript" src="/lib/ui-chart/chart.js"></script>
+  <script type="text/javascript" src="/lib/ui-grid/ui-grid-stable.js"></script>
   <script type="text/javascript" src="/application/boot.js"></script>
   <script type="text/javascript" src="/application/ace/mode-gmpl.js"></script>
   <script type="text/javascript" src="/application/ace/theme-lio-ng.js"></script>
@@ -59,6 +60,7 @@
   <script type="text/javascript" src="/application/ace/token-tooltip.js"></script>
   <link rel="stylesheet" type="text/css" href="/lib/ui-bootstrap/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/lib/jqplot/jquery.jqplot.css">
+  <link rel="stylesheet" type="text/css" href="/lib/ui-grid/ui-grid-stable.css">
   <link rel="stylesheet" type="text/css" href="/css/application.css">
   <link rel="stylesheet" type="text/css" href="/application/directives/resulttable.css">
 
@@ -152,7 +154,7 @@
       <h1>Model overview</h1>
       <div ng-repeat="entry in model.results.overview">
         <div ng-switch on="entry.type">
-          <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
+          <result-table ng-switch-when="table" data="entry.table"></result-table>
           <result-verbatim ng-switch-when="verbatim" ng-model="entry"></result-verbatim>
           <result-graph ng-switch-when="graph" ng-model="entry.graph"></result-graph>
         </div>
@@ -161,7 +163,7 @@
   </tabpane>
   <tabpane name="Output" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <div id="results-output" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
-      <h1>Model output</h1>
+      <h1>Output</h1>
       <div ng-repeat="entry in model.results.output">
         <div ng-switch on="entry.type">
           <result-verbatim ng-switch-when="verbatim" ng-model="entry"></result-verbatim>
@@ -170,22 +172,22 @@
       </div>
     </div>
   </tabpane>
-  <tabpane name="Variables" level="2">
+  <tabpane name="Variables" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <div id="results-primal" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
       <h1>Variables</h1>
       <div ng-repeat="entry in model.results.primal">
         <div ng-switch on="entry.type">
-          <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
+          <result-table ng-switch-when="table" data="entry.table"></result-table>
         </div>
       </div>
     </div>
   </tabpane>
-  <tabpane name="Constraints" level="2">
+  <tabpane name="Constraints" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <div id="results-dual" class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
       <h1>Constraints</h1>
       <div ng-repeat="entry in model.results.dual">
         <div ng-switch on="entry.type">
-          <result-table ng-switch-when="table" ng-model="entry.table"></result-table>
+          <result-table ng-switch-when="table" data="entry.table"></result-table>
         </div>
       </div>
     </div>

@@ -1,12 +1,3 @@
-<table class="result-table">
-  <tr>
-    <th ng-repeat="column in ngModel.columns track by $index">
-      {{column.name}}
-    </th>
-  </tr>
-  <tr ng-repeat="row in ngModel.rows track by $index">
-    <td ng-repeat="value in row track by $index">
-      {{formatValue(value)}}
-    </td>
-  </tr>
-</table>
+<div>
+  <div ui-grid="options" class="grid"></div>
+</div>
