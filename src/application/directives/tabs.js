@@ -17,6 +17,7 @@ module.directive('tabs', function () {
         if (child.hasClass('tab-pane')) {
           var tab = {
             element: child,
+            id: child.attr('id'),
             name: child.attr('name'),
             level: parseInt(child.attr('level'))
           };
@@ -30,7 +31,23 @@ module.directive('tabs', function () {
       scope.setActiveTab(0);
     },
     controller: function ($scope) {
+      function getTabById(id) {
+        for (var i = 0; i < $scope.containers.length; i++) {
+          if ($scope.containers[i].id === id) {
+            return i;
+          }
+        }
+        return null;
+      }
+
       $scope.setActiveTab = function (newActiveTab) {
+        // If the argument is a string, interpret it as an id and look it up first.
+        if (typeof newActiveTab === "string") {
+          newActiveTab = getTabById(newActiveTab);
+          if (newActiveTab === null) {
+            return;
+          }
+        }
         var element;
         var oldActiveTab = $scope.activeTab;
 

@@ -141,6 +141,12 @@ app.controller('AppCtrl', function (
       storageService.readModel('gdrive:' + fileId);
     });
   };
+
+  $scope.activateTab = function(id) {
+    // TODO: This is a code smell; do this properly.
+    var tabScope = angular.element(document.getElementById('main-tabs')).scope();
+    tabScope.setActiveTab(id);
+  }
 });
 
 app.factory('model', function () {
