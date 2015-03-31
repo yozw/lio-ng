@@ -152,7 +152,8 @@
   <tabpane name="Solution" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()">
     <div class="scrollable" resizable style="height: {{windowHeight - 26}}px;">
       <h1>Solution</h1>
-      <div ng-if="model.results.overview == null || model.results.overview.length == 0"  class="bs-callout bs-callout-info">
+      <div ng-if="(model.results.overview == null || model.results.overview.length == 0) && (!isComputing)"
+           class="bs-callout bs-callout-info">
         Press "Solve model" to solve the model.
       </div>
       <p>Here, you can find several aspects of the solution of the model:</p>

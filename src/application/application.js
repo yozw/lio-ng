@@ -57,12 +57,7 @@ app.controller('AppCtrl', function (
   // Bind solver service callback
   solverService.setCallback({
     start: function() {
-      model.log = "";
-      model.results = {};
-      model.results.overview = [];
-      model.results.output = [];
-      model.results.primal = [];
-      model.results.dual = [];
+      $scope.clearResults();
       $scope.isComputing = true;
     },
     output: function(message) {
@@ -95,10 +90,14 @@ app.controller('AppCtrl', function (
     }
   });
 
-  // Initialize scope variables
-  $scope.examples = examples;
-  $scope.model = model;
-  $scope.isComputing = false;
+  $scope.clearResults = function() {
+    model.log = "";
+    model.results = {};
+    model.results.overview = [];
+    model.results.output = [];
+    model.results.primal = [];
+    model.results.dual = [];
+  };
 
   // Initialize scope functions
   $scope.solveModel = function () {
@@ -129,11 +128,13 @@ app.controller('AppCtrl', function (
   $scope.loadModel = function (url) {
     if (url !== undefined) {
       storageService.readModel(url);
+      $scope.clearResults();
     }
   };
 
   $scope.newModel = function () {
     storageService.readModel("builtin:empty.mod");
+    $scope.clearResults();
   };
 
   $scope.exportModel = function () {
@@ -143,6 +144,7 @@ app.controller('AppCtrl', function (
   $scope.loadModelFromDrive = function () {
     googlePickerService.pickDriveModel(function (fileId) {
       storageService.readModel('gdrive:' + fileId);
+      $scope.clearResults();
     });
   };
 
@@ -150,7 +152,13 @@ app.controller('AppCtrl', function (
     // TODO: This is a code smell; do this properly.
     var tabScope = angular.element(document.getElementById('main-tabs')).scope();
     tabScope.setActiveTab(id);
-  }
+  };
+
+  // Initialize scope variables
+  $scope.examples = examples;
+  $scope.model = model;
+  $scope.isComputing = false;
+  $scope.clearResults();
 });
 
 app.factory('model', function () {
