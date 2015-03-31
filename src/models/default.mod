@@ -6,7 +6,7 @@ This is an online solver for linear optimization models, primarily developed for
 
 ## Getting started
 Choose any of the examples in the top menu to start with an example from the book, or create a
-<a>new model</a>.
+new model by choosing Model &gt New model.
 
 ## About linear optimization
 Linear optimization (also called linear programming) is a mathematical method to achieve the best outcome

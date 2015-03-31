@@ -132,6 +132,10 @@ app.controller('AppCtrl', function (
     }
   };
 
+  $scope.newModel = function () {
+    storageService.readModel("builtin:empty.mod");
+  };
+
   $scope.exportModel = function () {
     exportDialog.open(model);
   };
