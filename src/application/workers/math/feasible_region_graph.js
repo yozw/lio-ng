@@ -2,6 +2,26 @@
 
 var FeasibleRegionGraph = Object();
 
+FeasibleRegionGraph._addPolygon = function(graph, points) {
+  // Add a polygon for the feasible region
+  if (points.length === 2) {
+    graph.addPolygon(points);
+  } else if (points.length > 2) {
+    var hull = new ConvexHull();
+    hull.compute(points);
+    var indices = hull.getIndices();
+    var data = [];
+    for (var i = 0; i < indices.length; i++) {
+      var index = indices[i];
+      data.push(points[index]);
+    }
+    if (data.length > 1) {
+      data.push(data[0]);
+    }
+    graph.addPolygon(data);
+  }
+};
+
 FeasibleRegionGraph._drawFeasibleRegion = function(graph, lp) {
   // Obtain all constraints, and add them as lines in the resulting graph
   var constraints = GlpkUtil.getConstraints(lp);
@@ -46,27 +66,17 @@ FeasibleRegionGraph._drawFeasibleRegion = function(graph, lp) {
 
   // Calculate the vertices of this artificially constrained problem
   var artificialVertices = MathUtil.getBasicSolutions(constraints.matrix, constraints.rhs).feasible;
+  var objectiveVector = GlpkUtil.getObjectiveVector(lp);
+  var optArtificialVertices = MathUtil.getOptimalPoints(artificialVertices, objectiveVector);
+  var optVertices = MathUtil.getOptimalPoints(basicSolutions.feasible, objectiveVector);
 
-  // Add a polygon for the feasible region
-  if (artificialVertices.length === 2) {
-    graph.addPolygon(artificialVertices);
-  } else if (artificialVertices.length > 2) {
-    var hull = new ConvexHull();
-    hull.compute(artificialVertices);
-    var indices = hull.getIndices();
-    var data = [];
-    for (i = 0; i < indices.length; i++) {
-      var index = indices[i];
-      data.push(artificialVertices[index]);
-    }
-    if (data.length > 1) {
-      data.push(data[0]);
-    }
-    graph.addPolygon(data);
-  }
+  FeasibleRegionGraph._addPolygon(graph, artificialVertices);
+  //TODO: use different color/zindex for this polygon + points
+  //FeasibleRegionGraph._addPolygon(graph, optArtificialVertices);
 
   // Add all feasible basic solutions as points
   graph.addScatterPlot(basicSolutions.feasible);
+  //graph.addScatterPlot(optVertices);
 
   return vertexBounds;
 };

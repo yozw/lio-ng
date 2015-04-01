@@ -107,6 +107,27 @@ MathUtil.getBasicSolutions = function (matrix, rhs) {
   };
 };
 
+MathUtil.getOptimalPoints = function (points, objVector) {
+  var curBestObjective = -Infinity;
+  var optimal = [];
+
+  for (var i = 0; i < points.length; i++) {
+    var point = points[i];
+    var z = 0;
+    for (var j = 0; j < objVector.length; j++) {
+      z += objVector[j] * point[j];
+    }
+    if (z >= curBestObjective) {
+      if (z > curBestObjective) {
+        optimal = [];
+        curBestObjective = z;
+      }
+      optimal.push(point);
+    }
+  }
+  return optimal;
+};
+
 /**
  * Calculates the two intersections between the two-dimensional line {@code normal . [x y] = rhs} and the two-dimensional
  * box given by {@code minX <= x <= maxX} and {@code minY <= y <= maxY}.
