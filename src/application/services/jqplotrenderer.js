@@ -73,16 +73,23 @@ app.service('jqPlotRenderService', function () {
     return layers.map(toTriple).sort(tripleComparator).map(getLayer);
   }
 
-  function getSeriesData(layer) {
+  function getSeriesData(layer, graph) {
     if (layer.type === "line") {
-      return MathUtil.getLineEndpoints(layer.normal, layer.rhs, -10, 10, -10, 10);
+      return MathUtil.getLineEndpoints(
+          layer.normal,
+          layer.rhs,
+          graph.xrange.min,
+          graph.xrange.max,
+          graph.yrange.min,
+          graph.yrange.max);
     } else {
       return layer.data;
     }
   }
   
   function getSeriesOptions(layer) {
-    return defaultSeriesOptions[layer.type];
+    // Make a deep copy of the default options
+    return jQuery.extend(true, {}, defaultSeriesOptions[layer.type]);
   }
 
   return {
@@ -92,8 +99,16 @@ app.service('jqPlotRenderService', function () {
       var seriesOptions = [];
 
       for (var i = 0; i < layers.length; i++) {
-        seriesData.push(getSeriesData(layers[i]));
-        seriesOptions.push(getSeriesOptions(layers[i]));
+        var layer = layers[i];
+        var data = getSeriesData(layer, graph);
+        var options = getSeriesOptions(layers[i]);
+
+        // Bug in jqPlot: a polygon with two points might be filled incorrectly.
+        if ((layer.type === "polygon") && (layer.data.length <= 2)) {
+          options.fill = false;
+        }
+        seriesData.push(data);
+        seriesOptions.push(options);
       }
 
       var jqPlot = {};
@@ -109,8 +124,9 @@ app.service('jqPlotRenderService', function () {
       jqPlot.options.axes.yaxis.max = graph.yrange.max;
 
       jqPlot.options.series = seriesOptions;
+
+      console.log(jqPlot);
       return jqPlot;
     }
   };
 });
-

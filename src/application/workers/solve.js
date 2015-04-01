@@ -5,20 +5,30 @@ function actionSolve(e) {
     return;
   }
 
-  if (result.status === "infeasible") {
-    return "The model is infeasible.";
-  } else if (result.status === "unbounded") {
-    return "The model is unbounded.";
-  } else if (result.status === "optimal") {
-    var lp = result.lp;
-    postTable('overview', GlpkUtil.getOverviewTable(lp));
-    postTable('primal', GlpkUtil.getPrimalSolutionTable(lp));
-    postTable('dual', GlpkUtil.getConstraintsTable(lp));
-    if (glp_get_num_cols(lp) === 2) {
-      postGraph('overview', FeasibleRegionGraph.create(lp));
-    }
-    return "An optimal solution was found.";
-  } else {
-    return "An error occurred while solving (status = " + result.status + ")";
+  var lp = result.lp;
+
+  postTable('overview', GlpkUtil.getOverviewTable(lp, result.statusMessage));
+
+  switch (result.status) {
+    case GlpkUtil.STATUS_INFEASIBLE:
+    case GlpkUtil.STATUS_UNBOUNDED:
+      if (glp_get_num_cols(lp) === 2) {
+        postGraph('overview', FeasibleRegionGraph.create(lp));
+      }
+      return result.statusMessage;
+
+    case GlpkUtil.STATUS_OPTIMAL:
+      postTable('primal', GlpkUtil.getPrimalSolutionTable(lp));
+      postTable('dual', GlpkUtil.getConstraintsTable(lp));
+      if (glp_get_num_cols(lp) === 2) {
+        postGraph('overview', FeasibleRegionGraph.create(lp));
+      }
+      return "An optimal solution was found.";
+
+    case GlpkUtil.STATUS_ERROR:
+      throw result.statusMessage;
+
+    default:
+      throw "Unknown status.";
   }
 }

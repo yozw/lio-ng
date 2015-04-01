@@ -39,8 +39,11 @@ describe("MathUtil", function () {
   it('determines the vertices of a set of linear inequalities', function () {
     var A = [[-1, 0], [0, -1], [1, 1], [3, 1], [1, 0], [0, 1]];
     var b = [0, 0, 9, 18, 7, 6];
-    var expectedVertices = [ [0, 0], [0, 6], [6, 0], [4.5, 4.5], [3, 6] ];
-    expect(MathUtil.getVertices(A, b)).toEqual(expectedVertices);
+    var feasibleBasicSolutions = [ [0, 0], [0, 6], [6, 0], [4.5, 4.5], [3, 6] ];
+    var infeasibleBasicSolutions =  [ [0, 9], [0, 18], [9, 0], [7, 0], [7, 2], [7, -3], [4, 6], [7, 6] ];
+    var basicSolutions = MathUtil.getBasicSolutions(A, b);
+    expect(basicSolutions.feasible).toEqual(feasibleBasicSolutions);
+    expect(basicSolutions.infeasible).toEqual(infeasibleBasicSolutions);
   });
 
   it('calculates intersections of a vertical line and box', function () {

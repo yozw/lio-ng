@@ -68,8 +68,10 @@ MathUtil.uniqueBy = function(array, keyFn) {
   });
 };
 
-MathUtil.getVertices = function (matrix, rhs) {
-  var vertices = [];
+MathUtil.getBasicSolutions = function (matrix, rhs) {
+  var feasible = [];
+  var infeasible = [];
+
   for (var i = 0; i < matrix.length; i++) {
     for (var j = i + 1; j < matrix.length; j++) {
       // Solve 2 x 2 system corresponding to constraint i and j
@@ -92,11 +94,17 @@ MathUtil.getVertices = function (matrix, rhs) {
         }
       }
       if (isFeasible) {
-        vertices.push(point);
+        feasible.push(point);
+      } else {
+        infeasible.push(point);
       }
     }
   }
-  return MathUtil.uniqueBy(vertices, JSON.stringify);
+
+  return {
+    feasible: MathUtil.uniqueBy(feasible, JSON.stringify),
+    infeasible: MathUtil.uniqueBy(infeasible, JSON.stringify)
+  };
 };
 
 /**

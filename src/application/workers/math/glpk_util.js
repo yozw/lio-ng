@@ -9,6 +9,11 @@ var GlpkUtil = Object();
 GlpkUtil.MODEL_NAME = "editor.mod";
 GlpkUtil.ERROR_MSG_RE = new RegExp(GlpkUtil.MODEL_NAME.replace(".", "\\.") + ":([0-9]+):(.*)");
 
+GlpkUtil.STATUS_OPTIMAL = 1;
+GlpkUtil.STATUS_INFEASIBLE = 2;
+GlpkUtil.STATUS_UNBOUNDED = 3;
+GlpkUtil.STATUS_ERROR = 0;
+
 GlpkUtil.GLP_COL_KIND = {};
 GlpkUtil.GLP_COL_KIND[GLP_CV] = 'Real';
 GlpkUtil.GLP_COL_KIND[GLP_IV] = 'Integer';
@@ -28,6 +33,24 @@ GlpkUtil.GLP_ROW_STATUS[GLP_NU] = 'At upper bound';
 GlpkUtil.GLP_ROW_STATUS[GLP_NF] = 'Free';
 GlpkUtil.GLP_ROW_STATUS[GLP_NS] = 'Fixed';
 
+GlpkUtil.GLP_SOLVER_STATUS = {};
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EBADB] = "Invalid basis.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_ESING] = "Singular matrix.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_ECOND] = "Ill-conditioned matrix.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EBOUND] = "The model contains one or more variables with invalid bounds.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EFAIL] = "Solver failed";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EOBJLL] = "Objective lower limit reached.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EOBJUL] = "Objective upper limit reached.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EITLIM] = "Iteration limit exceeded.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_ETMLIM] = "Time limit exceeded.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EROOT] = "Root LP optimum not provided.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_ESTOP] = "Search terminated by application.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EMIPGAP] = "Search terminated by application.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_ENOFEAS] = "No primal/dual feasible solution.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_ENOCVG] = "No convergence.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EINSTAB] = "Numerical instability.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_EDATA] = "Invalid data.";
+GlpkUtil.GLP_SOLVER_STATUS[GLP_ERANGE] = "Result out of range.";
 
 //-----------------------------------------------------------------------------
 // LOGGING FUNCTIONS
@@ -246,61 +269,35 @@ GlpkUtil.solveGmpl = function (code) {
       throw "Invalid optimization direction";
     }
 
-    var status;
+    var status, statusMessage;
     var objectiveValue;
 
     switch (glpStatus) {
       case GLP_ENOPFS:
-        status = "infeasible";
+        status = GlpkUtil.STATUS_INFEASIBLE;
+        statusMessage = "The model is infeasible.";
         objectiveValue = isMinimizing ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
         break;
       case GLP_ENODFS:
-        status = "unbounded";
+        status = GlpkUtil.STATUS_UNBOUNDED;
+        statusMessage = "The model is unbounded.";
         objectiveValue = isMinimizing ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
         break;
       case 0:
-        status = "optimal";
+        status = GlpkUtil.STATUS_OPTIMAL;
+        statusMessage = "Optimal.";
         objectiveValue = GlpkUtil.getObjectiveValue(lp);
         break;
-      case GLP_EBADB:
-        throw "Invalid basis.";
-      case GLP_ESING:
-        throw "Singular matrix.";
-      case GLP_ECOND:
-        throw "Ill-conditioned matrix.";
-      case GLP_EBOUND:
-        throw "The model contains one or more variables with invalid bounds.";
-      case GLP_EFAIL:
-        throw "Solver failed";
-      case GLP_EOBJLL:
-        throw "Objective lower limit reached.";
-      case GLP_EOBJUL:
-        throw "Objective upper limit reached.";
-      case GLP_EITLIM:
-        throw "Iteration limit exceeded.";
-      case GLP_ETMLIM:
-        throw "Time limit exceeded.";
-      case GLP_EROOT:
-        throw "Root LP optimum not provided.";
-      case GLP_ESTOP:
-        throw "Search terminated by application.";
-      case GLP_EMIPGAP:
-        throw "Search terminated by application.";
-      case GLP_ENOFEAS:
-        throw "No primal/dual feasible solution.";
-      case GLP_ENOCVG:
-        throw "No convergence.";
-      case GLP_EINSTAB:
-        throw "Numerical instability.";
-      case GLP_EDATA:
-        throw "Invalid data.";
-      case GLP_ERANGE:
-        throw "Result out of range.";
       default:
-        throw "Simplex algorithm returned unknown status (" + glpStatus + ")";
+        status = GlpkUtil.STATUS_ERROR;
+        statusMessage = GlpkUtil.GLP_SOLVER_STATUS[glpStatus];
+        objectiveValue = NaN;
+        if (status == null) {
+          statusMessage = "Solver algorithm returned an unknown status (" + glpStatus + ").";
+        }
     }
 
-    return {lp: lp, status: status, objectiveValue: objectiveValue};
+    return {lp: lp, status: status, statusMessage: statusMessage, objectiveValue: objectiveValue};
   }
 
   try {
@@ -310,18 +307,21 @@ GlpkUtil.solveGmpl = function (code) {
     glp_scale_prob(lp, GLP_SF_AUTO);
 
     var info;
-    if (!GlpkUtil.isMip(lp)) {
+    var glpkStatus;
+    var isMip = GlpkUtil.isMip(lp);
+    if (!isMip) {
       GlpkUtil.info("Solving the model using the simplex optimizer");
       var smcp = new SMCP({presolve: GLP_ON});
-      var simplexStatus = glp_simplex(lp, smcp);
-      info = getSolverStatus(simplexStatus, lp);
-      glp_mpl_postsolve(workspace, lp, GLP_SOL);
+      glpkStatus = glp_simplex(lp, smcp);
     } else {
       GlpkUtil.info("The model has integer variables: solving the model using the mixed-integer optimizer");
       var iocp = new IOCP({presolve: GLP_ON});
-      var intOptStatus = glp_intopt(lp, iocp);
-      info = getSolverStatus(intOptStatus, lp);
-      glp_mpl_postsolve(workspace, lp, GLP_MIP);
+      glpkStatus = glp_intopt(lp, iocp);
+    }
+
+    info = getSolverStatus(glpkStatus, lp);
+    if (info.status !== GlpkUtil.STATUS_ERROR) {
+      glp_mpl_postsolve(workspace, lp, isMip ? GLP_MIP : GLP_SOL);
     }
     return info;
   } catch (error) {
@@ -338,9 +338,10 @@ GlpkUtil.solveGmpl = function (code) {
 /**
  * Constructs a solution table for the specified lp object.
  * @param lp
+ * @param statusMessage
  * @returns {Table}
  */
-GlpkUtil.getOverviewTable = function (lp) {
+GlpkUtil.getOverviewTable = function (lp, statusMessage) {
   "use strict";
   var numBinary = glp_get_num_bin(lp);
   var numInteger = glp_get_num_int(lp) - numBinary;
@@ -363,6 +364,12 @@ GlpkUtil.getOverviewTable = function (lp) {
     row = table.addRow();
     row.setValue(labelColumn, "Optimal objective value");
     row.setValue(valueColumn,  GlpkUtil.getObjectiveValue(lp));
+  }
+
+  if (statusMessage !== null) {
+    row = table.addRow();
+    row.setValue(labelColumn, "Solver status");
+    row.setValue(valueColumn, statusMessage);
   }
 
   row = table.addRow();

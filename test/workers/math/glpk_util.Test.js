@@ -89,7 +89,7 @@ describe("GlpkUtil", function () {
     expect(table.getRow(1).getValue(nameColumn)).toEqual("x2");
     expect(table.getRow(1).getValue(valueColumn)).toEqual(4.5);
     expect(table.getRow(1).getValue(statusColumn)).toEqual("Basic");
-    expect(table.options.showHeader).toEqual(false);
+    expect(table.options.showHeader).toEqual(true);
   });
 
   it('getPrimalSolutionTable generates a valid table for MIP', function () {
