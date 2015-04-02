@@ -59,3 +59,20 @@ Function.prototype.memoize = function () {
   wrapper.cache = cache;
   return wrapper;
 };
+
+/**
+ * jQuery-like extend function (used by workers that do not import jQuery).
+ * @param options
+ * @param extraOptions
+ * @returns {*}
+ */
+function extend(options, extraOptions) {
+  if (extraOptions !== undefined && extraOptions !== null) {
+    for (var key in extraOptions) {
+      if (extraOptions.hasOwnProperty(key)) {
+        options[key] = extraOptions[key];
+      }
+    }
+  }
+  return options;
+}

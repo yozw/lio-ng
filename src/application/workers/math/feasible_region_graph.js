@@ -2,10 +2,10 @@
 
 var FeasibleRegionGraph = Object();
 
-FeasibleRegionGraph._addPolygon = function(graph, points) {
+FeasibleRegionGraph._addPolygon = function(graph, points, options) {
   // Add a polygon for the feasible region
   if (points.length === 2) {
-    graph.addPolygon(points);
+    graph.addPolygon(points, options);
   } else if (points.length > 2) {
     var hull = new ConvexHull();
     hull.compute(points);
@@ -18,7 +18,7 @@ FeasibleRegionGraph._addPolygon = function(graph, points) {
     if (data.length > 1) {
       data.push(data[0]);
     }
-    graph.addPolygon(data);
+    graph.addPolygon(data, options);
   }
 };
 
@@ -70,13 +70,16 @@ FeasibleRegionGraph._drawFeasibleRegion = function(graph, lp) {
   var optArtificialVertices = MathUtil.getOptimalPoints(artificialVertices, objectiveVector);
   var optVertices = MathUtil.getOptimalPoints(basicSolutions.feasible, objectiveVector);
 
-  FeasibleRegionGraph._addPolygon(graph, artificialVertices);
-  //TODO: use different color/zindex for this polygon + points
-  //FeasibleRegionGraph._addPolygon(graph, optArtificialVertices);
+  FeasibleRegionGraph._addPolygon(graph, artificialVertices, {zIndex: 1});
+  FeasibleRegionGraph._addPolygon(graph, optArtificialVertices, {
+    zIndex: 10,
+    color: "#000080",
+    fillColor: "rgba(128,128,255,0.5)"
+  });
 
   // Add all feasible basic solutions as points
-  graph.addScatterPlot(basicSolutions.feasible);
-  //graph.addScatterPlot(optVertices);
+  graph.addScatterPlot(basicSolutions.feasible, {zIndex: 2});
+  graph.addScatterPlot(optVertices, {zIndex: 11, color: "#000080"});
 
   return vertexBounds;
 };

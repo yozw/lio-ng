@@ -19,6 +19,18 @@ describe("Graph", function () {
     expect(graph.layers.length).toEqual(1);
     expect(graph.layers[0].type).toEqual('scatter');
     expect(graph.layers[0].data).toEqual([[1, 1], [2, 2]]);
+    expect(graph.layers[0].options.zIndex).toEqual(0);
+  });
+
+  it('add a scatter plot with options', function () {
+    var graph = new Graph();
+    graph.addScatterPlot([[1, 1], [2, 2]], {color: "blue"});
+
+    expect(graph.layers.length).toEqual(1);
+    expect(graph.layers[0].type).toEqual('scatter');
+    expect(graph.layers[0].data).toEqual([[1, 1], [2, 2]]);
+    expect(graph.layers[0].options.zIndex).toEqual(0);
+    expect(graph.layers[0].options.color).toEqual("blue");
   });
 
   it('add a polygon', function () {
@@ -29,17 +41,20 @@ describe("Graph", function () {
     expect(graph.layers.length).toEqual(1);
     expect(graph.layers[0].type).toEqual('polygon');
     expect(graph.layers[0].data).toEqual([[1, 1], [2, 2]]);
+    expect(graph.layers[0].options.zIndex).toEqual(0);
   });
 
   it('add multiple layers', function () {
     var graph = new Graph();
 
     graph.addPolygon([[1, 1], [2, 2]]);
-    graph.addScatterPlot([[1, 1], [2, 2]]);
+    graph.addScatterPlot([[1, 1], [2, 2]], {zIndex: 5});
 
     expect(graph.layers.length).toEqual(2);
     expect(graph.layers[0].type).toEqual('polygon');
     expect(graph.layers[1].type).toEqual('scatter');
+    expect(graph.layers[0].options.zIndex).toEqual(0);
+    expect(graph.layers[1].options.zIndex).toEqual(5);
   });
 });
 

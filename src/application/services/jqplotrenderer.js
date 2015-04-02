@@ -55,7 +55,7 @@ app.service('jqPlotRenderService', function () {
     var i = 0;
     
     function toTriple(layer) {
-      return {index: i++, zIndex: layer.zIndex, layer: layer};
+      return {index: i++, zIndex: layer.options.zIndex, layer: layer};
     }
     
     function tripleComparator(item1, item2) {
@@ -89,7 +89,11 @@ app.service('jqPlotRenderService', function () {
   
   function getSeriesOptions(layer) {
     // Make a deep copy of the default options
-    return jQuery.extend(true, {}, defaultSeriesOptions[layer.type]);
+    var options = jQuery.extend(true, {}, defaultSeriesOptions[layer.type]);
+    if (layer.options !== undefined) {
+      options = jQuery.extend(true, options, layer.options);
+    }
+    return options;
   }
 
   return {

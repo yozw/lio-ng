@@ -18,37 +18,41 @@ var Graph = function () {
     self.yrange =  {min: minY, max: maxY};
   };
 
-  this.addScatterPlot = function (data) {
-    self.layers.push({
+  this.addScatterPlot = function (data, options) {
+    var layer = {
       type: 'scatter',
       data: data,
-      zIndex: 0
-    });
+      options: extend({zIndex: 0}, options)
+    };
+    self.layers.push(layer);
   };
 
-  this.addPolygon = function (data) {
-    self.layers.push({
+  this.addPolygon = function (data, options) {
+    var layer = {
       type: 'polygon',
       data: data,
-      zIndex: 0
-    });
+      options: extend({zIndex: 0}, options)
+    };
+    self.layers.push(layer);
   };
 
-  this.addLinePlot = function (data) {
-    self.layers.push({
+  this.addLinePlot = function (data, options) {
+    var layer = {
       type: 'plot',
       data: data,
-      zIndex: 0
-    });
+      options: extend({zIndex: 0}, options)
+    };
+    self.layers.push(layer);
   };
 
-  this.addLine = function (normal, rhs) {
-    self.layers.push({
+  this.addLine = function (normal, rhs, options) {
+    var layer = {
       type: 'line',
       normal: normal,
       rhs: rhs,
-      zIndex: 0
-    });
+      options: extend({zIndex: 0}, options)
+    };
+    self.layers.push(layer);
   };
 
   this.setXlabel = function (label) {
