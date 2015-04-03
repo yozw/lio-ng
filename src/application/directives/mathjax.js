@@ -7,7 +7,10 @@ module.directive("mathjaxBind", function($log, marked) {
       inlineMath: [['$','$'], ['\\(','\\)']],
       processEscapes: true
     },
-    skipStartupTypeset: true
+    skipStartupTypeset: true,
+    messageStyle: "none",
+    showMathMenu: false,
+    showMathMenuMSIE: false
   });
 
   var markedRenderer = new marked.Renderer();
