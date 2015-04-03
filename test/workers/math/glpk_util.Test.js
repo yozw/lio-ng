@@ -66,12 +66,48 @@ describe("GlpkUtil", function () {
   });
 
   it('finds the constraints of the LO model', function () {
-    var lp = GlpkUtil.solveGmpl(DOVETAIL).lp;
+    var lp = GlpkUtil.loadGmpl(DOVETAIL).lp;
     var constraints = GlpkUtil.getConstraints(lp);
     var expectedMatrix = [[-1, 0], [0, -1], [1, 1], [3, 1], [1, 0], [0, 1]];
     var expectedRhs = [0, 0, 9, 18, 7, 6];
     expect(constraints.matrix).toEqual(expectedMatrix);
     expect(constraints.rhs).toEqual(expectedRhs);
+  });
+
+  it('isMip returns true if and only if the model has integer variables', function () {
+    var lp = GlpkUtil.loadGmpl(DOVETAIL).lp;
+    expect(GlpkUtil.isMip(lp)).toEqual(false);
+
+    lp = GlpkUtil.loadGmpl(DOVETAIL_MIP).lp;
+    expect(GlpkUtil.isMip(lp)).toEqual(true);
+  });
+
+  it('getObjectiveVector returns the objective vector', function () {
+    var lp = GlpkUtil.loadGmpl(DOVETAIL).lp;
+    expect(GlpkUtil.getObjectiveVector(lp)).toEqual([3, 2]);
+
+    lp = GlpkUtil.loadGmpl(DOVETAIL.replace("maximize", "minimize")).lp;
+    expect(GlpkUtil.getObjectiveVector(lp)).toEqual([3, 2]);
+
+    lp = GlpkUtil.loadGmpl(DOVETAIL_MIP).lp;
+    expect(GlpkUtil.getObjectiveVector(lp)).toEqual([3, 2]);
+
+    lp = GlpkUtil.loadGmpl(DOVETAIL_MIP.replace("maximize", "minimize")).lp;
+    expect(GlpkUtil.getObjectiveVector(lp)).toEqual([3, 2]);
+  });
+
+  it('getMaximizingObjectiveVector returns the objective vector', function () {
+    var lp = GlpkUtil.loadGmpl(DOVETAIL).lp;
+    expect(GlpkUtil.getMaximizingObjectiveVector(lp)).toEqual([3, 2]);
+
+    lp = GlpkUtil.loadGmpl(DOVETAIL.replace("maximize", "minimize")).lp;
+    expect(GlpkUtil.getMaximizingObjectiveVector(lp)).toEqual([-3, -2]);
+
+    lp = GlpkUtil.loadGmpl(DOVETAIL_MIP).lp;
+    expect(GlpkUtil.getMaximizingObjectiveVector(lp)).toEqual([3, 2]);
+
+    lp = GlpkUtil.loadGmpl(DOVETAIL_MIP.replace("maximize", "minimize")).lp;
+    expect(GlpkUtil.getMaximizingObjectiveVector(lp)).toEqual([-3, -2]);
   });
 
   it('getPrimalSolutionTable generates a valid table', function () {

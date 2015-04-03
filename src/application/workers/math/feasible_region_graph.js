@@ -66,7 +66,7 @@ FeasibleRegionGraph._drawFeasibleRegion = function(graph, lp) {
 
   // Calculate the vertices of this artificially constrained problem
   var artificialVertices = MathUtil.getBasicSolutions(constraints.matrix, constraints.rhs).feasible;
-  var objectiveVector = GlpkUtil.getObjectiveVector(lp);
+  var objectiveVector = GlpkUtil.getMaximizingObjectiveVector(lp);
   var optArtificialVertices = MathUtil.getOptimalPoints(artificialVertices, objectiveVector);
   var optVertices = MathUtil.getOptimalPoints(basicSolutions.feasible, objectiveVector);
 

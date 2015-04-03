@@ -115,12 +115,29 @@ GlpkUtil.error = function(error) {
  * @param lp
  * @returns {Array}
  */
-// TODO: Write unit test
 GlpkUtil.getObjectiveVector = function (lp) {
   "use strict";
   var vector = [];
   for (var j = 1; j <= glp_get_num_cols(lp); j++) {
     vector.push(glp_get_obj_coef(lp, j));
+  }
+  return vector;
+};
+
+/**
+ * Returns the objective vector of a GLPK lp model, as if it were a maximizing model.
+ * That is, the function returns the same as GlpkUtil.getObjectiveVector if the model
+ * is maximizing; it returns the negative of GlpkUtil.getObjectiveVector if the model
+ * is minimizing.
+ * @param lp
+ * @returns {Array}
+ */
+GlpkUtil.getMaximizingObjectiveVector = function (lp) {
+  "use strict";
+  var factor = glp_get_obj_dir(lp) === GLP_MIN ? -1 : 1;
+  var vector = [];
+  for (var j = 1; j <= glp_get_num_cols(lp); j++) {
+    vector.push(factor * glp_get_obj_coef(lp, j));
   }
   return vector;
 };
@@ -245,6 +262,30 @@ GlpkUtil.getConstraints = function (lp) {
   }
   return {matrix: matrix, rhs: rhs};
 };
+
+/**
+ * Loads a GNU MathProg model and returns a Glpk lp object.
+ * @param code
+ * @returns {Object} lp-model
+ */
+GlpkUtil.loadGmpl = function (code) {
+  "use strict";
+  var workspace = glp_mpl_alloc_wksp();
+  var lp = glp_create_prob();
+
+  GlpkUtil.installLogFunction();
+
+  try {
+    glp_mpl_read_model_from_string(workspace, GlpkUtil.MODEL_NAME, code);
+    glp_mpl_generate(workspace, GlpkUtil.MODEL_NAME, GlpkUtil.output, null);
+    glp_mpl_build_prob(workspace, lp);
+    return {lp: lp};
+  } catch (error) {
+    GlpkUtil.error(error);
+    return null;
+  }
+};
+
 
 /**
  * Solves a GNU MathProg model and returns a Glpk lp object.
