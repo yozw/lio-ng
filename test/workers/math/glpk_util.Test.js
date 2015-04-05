@@ -133,16 +133,13 @@ describe("GlpkUtil", function () {
     var table = GlpkUtil.getPrimalSolutionTable(lp);
     var nameColumn = table.getColumnByName("Variable");
     var valueColumn = table.getColumnByName("Value");
-    var statusColumn = table.getColumnByName("Status");
 
-    expect(table.getColumns().length).toEqual(6);
+    expect(table.getColumns().length).toEqual(5);
     expect(table.getRows().length).toEqual(2);
     expect(table.getRow(0).getValue(nameColumn)).toEqual("x1");
     expect(table.getRow(0).getValue(valueColumn)).toEqual(4);
-    expect(table.getRow(0).getValue(statusColumn)).toEqual("Basic");
     expect(table.getRow(1).getValue(nameColumn)).toEqual("x2");
-    expect(table.getRow(1).getValue(valueColumn)).toEqual(6);
-    expect(table.getRow(1).getValue(statusColumn)).toEqual("Basic");
+    expect(table.getRow(1).getValue(valueColumn)).toEqual(5);
     expect(table.options.showHeader).toEqual(true);
   });
 

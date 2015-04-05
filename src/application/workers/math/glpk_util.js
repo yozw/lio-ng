@@ -461,7 +461,7 @@ GlpkUtil.getPrimalSolutionTable = function (lp) {
   var varNameColumn = table.addColumn("Variable");
   var valueColumn = table.addColumn("Value");
   var kindColumn = table.addColumn("Type");
-  var statusColumn = table.addColumn("Status");
+  var statusColumn;
 
   var lbColumn = table.addColumn("Lower bound");
   var ubColumn = table.addColumn("Upper bound");
@@ -469,6 +469,7 @@ GlpkUtil.getPrimalSolutionTable = function (lp) {
   var dualColumn;
   if (!isMip) {
     dualColumn = table.addColumn("Sensitivity");
+    statusColumn = table.addColumn("Status");
   }
 
   for (var c = 1; c <= glp_get_num_cols(lp); c++) {
@@ -477,12 +478,12 @@ GlpkUtil.getPrimalSolutionTable = function (lp) {
     row.setValue(valueColumn, isMip ? glp_mip_col_val(lp, c) : glp_get_col_prim(lp, c));
     var kind = glp_get_col_kind(lp, c);
     row.setValue(kindColumn, GlpkUtil.GLP_COL_KIND[kind]);
-    var colStatus = glp_get_col_stat(lp, c);
-    row.setValue(statusColumn, GlpkUtil.GLP_COL_STATUS[colStatus]);
     row.setValue(lbColumn, glp_get_col_lb(lp, c));
     row.setValue(ubColumn, glp_get_col_ub(lp, c));
     if (!isMip) {
       row.setValue(dualColumn, glp_get_col_dual(lp, c));
+      var colStatus = glp_get_col_stat(lp, c);
+      row.setValue(statusColumn, GlpkUtil.GLP_COL_STATUS[colStatus]);
     }
   }
 

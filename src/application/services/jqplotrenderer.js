@@ -129,7 +129,6 @@ app.service('jqPlotRenderService', function () {
 
       jqPlot.options.series = seriesOptions;
 
-      console.log(jqPlot);
       return jqPlot;
     }
   };
