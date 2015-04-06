@@ -1,10 +1,5 @@
 "use strict";
 
-var START_SUBDIVISIONS = 4;
-var MAXITER = 300;
-var PRECISION = 1e-6;
-var SIMPLIFY_PRECISION = 1e-5;
-
 var Interval = function (start, end) {
   this.start = start;
   this.end = end;
@@ -43,6 +38,11 @@ var AdaptiveFunctionEstimation = function () {
   "use strict";
 
   var data;
+
+  var START_SUBDIVISIONS = 4;
+  var MAXITER = 300;
+  var PRECISION = 1e-6;
+  var SIMPLIFY_PRECISION = 1e-5;
 
   /**
    * Calculate the slope of the piecewise interpolant of the function on the given interval

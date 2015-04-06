@@ -22,6 +22,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'test/init.js',
       'src/lib/jquery/jquery-2.1.0.min.js',
       'src/lib/angular/angular.js',
       'src/lib/angular/angular-mocks.js',
@@ -39,7 +40,9 @@ module.exports = function(config) {
       'src/application/directives/results/*.js',
       'src/application/services/*.js',
       'src/application/workers/math/*.js',
+      'src/application/workers/*.js',
       'test/**/*.Test.js',
+//      'test/workers/*.Test.js',
 
       { pattern: './src/**/*', included: false }
     ],

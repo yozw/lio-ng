@@ -181,15 +181,19 @@ MathUtil.getLineEndpoints = function(normal, rhs, minX, maxX, minY, maxY) {
  * @returns {{minX: number, maxX: number, minY: number, maxY: number}}
  */
 MathUtil.getBounds = function (points) {
-  var minX = points[0][0];
-  var maxX = points[0][0];
-  var minY = points[0][1];
-  var maxY = points[0][1];
-  for (var i = 1; i < points.length; i++) {
-    minX = Math.min(points[i][0], minX);
-    maxX = Math.max(points[i][0], maxX);
-    minY = Math.min(points[i][1], minY);
-    maxY = Math.max(points[i][1], maxY);
+  var minX = Infinity;
+  var maxX = -Infinity;
+  var minY = Infinity;
+  var maxY = -Infinity;
+  for (var i = 0; i < points.length; i++) {
+    if (MathUtil.isFinite(points[i][0])) {
+      minX = Math.min(points[i][0], minX);
+      maxX = Math.max(points[i][0], maxX);
+    }
+    if (MathUtil.isFinite(points[i][1])) {
+      minY = Math.min(points[i][1], minY);
+      maxY = Math.max(points[i][1], maxY);
+    }
   }
   return {minX: minX, maxX: maxX, minY: minY, maxY: maxY};
 };

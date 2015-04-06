@@ -9,6 +9,11 @@ var SensitivityAnalysis = function () {
   var self = this;
   var selectedAlgorithm;
 
+  this.PARTITION_FINITE = 1;
+  this.PARTITION_POS_INFINITE = 2;
+  this.PARTITION_NEG_INFINITE = 3;
+  this.PARTITION_NAN = 4;
+
   /**
    * Returns the model code as a function of the value of the perturbed parameter.
    * @param code
@@ -48,10 +53,10 @@ var SensitivityAnalysis = function () {
    * @param func {Function}
    * @param minX {Number}
    * @param maxX {Number}
-   * @param parameters {Array}
+   * @param options {Array}
    * @returns {Array}
    */
-  this.runAnalysisAdaptive = function (func, minX, maxX, parameters) {
+  this.runAnalysisAdaptive = function (func, minX, maxX, options) {
     var afe = new AdaptiveFunctionEstimation();
     return afe.estimate(func, minX, maxX);
   };
@@ -61,14 +66,18 @@ var SensitivityAnalysis = function () {
    * @param func {Function}
    * @param minX {Number}
    * @param maxX {Number}
-   * @param parameters {Array}
+   * @param options {Array}
    * @returns {Array}
    */
-  this.runAnalysisUniform = function (func, minX, maxX, parameters) {
-    var stepCount = 101;
+  this.runAnalysisUniform = function (func, minX, maxX, options) {
+    var defaultOptions = {
+      stepCount: 101
+    };
+    options = extend(defaultOptions, options);
+
     var data = [];
-    for (var i = 0; i < stepCount; i++) {
-      var x = minX + (maxX - minX) * (i / (stepCount - 1));
+    for (var i = 0; i < options.stepCount; i++) {
+      var x = minX + (maxX - minX) * (i / (options.stepCount - 1));
       var value = func(x);
       data.push([x, value]);
     }
@@ -94,16 +103,48 @@ var SensitivityAnalysis = function () {
   };
 
   /**
+   * Takes an array of (x, y) pairs describing a piecewise linear function, and
+   * partitions the data set into subarrays of finite, +infinite, and -infinite
+   * segments.
+   *
+   * @param data
+   */
+  this.partitionData = function(data) {
+    var parts = [];
+    var curPart;
+    for (var i = 0; i < data.length; i++) {
+      var type;
+      var point = data[i];
+      if (MathUtil.isFinite(point[1])) {
+        type = self.PARTITION_FINITE;
+      } else if (point[1] < 0) {
+        type = self.PARTITION_NEG_INFINITE;
+      } else if (point[1] > 0) {
+        type = self.PARTITION_POS_INFINITE;
+      } else {
+        type = self.PARTITION_NAN;
+      }
+      if (i === 0 || type !== curPart.type) {
+        curPart = {type: type, data: []};
+        parts.push(curPart);
+      }
+      curPart.data.push(point);
+    }
+    return parts;
+  };
+
+  /**
    * Runs the sensitivity analysis using the selected algorithm.
    * @param code {String}
    * @param minX {Number}
    * @param maxX {Number}
-   * @param parameters {Array}
+   * @param options {Array}
    * @returns {Array}
    */
-  this.run = function (code, minX, maxX, parameters) {
+  this.run = function (code, minX, maxX, options) {
     var func = self.evaluationFn(code);
-    return selectedAlgorithm(func, minX, maxX, parameters);
+
+    return selectedAlgorithm(func, minX, maxX, options);
   };
 
   selectedAlgorithm = self.runAnalysisAdaptive;
@@ -119,19 +160,28 @@ function actionSensitivity(e) {
   var minX = e.data.minValue;
   var maxX = e.data.maxValue;
   analysis.setAlgorithm(e.data.method);
-  var data = analysis.run(e.data.code, minX, maxX, e.data);
+  var rawData = analysis.run(e.data.code, minX, maxX, e.data);
 
   // Draw graph
-  var dataBounds = MathUtil.getBounds(data);
+  var dataBounds = MathUtil.getBounds(rawData);
   var viewBounds = MathUtil.expandBounds(dataBounds, 0.5, 1.0);
 
   var graph = new Graph();
   graph.setTitle("Perturbation function");
   graph.setXlabel("x");
   graph.setYlabel("objective value");
-  graph.addLinePlot(data);
   graph.setXRange(minX, maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);
+
+  // Partition data into feasible, infeasible, unbounded segments
+  var parts = analysis.partitionData(rawData);
+  for (var i = 0; i < parts.length; i++) {
+    var part = parts[i];
+    if (part.type == analysis.PARTITION_FINITE) {
+      graph.addLinePlot(part.data);
+    }
+  }
+
   postGraph('output', graph);
 
   return "";
