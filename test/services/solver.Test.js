@@ -146,7 +146,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(successMessages).toEqual(["The model is unbounded."]);
+          expect(successMessages).toEqual(["The model is unbounded"]);
         })
       });
 
@@ -163,7 +163,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(successMessages).toEqual(["The model is infeasible."]);
+          expect(successMessages).toEqual(["The model is infeasible"]);
         })
       });
 
@@ -198,7 +198,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(successMessages).toEqual(["The model is unbounded."]);
+          expect(successMessages).toEqual(["The model is unbounded"]);
         })
       });
 
@@ -215,7 +215,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(successMessages).toEqual(["The model is infeasible."]);
+          expect(successMessages).toEqual(["The model is infeasible"]);
         })
       });
 
