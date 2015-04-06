@@ -316,17 +316,17 @@ GlpkUtil.solveGmpl = function (code) {
     switch (glpStatus) {
       case GLP_ENOPFS:
         status = GlpkUtil.STATUS_INFEASIBLE;
-        statusMessage = "The model is infeasible.";
+        statusMessage = "The model is infeasible";
         objectiveValue = isMinimizing ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
         break;
       case GLP_ENODFS:
         status = GlpkUtil.STATUS_UNBOUNDED;
-        statusMessage = "The model is unbounded.";
+        statusMessage = "The model is unbounded";
         objectiveValue = isMinimizing ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
         break;
       case 0:
         status = GlpkUtil.STATUS_OPTIMAL;
-        statusMessage = "Optimal.";
+        statusMessage = "Optimal";
         objectiveValue = GlpkUtil.getObjectiveValue(lp);
         break;
       default:
@@ -334,7 +334,7 @@ GlpkUtil.solveGmpl = function (code) {
         statusMessage = GlpkUtil.GLP_SOLVER_STATUS[glpStatus];
         objectiveValue = NaN;
         if (status == null) {
-          statusMessage = "Solver algorithm returned an unknown status (" + glpStatus + ").";
+          statusMessage = "Solver algorithm returned an unknown status (" + glpStatus + ")";
         }
     }
 
