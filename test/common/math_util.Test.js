@@ -125,5 +125,18 @@ describe("MathUtil", function () {
     expect(MathUtil.expandToNumber("10.123.30", 4, 4)).toEqual({text: '10.123', start: 0, end: 6});
     expect(MathUtil.expandToNumber("10.123.30", 7, 7)).toEqual({text: '123.30', start: 3, end: 9});
   });
+
+  it('almostEquals works correctly', function() {
+    expect(MathUtil.almostEqual(0, 0)).toEqual(true);
+    expect(MathUtil.almostEqual(1e-15, 0)).toEqual(true);
+    expect(MathUtil.almostEqual(-1e-15, 0)).toEqual(true);
+    expect(MathUtil.almostEqual(1, 1.000000000001)).toEqual(true);
+    expect(MathUtil.almostEqual(1, 1.00001)).toEqual(false);
+    expect(MathUtil.almostEqual(1, -1.00001)).toEqual(false);
+    expect(MathUtil.almostEqual(100000, 100001)).toEqual(false);
+    expect(MathUtil.almostEqual(100000, 100000.000001)).toEqual(true);
+    expect(MathUtil.almostEqual(-100000, 100000.000001)).toEqual(false);
+    expect(MathUtil.almostEqual(-1e-12, 1e-15)).toEqual(true);
+  });
 });
 

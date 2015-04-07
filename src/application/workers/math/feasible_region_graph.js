@@ -71,7 +71,7 @@ FeasibleRegionGraph._drawFeasibleRegion = function(graph, lp) {
   var optVertices = MathUtil.getOptimalPoints(basicSolutions.feasible, objectiveVector);
 
   FeasibleRegionGraph._addPolygon(graph, artificialVertices, {zIndex: 1});
-  FeasibleRegionGraph._addPolygon(graph, optArtificialVertices, {
+  FeasibleRegionGraph._addPolygon(graph, optArtificialVertices.points, {
     zIndex: 10,
     color: "#000080",
     fillColor: "rgba(128,128,255,0.5)"
@@ -79,13 +79,21 @@ FeasibleRegionGraph._drawFeasibleRegion = function(graph, lp) {
 
   // Add all feasible basic solutions as points
   graph.addScatterPlot(basicSolutions.feasible, {zIndex: 2});
-  graph.addScatterPlot(optVertices, {zIndex: 11, color: "#000080"});
+
+  // Add all optimal points as darker points
+  if (MathUtil.almostEqual(optVertices.objectiveValue, optArtificialVertices.objectiveValue)) {
+    graph.addScatterPlot(optVertices.points, {zIndex: 11, color: "#000080"});
+  }
 
   return vertexBounds;
 };
 
 FeasibleRegionGraph.create = function (lp) {
   "use strict";
+  if (glp_get_num_cols(lp) !== 2) {
+    throw "FeasibleRegionGraph is only possible for two-dimensional models";
+  }
+
   var graph = new Graph();
   var viewBounds = FeasibleRegionGraph._drawFeasibleRegion(graph, lp);
 
@@ -93,8 +101,8 @@ FeasibleRegionGraph.create = function (lp) {
   viewBounds = MathUtil.expandBounds(viewBounds, 0.5, 1.0);
 
   graph.setTitle("Feasible region");
-  graph.setXlabel("x1");
-  graph.setYlabel("x2");
+  graph.setXlabel(glp_get_col_name(lp, 1));
+  graph.setYlabel(glp_get_col_name(lp, 2));
 
   graph.setXRange(viewBounds.minX, viewBounds.maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);

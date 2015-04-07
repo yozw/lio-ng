@@ -3,6 +3,34 @@
 var MathUtil = Object();
 
 /**
+ * Returns true if the two arguments are equal,
+ * up to a given precision eps (which defaults to 1e-10).
+ * @param a
+ * @param b
+ * @param eps
+ * @returns {boolean}
+ */
+MathUtil.almostEqual = function (a, b, eps) {
+  if (a === b) {
+    return true;
+  }
+
+  if (eps === undefined) {
+    eps = 1e-10;
+  }
+
+  var absDiff = Math.abs(a - b);
+  if (absDiff < eps * Math.abs(a)) {
+    return true;
+  } else if (absDiff < eps * Math.abs(b)) {
+    return true;
+  } else if (absDiff < eps) {
+    return true;
+  }
+  return false;
+};
+
+  /**
  * Solves the two-dimensional system of equations Ax = b, where A is a 2 x 2 matrix, and b and x are 2-vector.
  * @param A
  * @param b
@@ -118,14 +146,14 @@ MathUtil.getOptimalPoints = function (points, objVector) {
       z += objVector[j] * point[j];
     }
     if (z >= curBestObjective) {
-      if (z > curBestObjective) {
+      if ((z > curBestObjective) && !MathUtil.almostEqual(z, curBestObjective)) {
         optimal = [];
         curBestObjective = z;
       }
       optimal.push(point);
     }
   }
-  return optimal;
+  return {points: optimal, objectiveValue: curBestObjective};
 };
 
 /**
