@@ -35,18 +35,15 @@ ace.define(
       var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
       var GmplHighlightRules = function () {
-        var keywords = "and|by|cross|default|diff|div|dimen|else|if|in|inter|less|mod|not|or|symdiff|then|union|within";
+        var keywords = "and|by|cross|default|diff|div|dimen|else|if|in|inter|less|mod|not|or|out|symdiff|table|"
+            + "then|union|within";
         var statements = "set|param|integer|binary|symbolic|var|subject to|minimize|maximize|solve|check|display|"
             + "printf|for|data|end";
 
-        var builtinConstants = (
-            "true|false|null"
-            );
+        var builtinConstants = "true|false|null";
 
-        var builtinFunctions = (
-            "count|abs|atan|card|ceil|cos|exp|floor|gmtime|length|log|log10|min|max|"
-            + "round|sin|sqrt|str2time|trunc|Irand224|Uniform01|Uniform|Normal01|Normal|sum"
-            );
+        var builtinFunctions = "count|abs|atan|card|ceil|cos|exp|floor|gmtime|length|log|log10|min|max|"
+            + "round|sin|sqrt|str2time|trunc|Irand224|Uniform01|Uniform|Normal01|Normal|sum";
 
         var keywordMapper = this.createKeywordMapper({
           "support.function": builtinFunctions,
