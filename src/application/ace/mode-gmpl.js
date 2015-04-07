@@ -44,7 +44,8 @@ ace.define(
             );
 
         var builtinFunctions = (
-            "count|min|max|avg|sum|rank|now|coalesce|main"
+            "count|abs|atan|card|ceil|cos|exp|floor|gmtime|length|log|log10|min|max|"
+            + "round|sin|sqrt|str2time|trunc|Irand224|Uniform01|Uniform|Normal01|Normal|sum"
             );
 
         var keywordMapper = this.createKeywordMapper({
