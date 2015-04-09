@@ -1,5 +1,12 @@
 "use strict";
 
+function checkDefined(obj) {
+  if (obj === undefined) {
+    throw "checkDefined failed";
+  }
+  return obj;
+}
+
 /**
  * Stopwatch that measures elapsed time
  * @param [clockFunction] optional clock function for unit testing
