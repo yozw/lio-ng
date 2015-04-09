@@ -31,7 +31,7 @@ describe("SensitivityAnalysis", function () {
     return (data[b][1] * (x - data[a][0]) + data[a][1] * (data[b][0] - x)) / (data[b][0] - data[a][0]);
   }
 
-  it('the adaptive algorithm correctly performs a rhs perturbation', function() {
+  it('the adaptive algorithm correctly performs a rhs perturbation', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('adaptive');
     var rawData = analysis.run(DOVETAIL_RHS, 0, 32);
@@ -50,7 +50,7 @@ describe("SensitivityAnalysis", function () {
     expect(interpolate(32, data)).toBeCloseTo(25, PRECISION);
   });
 
-  it('the uniform algorithm correctly performs a rhs perturbation', function() {
+  it('the uniform algorithm correctly performs a rhs perturbation', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('uniform');
     var rawData = analysis.run(DOVETAIL_RHS, 0, 36, {stepCount: 7});
@@ -70,7 +70,7 @@ describe("SensitivityAnalysis", function () {
     expect(interpolate(36, data)).toBeCloseTo(25, PRECISION);
   });
 
-  it('the adaptive algorithm correctly performs a rhs perturbation with feasibility and infeasibility', function() {
+  it('the adaptive algorithm correctly performs a rhs perturbation with feasibility and infeasibility', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('adaptive');
     var rawData = analysis.run(DOVETAIL_RHS, -6, 6);
@@ -86,13 +86,24 @@ describe("SensitivityAnalysis", function () {
     expect(interpolate(6, data)).toBeCloseTo(12, PRECISION);
   });
 
-  it('the adaptive algorithm correctly performs a rhs perturbation with infeasibility', function() {
+  it('the adaptive algorithm correctly performs a rhs perturbation with infeasibility', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('adaptive');
     var rawData = analysis.run(DOVETAIL_RHS, -10, -1);
     var segments = analysis.partitionData(rawData);
-
   });
+});
+
+describe("SensitivityAnalysis Async Action", function () {
+
+  var DOVETAIL_RHS = "var x1 >= 0;\n"
+      + "var x2 >= 0;\n"
+      + "maximize z: 3*x1 + 2*x2;\n"
+      + "subject to c11: x1 + x2 <= 9;\n"
+      + "subject to c12: 3*x1 + x2 <= {{SENSITIVITY_PLACEHOLDER}};\n"
+      + "subject to c13: x1 <=  7;\n"
+      + "subject to c14: x2 <=  6;\n"
+      + "end;";
 
   it('the worker action generates a graph', function() {
     var event = {};
