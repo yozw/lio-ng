@@ -138,5 +138,18 @@ describe("MathUtil", function () {
     expect(MathUtil.almostEqual(-100000, 100000.000001)).toEqual(false);
     expect(MathUtil.almostEqual(-1e-12, 1e-15)).toEqual(true);
   });
+
+  it('niceSpacing works correctly', function() {
+    expect(MathUtil.niceSpacing(1, 10, 5)).toEqual({min: 0, max: 10, stepSize: 2});
+    expect(MathUtil.niceSpacing(0.1, 1, 5)).toEqual({min: 0, max: 1, stepSize: 0.2});
+    expect(MathUtil.niceSpacing(10, 100, 5)).toEqual({min: 0, max: 100, stepSize: 20});
+
+    expect(MathUtil.niceSpacing(1, 10, 4)).toEqual({min: 0, max: 10, stepSize: 2.5});
+    expect(MathUtil.niceSpacing(0.1, 1, 4)).toEqual({min: 0, max: 1, stepSize: 0.25});
+    expect(MathUtil.niceSpacing(10, 100, 4)).toEqual({min: 0, max: 100, stepSize: 25});
+
+    expect(MathUtil.niceSpacing(-5, 5, 2)).toEqual({min: -5, max: 5, stepSize: 5});
+    expect(MathUtil.niceSpacing(-4.8, 4.8, 2)).toEqual({min: -5, max: 5, stepSize: 5});
+  });
 });
 

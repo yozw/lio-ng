@@ -256,6 +256,42 @@ MathUtil.expandBounds = function (bounds, expansionFactor, defaultRange) {
   };
 };
 
+MathUtil.niceSpacing = function(min, max, segments) {
+  if (min === max) {
+    return {low: min, high: max, stepSize: 0};
+  }
+
+  // weight of minimizing outer bounds vs getting the number of segments right
+  var lambda = 0.5;
+  var acceptableMantissas = [0.5, 1, 2, 2.5, 3, 4, 5, 10];
+
+  var idealStepSize = (max - min) / segments;
+  var scalingFactor = Math.pow(10, Math.floor(Math.log(idealStepSize) / Math.LN10));
+  // We have: 1 <= idealStepSize / scalingFactor < 10
+
+  var optimalSpacing;
+  var bestZ = Infinity;
+
+  for (var i = 0; i < acceptableMantissas.length; i++) {
+    var stepSize = acceptableMantissas[i] * scalingFactor;
+    var roundedMin = Math.floor(min / stepSize);
+    var roundedMax = Math.ceil(max / stepSize);
+    var steps = roundedMax - roundedMin;
+    var z = Math.pow(steps - segments, 2)
+        + lambda * Math.pow(roundedMin - min / stepSize, 2)
+        + lambda * Math.pow(roundedMax - max / stepSize, 2);
+    if (z < bestZ) {
+      bestZ = z;
+      optimalSpacing = {
+        min: roundedMin * stepSize,
+        max: roundedMax * stepSize,
+        stepSize: stepSize
+      };
+    }
+  }
+  return optimalSpacing;
+};
+
 MathUtil.isDigit = function(ch) {
   return ch >= '0' && ch <= '9';
 };

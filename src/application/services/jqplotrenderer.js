@@ -16,6 +16,11 @@ app.service('jqPlotRenderService', function () {
        show: true,
        zoom: true,
        tooltipLocation: 'sw'
+     },
+     grid: {
+//       borderColor: '#808080',
+       shadow: false,
+//       drawBorder: true
      }
   };
      
@@ -40,8 +45,8 @@ app.service('jqPlotRenderService', function () {
     "plot": {
       showMarker: false,
       showLine: true,
-      lineWidth: 1,
-      color: "#808080"
+      lineWidth: 2,
+      color: "#428bca"
     },
     "line": {
       showMarker: false,
@@ -102,6 +107,14 @@ app.service('jqPlotRenderService', function () {
       var seriesData = [];
       var seriesOptions = [];
 
+      var xSpacing = MathUtil.niceSpacing(graph.xrange.min, graph.xrange.max, 5);
+      var ySpacing = MathUtil.niceSpacing(graph.yrange.min, graph.yrange.max, 7);
+      graph.xrange.min = xSpacing.min;
+      graph.xrange.max = xSpacing.max;
+      graph.yrange.min = ySpacing.min;
+      graph.yrange.max = ySpacing.max;
+
+
       for (var i = 0; i < layers.length; i++) {
         var layer = layers[i];
         var data = getSeriesData(layer, graph);
@@ -122,10 +135,14 @@ app.service('jqPlotRenderService', function () {
       jqPlot.options.title = graph.title;
       jqPlot.options.axes.xaxis.label = graph.xlabel;
       jqPlot.options.axes.yaxis.label = graph.ylabel;
+
       jqPlot.options.axes.xaxis.min = graph.xrange.min;
       jqPlot.options.axes.xaxis.max = graph.xrange.max;
+      jqPlot.options.axes.xaxis.tickInterval = xSpacing.stepSize;
+
       jqPlot.options.axes.yaxis.min = graph.yrange.min;
       jqPlot.options.axes.yaxis.max = graph.yrange.max;
+      jqPlot.options.axes.yaxis.tickInterval = ySpacing.stepSize;
 
       jqPlot.options.series = seriesOptions;
 

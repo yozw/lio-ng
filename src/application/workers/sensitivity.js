@@ -164,7 +164,7 @@ function actionSensitivity(e) {
 
   // Draw graph
   var dataBounds = MathUtil.getBounds(rawData);
-  var viewBounds = MathUtil.expandBounds(dataBounds, 0.5, 1.0);
+  var viewBounds = MathUtil.expandBounds(dataBounds, 0.0, 1.0);
 
   var graph = new Graph();
   graph.setTitle("Perturbation function");
@@ -173,13 +173,21 @@ function actionSensitivity(e) {
   graph.setXRange(minX, maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);
 
-  // Partition data into feasible, infeasible, unbounded segments
+  // Partition data into feasible, infeasible, unbounded parts
   var parts = analysis.partitionData(rawData);
   for (var i = 0; i < parts.length; i++) {
     var part = parts[i];
     if (part.type == analysis.PARTITION_FINITE) {
       graph.addLinePlot(part.data);
     }
+  }
+
+  // Draw lines between parts
+  for (var j = 1; j < parts.length; j++) {
+    var dataBefore = parts[j - 1].data;
+    var dataAfter = parts[j].data;
+    var x = (dataAfter[0][0] + dataBefore[dataBefore.length - 1][0]) / 2;
+    graph.addLine([1, 0], x);
   }
 
   postGraph('output', graph);
