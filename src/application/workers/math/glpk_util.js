@@ -519,7 +519,10 @@ GlpkUtil.getConstraintsTable = function (lp) {
 
   var varNameColumn = table.addColumn("Name");
   var valueColumn = table.addColumn("Rhs value");
-  var statusColumn = table.addColumn("Status");
+  var statusColumn;
+  if (!isMip) {
+    statusColumn = table.addColumn("Status");
+  }
   var lbColumn = table.addColumn("Lower bound");
   var ubColumn = table.addColumn("Upper bound");
 
@@ -530,8 +533,11 @@ GlpkUtil.getConstraintsTable = function (lp) {
     row.setValue(varNameColumn, glp_get_row_name(lp, r));
     row.setValue(valueColumn, isMip ? glp_mip_row_val(lp, r) : glp_get_row_prim(lp, r));
 
-    var rowStatus = glp_get_row_stat(lp, r);
-    row.setValue(statusColumn, GlpkUtil.GLP_ROW_STATUS[rowStatus]);
+    if (!isMip) {
+      var rowStatus = glp_get_row_stat(lp, r);
+      row.setValue(statusColumn, GlpkUtil.GLP_ROW_STATUS[rowStatus]);
+    }
+    
     row.setValue(lbColumn, glp_get_row_lb(lp, r));
     row.setValue(ubColumn, glp_get_row_ub(lp, r));
   }
