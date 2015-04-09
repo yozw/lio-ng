@@ -1,7 +1,7 @@
 /**
  * Job runner service
  */
-app.service('jobRunnerService', function ($log) {
+app.service('jobRunnerService', function ($q, $log) {
   "use strict";
   var currentJob = {};
 
@@ -71,9 +71,28 @@ app.service('jobRunnerService', function ($log) {
     }
   }
 
+  function runJobAsPromise(parameters) {
+    var deferred = $q.defer();
+
+    currentJob = startJob(parameters, {
+      error: function (message) {
+        deferred.reject(message);
+      },
+      success: function (returnValue) {
+        deferred.resolve(returnValue);
+      }
+    });
+
+    return deferred.promise;
+  }
+
   return {
     runJob: function (parameters, callback) {
-      currentJob = startJob(parameters, callback);
+      if (callback !== undefined) {
+        currentJob = startJob(parameters, callback);
+      } else {
+        return runJobAsPromise(parameters);
+      }
     },
     terminateJob: function () {
       if (angular.isDefined(currentJob.worker)) {
