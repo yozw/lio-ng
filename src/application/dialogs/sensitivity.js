@@ -1,4 +1,4 @@
-app.factory('sensitivityDialog', function ($modal, $log, errorDialog, solverService) {
+app.factory('sensitivityDialog', function ($modal, $log, errorDialog, jobRunnerService, solverService) {
   "use strict";
 
   var TEMPLATE =
@@ -48,8 +48,10 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, solverServ
         <button class="btn" ng-click="cancel()">Cancel</button>\
       </div>';
 
-  var ERROR_MESSAGE = "To perform a sensitivity analysis, select a number in the model code, and then choose Run > "
-      + "Sensitivity Analysis";
+  var INVALID_SELECTION_MESSAGE = "To perform a sensitivity analysis, select a number in the model code, and then "
+      + "choose Run > Sensitivity Analysis";
+  var INVALID_CODE_MESSAGE = "The model is not a valid MathProg model. Please make sure that the model can be solved "
+      + "without errors before running sensitivity analysis.";
 
   function getSelection(code, range) {
     var selection = {};
@@ -83,12 +85,16 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, solverServ
     selection.lineAfter = lines[row].substring(end);
 
     lines[row] = selection.lineBefore + "{{SENSITIVITY_PLACEHOLDER}}" + selection.lineAfter;
+    selection.code = code;
     selection.codeWithPlaceholder = lines.join("\n");
 
     return selection;
   }
 
-  var modalController = function (selection) {
+  var modalController = function (selection, lpVariables) {
+    checkDefined(selection);
+    checkDefined(lpVariables);
+
     return function ($scope, $modalInstance) {
 
       var ADAPTIVE = {
@@ -104,6 +110,9 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, solverServ
 
       var variables = [];
       variables.push({name: 'Optimal objective value'});
+      for (var i = 0; i < lpVariables.length; i++) {
+        variables.push({name: lpVariables[i].name});
+      }
 
       $scope.parameters = Object();
       $scope.parameters.minimum = Math.min(0, 2 * selection.value);
@@ -136,12 +145,19 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, solverServ
     open: function (code, range) {
       var selection = getSelection(code, range);
       if (angular.isUndefined(selection)) {
-        errorDialog.open(ERROR_MESSAGE, "Sensitivity analysis");
+        errorDialog.open(INVALID_SELECTION_MESSAGE, "Sensitivity analysis");
         return;
       }
-      $modal.open({
-        template: TEMPLATE,
-        controller: modalController(selection)
-      });
+
+      jobRunnerService.runJob({action: 'modelInfo', code: code})
+          .then(function (modelInfo) {
+            $modal.open({
+              template: TEMPLATE,
+              controller: modalController(selection, modelInfo.variables)
+            });
+          })
+          .catch(function (message) {
+            errorDialog.open(INVALID_CODE_MESSAGE + " (Error: " + message + ")", "Sensitivity analysis");
+          });
     }};
 });
