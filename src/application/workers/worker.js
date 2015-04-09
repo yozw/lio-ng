@@ -10,6 +10,7 @@ importScripts('/application/workers/math/adaptive_function_estimation.js');
 importScripts('/application/workers/math/feasible_region_graph.js');
 importScripts('/application/workers/math/glpk_util.js');
 importScripts('/application/workers/math/convex_hull.js');
+importScripts('/application/workers/modelinfo.js');
 importScripts('/application/workers/solve.js');
 importScripts('/application/workers/sensitivity.js');
 
@@ -39,8 +40,8 @@ function postOutput(value) {
 /**
  * Sends a "success" message back to the main thread.
  */
-function postSuccess(status) {
-  self.postMessage({action: 'success', status: status, result: {}, objective: {}});
+function postSuccess(returnValue) {
+  self.postMessage({action: 'success', returnValue: returnValue, result: {}, objective: {}});
 }
 
 /**
@@ -91,7 +92,8 @@ function postGraph(target, graph) {
 function getAction(e) {
   var actions = {
     solve: actionSolve,
-    sensitivity: actionSensitivity
+    sensitivity: actionSensitivity,
+    modelInfo: actionModelInfo
   };
 
   var action = e.data.action;
@@ -118,8 +120,8 @@ function onMessage(e) {
   }
 
   try {
-    var status = actionFn(e);
-    postSuccess(status);
+    var returnValue = actionFn(e);
+    postSuccess(returnValue);
   } catch (err) {
     postError(err);
   }

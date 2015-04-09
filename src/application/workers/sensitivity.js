@@ -150,6 +150,12 @@ var SensitivityAnalysis = function () {
   selectedAlgorithm = self.runAnalysisAdaptive;
 };
 
+
+/**
+ * Async action that performs sensitivity analysis.
+ * @param e
+ * @returns {string}
+ */
 function actionSensitivity(e) {
 
   // Turn off GLPK logging (as this results in a lot of log lines)
@@ -168,7 +174,7 @@ function actionSensitivity(e) {
 
   var graph = new Graph();
   graph.setTitle("Perturbation function");
-  graph.setXlabel("x");
+  graph.setXlabel("value");
   graph.setYlabel("objective value");
   graph.setXRange(minX, maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);
