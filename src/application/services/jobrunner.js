@@ -19,24 +19,36 @@ app.service('jobRunnerService', function ($log) {
       var obj = e.data;
       switch (obj.action) {
         case 'log':
-          callback.log(obj.message);
+          if (callback.log !== undefined) {
+            callback.log(obj.message);
+          }
           break;
         case 'output':
-          callback.output(obj.message);
+          if (callback.output !== undefined) {
+            callback.output(obj.message);
+          }
           break;
         case 'error':
           onJobStopped(job);
-          callback.error(obj.message);
+          if (callback.error !== undefined) {
+            callback.error(obj.message);
+          }
           break;
         case 'emit-table':
-          callback.emitTable(obj.table, obj.target);
+          if (callback.emitTable !== undefined) {
+            callback.emitTable(obj.table, obj.target);
+          }
           break;
         case 'emit-graph':
-          callback.emitGraph(obj.graph, obj.target);
+          if (callback.emitGraph !== undefined) {
+            callback.emitGraph(obj.graph, obj.target);
+          }
           break;
         case 'success':
           onJobStopped(job);
-          callback.success(obj.status);
+          if (callback.success !== undefined) {
+            callback.success(obj.returnValue);
+          }
           break;
       }
     };
@@ -44,7 +56,9 @@ app.service('jobRunnerService', function ($log) {
     job.stopWatch = new Stopwatch();
     job.stopWatch.start();
     job.worker.postMessage(parameters);
-    job.callback.start(parameters);
+    if (job.callback.start !== undefined) {
+      job.callback.start(parameters);
+    }
     return job;
   }
 
@@ -52,7 +66,9 @@ app.service('jobRunnerService', function ($log) {
     job.worker.onmessage = function () {};
     job.worker.terminate();
     $log.info("Terminating job");
-    job.callback.error("Cancelled by user.");
+    if (job.callback.error !== undefined) {
+      job.callback.error("Cancelled by user.");
+    }
   }
 
   return {
