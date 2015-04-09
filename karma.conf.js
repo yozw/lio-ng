@@ -24,6 +24,7 @@ module.exports = function(config) {
     files: [
       'test/init.js',
       'src/lib/jquery/jquery-2.1.0.min.js',
+      'src/lib/jqplot/jquery.jqplot.js',
       'src/lib/angular/angular.js',
       'src/lib/angular/angular-mocks.js',
       'src/lib/angular/angular-sanitize.js',
@@ -38,6 +39,7 @@ module.exports = function(config) {
       'src/application/common/*.js',
       'src/application/directives/*.js',
       'src/application/directives/results/*.js',
+      'src/application/jqplot/*.js',
       'src/application/services/*.js',
       'src/application/workers/math/*.js',
       'src/application/workers/*.js',
