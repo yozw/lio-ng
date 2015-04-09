@@ -18,9 +18,10 @@ app.service('jqPlotRenderService', function () {
        tooltipLocation: 'sw'
      },
      grid: {
-//       borderColor: '#808080',
+       renderer: $.jqplot.CustomCanvasGridRenderer,
+       borderColor: '#404040',
        shadow: false,
-//       drawBorder: true
+       drawBorder: true
      }
   };
      
