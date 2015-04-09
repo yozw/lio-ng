@@ -55,6 +55,24 @@ var AdaptiveFunctionEstimation = function () {
   }
 
   /**
+   * Determines the "value type" of the provided value, i.e., it returns
+   * 0 if the value is finite, -1 if it is -Infinity, and +1 if it is
+   * +Infinity.
+   *
+   * @param value
+   * @returns {number}
+   */
+  function valueType(value) {
+    if (MathUtil.isFinite(value)) {
+      return 0;
+    } else if (value < 0) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+
+  /**
    * Calculate the priority value of interval I.
    *
    * This priority value depends on the difference between derivative of I and the interval before and after I.
@@ -65,13 +83,22 @@ var AdaptiveFunctionEstimation = function () {
    */
   function priority(f, interval) {
     var weight = 0;
-    if (interval.previous !== undefined) {
-      weight = Math.max(weight,
-          interval.length * Math.abs(derivative(f, interval) - derivative(f, interval.previous)));
+    var startValueType = valueType(f(interval.start));
+    var endValueType = valueType(f(interval.end));
+
+    if (startValueType !== endValueType) {
+      return interval.length;
     }
-    if (interval.next !== undefined) {
-      weight = Math.max(weight,
-          interval.length * Math.abs(derivative(f, interval) - derivative(f, interval.next)));
+
+    if (startValueType === 0 && endValueType === 0) {
+      if (interval.previous !== undefined) {
+        weight = Math.max(weight,
+            interval.length * Math.abs(derivative(f, interval) - derivative(f, interval.previous)));
+      }
+      if (interval.next !== undefined) {
+        weight = Math.max(weight,
+            interval.length * Math.abs(derivative(f, interval) - derivative(f, interval.next)));
+      }
     }
     return weight;
   }
@@ -127,17 +154,29 @@ var AdaptiveFunctionEstimation = function () {
 
     while (intervalQueue.length > 0 && iterations++ < MAXITER) {
       var interval = intervalQueue.dequeue();
+      var startValueType = valueType(f(interval.start));
+      var endValueType = valueType(f(interval.end));
+      var subdivide = true;
 
-      /* Evaluate function at a random midpoint */
+      /* Take a random midpoint */
       var mu = 0.2 + 0.6 * Math.random();
       var x = mu * interval.start + (1 - mu) * interval.end;
       x = Math.round(x / PRECISION) * PRECISION;
-      var predicted = mu * f(interval.start) + (1 - mu) * f(interval.end);
-      var actual = f(x);
 
-      /* If the actual and predicted value are different enough, subdivide the interval and add the new intervals to
-       the queue, provided that the intervals are not too small. */
-      if (Math.abs(actual - predicted) > PRECISION * Math.abs(actual)) {
+      // If the problem is feasible at both the start point, and the end point,
+      // see if we can avoid subdividing
+      if (startValueType === 0 && endValueType === 0) {
+        // Evaluate function at a the chosen midpoint
+        var predicted = mu * f(interval.start) + (1 - mu) * f(interval.end);
+        var actual = f(x);
+
+        // If the actual and predicted value are different enough, subdivide
+        subdivide = Math.abs(actual - predicted) > PRECISION * Math.abs(actual);
+      }
+
+      if (subdivide) {
+        // Subdivide the interval and add the new intervals to the queue,
+        // provided that the intervals are not too small.
         var newIntervals = interval.subdivide(x);
         if (newIntervals.left.length > minimumIntervalLength) {
           intervalQueue.queue(newIntervals.left);
