@@ -1,3 +1,16 @@
+/**
+ * Async worker that loads the passed-in model and solves it.
+ *
+ * The worker emits (i.e., sends back to the main thread) an overview table giving an overview of the type of problem,
+ * the number of variables and constraints, etc.
+ *
+ * Depending on whether an optimal solution was found, tables with the found primal/dual solutions are emitted.
+ *
+ * If the model is two-dimensional, a graph of the feasible region is emitted.
+ *
+ * @param e
+ * @returns {*}
+ */
 function actionSolve(e) {
   var code = e.data.code;
   var result = GlpkUtil.solveGmpl(code);
