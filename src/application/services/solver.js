@@ -20,13 +20,14 @@ app.service('solverService', function (jobRunnerService) {
     solve: function (code, callback) {
       runJob({action: 'solve', code: code}, callback);
     },
-    performSensitivityAnalysis: function (code, minValue, maxValue, method, callback) {
+    performSensitivityAnalysis: function (code, minValue, maxValue, method, column, callback) {
       var parameters = {
         action: 'sensitivity',
         code: code,
         minValue: minValue,
         maxValue: maxValue,
-        method: method
+        method: method,
+        column: column
       };
       runJob(parameters, callback);
     },

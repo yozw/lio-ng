@@ -1,4 +1,4 @@
-app.factory('sensitivityDialog', function ($modal, $log, errorDialog, jobRunnerService, solverService) {
+app.factory('sensitivityDialog', function ($modal, $log, errorDialog, messageService, jobRunnerService, solverService) {
   "use strict";
 
   var TEMPLATE =
@@ -96,7 +96,6 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, jobRunnerS
     checkDefined(lpVariables);
 
     return function ($scope, $modalInstance) {
-
       var ADAPTIVE = {
         name: 'Adaptive',
         value: 'adaptive',
@@ -109,9 +108,9 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, jobRunnerS
         + 'range, and solves the model for these parameter values.'};
 
       var variables = [];
-      variables.push({name: 'Optimal objective value'});
+      variables.push({name: 'Optimal objective value', column: 0});
       for (var i = 0; i < lpVariables.length; i++) {
-        variables.push({name: lpVariables[i].name});
+        variables.push({name: lpVariables[i].name, column: lpVariables[i].column});
       }
 
       $scope.parameters = Object();
@@ -127,11 +126,13 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, jobRunnerS
       $scope.methods = [ADAPTIVE, EVEN_SPACED];
 
       $scope.ok = function () {
+        messageService.set("Performing sensitivity analysis");
         solverService.performSensitivityAnalysis(
             selection.codeWithPlaceholder,
             $scope.parameters.minimum,
             $scope.parameters.maximum,
-            $scope.parameters.method.value);
+            $scope.parameters.method.value,
+            $scope.parameters.variable.column);
         $modalInstance.close();
       };
 

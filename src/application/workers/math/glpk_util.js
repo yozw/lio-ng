@@ -166,6 +166,24 @@ GlpkUtil.isMip = function(lp) {
 };
 
 /**
+ * Returns the value of a column (which is the optimal value if the model
+ * was successfully solved).
+ *
+ * @param lp
+ * @param column
+ * @returns {*}
+ */
+GlpkUtil.getColumnValue = function(lp, column) {
+  if ((column >= 1) && (column <= glp_get_num_cols(lp))) {
+    return GlpkUtil.isMip(lp)
+        ? glp_mip_col_val(lp, column)
+        : glp_get_col_prim(lp, column)
+  } else {
+    throw "Invalid column index: " + column;
+  }
+};
+
+/**
  * Returns a string describing the type of problem.
  * @param lp
  * @returns {String}

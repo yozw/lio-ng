@@ -11,7 +11,7 @@ describe("SensitivityAnalysis", function () {
       + "subject to c14: x2 <=  6;\n"
       + "end;";
 
-  var PRECISION = 4;  // decimal precision for "toBeCloseTo" matcher
+  var PRECISION = 3;  // decimal precision for "toBeCloseTo" matcher
 
   function interpolate(x, data) {
     var a = 0;
@@ -34,7 +34,7 @@ describe("SensitivityAnalysis", function () {
   it('the adaptive algorithm correctly performs a rhs perturbation', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('adaptive');
-    var rawData = analysis.run(DOVETAIL_RHS, 0, 32);
+    var rawData = analysis.run(DOVETAIL_RHS, 0, 32, 0);
     var segments = analysis.partitionData(rawData);
 
     // Expect one segment for the finite objective values
@@ -53,7 +53,7 @@ describe("SensitivityAnalysis", function () {
   it('the uniform algorithm correctly performs a rhs perturbation', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('uniform');
-    var rawData = analysis.run(DOVETAIL_RHS, 0, 36, {stepCount: 7});
+    var rawData = analysis.run(DOVETAIL_RHS, 0, 36, 0, {stepCount: 7});
     var segments = analysis.partitionData(rawData);
 
     // Expect one segment for the finite objective values
@@ -70,10 +70,30 @@ describe("SensitivityAnalysis", function () {
     expect(interpolate(36, data)).toBeCloseTo(25, PRECISION);
   });
 
+  it('the uniform algorithm correctly performs a rhs perturbation with a variable as a target', function () {
+    var analysis = new SensitivityAnalysis();
+    analysis.setAlgorithm('uniform');
+    var rawData = analysis.run(DOVETAIL_RHS, 0, 36, 1, {stepCount: 7});
+    var segments = analysis.partitionData(rawData);
+
+    // Expect one segment for the finite objective values
+    expect(segments.length).toEqual(1);
+    var data = segments[0].data;
+
+    expect(interpolate(0, data)).toBeCloseTo(0, PRECISION);
+    expect(interpolate(6, data)).toBeCloseTo(0, PRECISION);
+    expect(interpolate(12, data)).toBeCloseTo(2, PRECISION);
+    expect(interpolate(15, data)).toBeCloseTo(3.25, PRECISION);
+    expect(interpolate(18, data)).toBeCloseTo(4.5, PRECISION);
+    expect(interpolate(24, data)).toBeCloseTo(7, PRECISION);
+    expect(interpolate(30, data)).toBeCloseTo(7, PRECISION);
+    expect(interpolate(36, data)).toBeCloseTo(7, PRECISION);
+  });
+
   it('the adaptive algorithm correctly performs a rhs perturbation with feasibility and infeasibility', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('adaptive');
-    var rawData = analysis.run(DOVETAIL_RHS, -6, 6);
+    var rawData = analysis.run(DOVETAIL_RHS, -6, 6, 0, {});
     var segments = analysis.partitionData(rawData);
 
     // Expect two segments: one infeasible, and one finite objective values
@@ -89,7 +109,7 @@ describe("SensitivityAnalysis", function () {
   it('the adaptive algorithm correctly performs a rhs perturbation with infeasibility', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('adaptive');
-    var rawData = analysis.run(DOVETAIL_RHS, -10, -1);
+    var rawData = analysis.run(DOVETAIL_RHS, -10, -1, 0, {});
     var segments = analysis.partitionData(rawData);
   });
 });
@@ -107,7 +127,7 @@ describe("SensitivityAnalysis Async Action", function () {
 
   it('the worker action generates a graph', function() {
     var event = {};
-    event.data = {minValue: 10, maxValue: 30, method: 'adaptive', code: DOVETAIL_RHS};
+    event.data = {minValue: 10, maxValue: 30, method: 'adaptive', code: DOVETAIL_RHS, column: 0};
     actionSensitivity(event);
   });
 

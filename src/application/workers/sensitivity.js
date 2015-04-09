@@ -33,18 +33,41 @@ var SensitivityAnalysis = function () {
   };
 
   /**
+   * Returns the target value name for the lp.
+   *
+   * @param lp
+   * @param column
+   * @returns {*}
+   */
+  this.getColumnValueName = function(lp, column) {
+    if (column === 0) {
+      return "objective value";
+    } else if ((column >= 1) && (column <= glp_get_num_cols(lp))) {
+      return glp_get_col_name(lp, column);
+    } else {
+      throw "Invalid column index: " + column;
+    }
+  };
+
+  /**
    * Returns the target value (e.g., objective value or variable value) as a function of the value of the perturbed
    * parameter. This function solves the model.
    * @param code
+   * @param column (0 = objective value, 1..n = variable)
    * @returns {Function}
    */
-  this.evaluationFn = function (code) {
+  this.evaluationFn = function (code, column) {
     var model = self.getModelFunction(code);
 
     return function (x) {
       var result = GlpkUtil.solveGmpl(model(x));
-      postInfo("value = " + x.toString() + ", objective = " + result.objectiveValue);
-      return result.objectiveValue;
+      var name = self.getColumnValueName(result.lp, column);
+      var value = (column === 0)
+          ? result.objectiveValue
+          : GlpkUtil.getColumnValue(result.lp, column);
+      self.columnName = name;
+      postInfo("value = " + x.toString() + ", " + name + " = " + value);
+      return value;
     }
   };
 
@@ -111,7 +134,7 @@ var SensitivityAnalysis = function () {
    */
   this.partitionData = function(data) {
     var parts = [];
-    var curPart;
+    var curPart = {};
     for (var i = 0; i < data.length; i++) {
       var type;
       var point = data[i];
@@ -138,12 +161,12 @@ var SensitivityAnalysis = function () {
    * @param code {String}
    * @param minX {Number}
    * @param maxX {Number}
-   * @param options {Array}
+   * @param column {Number}
+   * @param options {*}
    * @returns {Array}
    */
-  this.run = function (code, minX, maxX, options) {
-    var func = self.evaluationFn(code);
-
+  this.run = function (code, minX, maxX, column, options) {
+    var func = self.evaluationFn(code, column);
     return selectedAlgorithm(func, minX, maxX, options);
   };
 
@@ -158,6 +181,12 @@ var SensitivityAnalysis = function () {
  */
 function actionSensitivity(e) {
 
+  checkDefined(e.data);
+  checkDefined(e.data.minValue);
+  checkDefined(e.data.maxValue);
+  checkDefined(e.data.method);
+  checkDefined(e.data.column);
+
   // Turn off GLPK logging (as this results in a lot of log lines)
   GlpkUtil.setInfoLogFunction(function () {});
 
@@ -166,16 +195,16 @@ function actionSensitivity(e) {
   var minX = e.data.minValue;
   var maxX = e.data.maxValue;
   analysis.setAlgorithm(e.data.method);
-  var rawData = analysis.run(e.data.code, minX, maxX, e.data);
+  var rawData = analysis.run(e.data.code, minX, maxX, e.data.column, e.data);
 
   // Draw graph
   var dataBounds = MathUtil.getBounds(rawData);
-  var viewBounds = MathUtil.expandBounds(dataBounds, 0.0, 1.0);
+  var viewBounds = MathUtil.expandBounds(dataBounds, 0.01, 1.0);
 
   var graph = new Graph();
   graph.setTitle("Perturbation function");
   graph.setXlabel("value");
-  graph.setYlabel("objective value");
+  graph.setYlabel(analysis.columnName);
   graph.setXRange(minX, maxX);
   graph.setYRange(viewBounds.minY, viewBounds.maxY);
 
