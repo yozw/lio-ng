@@ -3,6 +3,8 @@ app.service('jqPlotRenderService', function () {
 
    var defaultOptions = {
      title: '',
+     width: '400px',
+     height: '400px',
      axes: {
        xaxis: {min: 0, max: 1, label: ''},
        yaxis: {min: 0, max: 1, label: ''}
@@ -10,7 +12,9 @@ app.service('jqPlotRenderService', function () {
      sortData: false,
      highlighter: {
        show: true,
-       sizeAdjust: 6
+       sizeAdjust: 6,
+       useAxesFormatters: false,
+       tooltipFormatString: "%.4f"
      },
      cursor: {
        show: true,

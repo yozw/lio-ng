@@ -10,7 +10,8 @@ module.directive('resultsGraph', function () {
     scope: {
       ngModel: '='
     },
-    template: '<div ui-chart="ngModel.data" chart-options="ngModel.options"></div>'
+    template: '<div style="width:{{ngModel.options.width}}; height:{{ngModel.options.height}};" '
+        + ' ui-chart="ngModel.data" chart-options="ngModel.options"></div>'
   };
 });
 
