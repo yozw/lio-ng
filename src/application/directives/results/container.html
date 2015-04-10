@@ -1,5 +1,5 @@
 <div class="scrollable">
-  <h1>{{title}}</h1>
+  <h1>{{header}}</h1>
   <div ng-if="entries == null || entries.length == 0"  class="bs-callout bs-callout-info">Nothing to display.</div>
   <div ng-repeat="entry in entries">
     <div ng-switch on="entry.type">

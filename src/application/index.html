@@ -179,22 +179,22 @@
   <tabpane name="Model overview" id="tab-overview" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <results-container resizable style="height: {{windowHeight - 26}}px;"
                        entries="model.results.overview"
-                       title="Model overview"></results-container>
+                       header="Model overview"></results-container>
   </tabpane>
   <tabpane name="Variables" id="tab-variables" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <results-container resizable style="height: {{windowHeight - 26}}px;"
                        entries="model.results.primal"
-                       title="Variables"></results-container>
+                       header="Variables"></results-container>
   </tabpane>
   <tabpane name="Constraints" id="tab-constraints" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <results-container resizable style="height: {{windowHeight - 26}}px;"
                        entries="model.results.dual"
-                       title="Constraints"></results-container>
+                       header="Constraints"></results-container>
   </tabpane>
   <tabpane name="Output" id="tab-output" ng-controller="ResultsTabCtrl" data-ng-activate="refresh()" level="2">
     <results-container resizable style="height: {{windowHeight - 26}}px;"
                        entries="model.results.output"
-                       title="Output"></results-container>
+                       header="Output"></results-container>
   </tabpane>
   <tabpane name="Log messages" id="tab-log" level="2">
     <div id="model-log"

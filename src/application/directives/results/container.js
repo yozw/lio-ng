@@ -9,9 +9,9 @@ module.directive('resultsContainer', function () {
     replace: true,
     scope: {
       entries: '=',
-      title: '@'
+      header: '@'
     },
-    templateUrl: '/application/directives/results/container.html',
+    templateUrl: '/application/directives/results/container.html'
   };
 });
 
