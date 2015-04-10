@@ -88,6 +88,20 @@ MathUtil.isFinite = function (number) {
   return (number > -Number.MAX_VALUE) && (number < Number.MAX_VALUE);
 };
 
+/**
+ * Determines whether a number is infinite.
+ * @returns {boolean} true if the argument is a number and it is infinite.
+ */
+MathUtil.isInfinite = function (number) {
+  if (typeof number !== "number") {
+    return false;
+  }
+  if (isNaN(number)) {
+    return false;
+  }
+  return (number <= -Number.MAX_VALUE) || (number >= Number.MAX_VALUE);
+};
+
 MathUtil.uniqueBy = function(array, keyFn) {
   var seen = {};
   return array.filter(function(element) {
@@ -332,4 +346,3 @@ MathUtil.expandToNumber = function(text, start, end) {
 
   return {text: text.substring(start, end), start: start, end: end};
 };
-

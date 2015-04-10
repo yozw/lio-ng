@@ -537,7 +537,7 @@ GlpkUtil.getConstraintsTable = function (lp) {
       var rowStatus = glp_get_row_stat(lp, r);
       row.setValue(statusColumn, GlpkUtil.GLP_ROW_STATUS[rowStatus]);
     }
-    
+
     row.setValue(lbColumn, glp_get_row_lb(lp, r));
     row.setValue(ubColumn, glp_get_row_ub(lp, r));
   }

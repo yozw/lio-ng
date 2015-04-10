@@ -5,6 +5,7 @@ importScripts('/application/common/table.js');
 importScripts('/application/common/graph.js');
 importScripts('/application/common/math_util.js');
 importScripts('/application/common/priority-queue.js');
+importScripts('/application/common/string_util.js');
 importScripts('/application/common/util.js');
 importScripts('/application/workers/math/adaptive_function_estimation.js');
 importScripts('/application/workers/math/feasible_region_graph.js');

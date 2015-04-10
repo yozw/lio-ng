@@ -31,9 +31,22 @@ describe("MathUtil", function () {
     expect(MathUtil.isFinite(2)).toEqual(true);
     expect(MathUtil.isFinite(Number.MAX_VALUE)).toEqual(false);
     expect(MathUtil.isFinite(-Number.MAX_VALUE)).toEqual(false);
+    expect(MathUtil.isFinite(Infinity)).toEqual(false);
+    expect(MathUtil.isFinite(-Infinity)).toEqual(false);
     expect(MathUtil.isFinite(NaN)).toEqual(false);
     expect(MathUtil.isFinite("")).toEqual(false);
     expect(MathUtil.isFinite("5")).toEqual(false);
+  });
+
+  it('determine infiniteness', function () {
+    expect(MathUtil.isInfinite(2)).toEqual(false);
+    expect(MathUtil.isInfinite(Number.MAX_VALUE)).toEqual(true);
+    expect(MathUtil.isInfinite(-Number.MAX_VALUE)).toEqual(true);
+    expect(MathUtil.isInfinite(Infinity)).toEqual(true);
+    expect(MathUtil.isInfinite(-Infinity)).toEqual(true);
+    expect(MathUtil.isInfinite(NaN)).toEqual(false);
+    expect(MathUtil.isInfinite("")).toEqual(false);
+    expect(MathUtil.isInfinite("5")).toEqual(false);
   });
 
   it('determines the vertices of a set of linear inequalities', function () {

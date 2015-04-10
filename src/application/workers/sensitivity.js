@@ -58,15 +58,54 @@ var SensitivityAnalysis = function () {
    */
   this.evaluationFn = function (code, column) {
     var model = self.getModelFunction(code);
+    var postInfoCounter = 0;
+
+    function postColumns() {
+      var str = "";
+      for (var i = 0; i < arguments.length; i++) {
+        if (i > 0) {
+          str += " ";
+        }
+        var value = arguments[i];
+        if (typeof value === 'number') {
+          str += StringUtil.formatNumberFixedWidth(value, 15);
+        } else {
+          str += StringUtil.lpad(arguments[i], 15);
+        }
+      }
+      postInfo(str);
+    }
 
     return function (x) {
       var result = GlpkUtil.solveGmpl(model(x));
       var name = self.getColumnValueName(result.lp, column);
-      var value = (column === 0)
-          ? result.objectiveValue
-          : GlpkUtil.getColumnValue(result.lp, column);
+      var value;
+
+      if (postInfoCounter == 0) {
+        postColumns("Sensitivity", "Objective");
+        if (column !== 0) {
+          postColumns("parameter", "value", name);
+          postInfo(StringUtil.repeat("-", 16 + 16 + 15));
+        } else {
+          postColumns("parameter", "value");
+          postInfo(StringUtil.repeat("-", 16 + 15));
+        }
+      }
+      postInfoCounter++;
+
+      if ((column === 0) || (MathUtil.isInfinite(result.objectiveValue))) {
+        // If the target variable (i.e., the one that is plotted on the vertical axis)
+        // is the optimal objective value, OR the model is unbounded or infeasible,
+        // then return the objective value.
+        value = result.objectiveValue;
+        postColumns(x, result.objectiveValue);
+      } else {
+        // Otherwise, return the optimal value of the target column.
+        value = GlpkUtil.getColumnValue(result.lp, column);
+        postColumns(x, result.objectiveValue, value);
+      }
+
       self.columnName = name;
-      postInfo("value = " + x.toString() + ", " + name + " = " + value);
       return value;
     }
   };

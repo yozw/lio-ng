@@ -106,6 +106,22 @@ describe("SensitivityAnalysis", function () {
     expect(interpolate(6, data)).toBeCloseTo(12, PRECISION);
   });
 
+  it('the adaptive algorithm correctly performs a rhs perturbation with feasibility/infeasibility and a variable target', function () {
+    var analysis = new SensitivityAnalysis();
+    analysis.setAlgorithm('adaptive');
+    var rawData = analysis.run(DOVETAIL_RHS, -6, 6, 2, {});
+    var segments = analysis.partitionData(rawData);
+
+    // Expect two segments: one infeasible, and one finite objective values
+    expect(segments.length).toEqual(2);
+    var data = segments[1].data;
+
+    expect(segments[0].data[0][0]).toBeCloseTo(-6);
+    expect(segments[0].data[0][1]).toEqual(-Infinity);
+    expect(interpolate(0, data)).toBeCloseTo(0);
+    expect(interpolate(6, data)).toBeCloseTo(6, PRECISION);
+  });
+
   it('the adaptive algorithm correctly performs a rhs perturbation with infeasibility', function () {
     var analysis = new SensitivityAnalysis();
     analysis.setAlgorithm('adaptive');
