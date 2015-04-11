@@ -262,6 +262,18 @@ function actionSensitivity(e) {
     var dataAfter = parts[j].data;
     var x = (dataAfter[0][0] + dataBefore[dataBefore.length - 1][0]) / 2;
     graph.addLine([1, 0], x);
+
+    if (dataBefore[0][1] <= -Number.MAX_VALUE) {
+      graph.addSectionLabel(x, 'infeasible', {location: 'c', xpadding: -32, rotate: 270});
+    } else if (dataBefore[0][1] >= Number.MAX_VALUE) {
+      graph.addSectionLabel(x, 'unbounded', {location: 'c', xpadding: -32, rotate: 270});
+    }
+
+    if (dataAfter[0][1] <= -Number.MAX_VALUE) {
+      graph.addSectionLabel(x, 'infeasible', {location: 'c', xpadding: -14, rotate: 90});
+    } else if (dataAfter[0][1] >= Number.MAX_VALUE) {
+      graph.addSectionLabel(x, 'unbounded', {location: 'c', xpadding: -14, rotate: 90});
+    }
   }
 
   postGraph('output', graph);

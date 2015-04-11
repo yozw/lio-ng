@@ -55,6 +55,16 @@ var Graph = function () {
     self.layers.push(layer);
   };
 
+  this.addSectionLabel = function (x, label, options) {
+    var layer = {
+      type: 'section-label',
+      x: x,
+      label: label,
+      options: {zIndex: 0, pointLabels: extend({}, options)}
+    };
+    self.layers.push(layer);
+  };
+
   this.setXlabel = function (label) {
     self.xlabel = label;
   };

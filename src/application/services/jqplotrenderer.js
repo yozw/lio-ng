@@ -30,7 +30,7 @@ app.service('jqPlotRenderService', function () {
   };
      
   var defaultSeriesOptions = {
-    "polygon": {
+    polygon: {
       showMarker: false,
       markerOptions: {
         size: 0, 
@@ -42,22 +42,30 @@ app.service('jqPlotRenderService', function () {
       fillAndStroke: true,
       shadow: false 
     },
-    "scatter": {
+    scatter: {
       showMarker: true,
       showLine: false,
       color: "#80A0FF"
     },
-    "plot": {
+    plot: {
       showMarker: false,
       showLine: true,
       lineWidth: 2,
       color: "#428bca"
     },
-    "line": {
+    line: {
       showMarker: false,
       showLine: true,
       lineWidth: 1,
       color: "#808080"
+    },
+    "section-label": {
+      showLine: false,
+      showMarker: false,
+      pointLabels: {
+        show: true,
+        location: 'e'
+      }
     }
   };
   
@@ -92,6 +100,10 @@ app.service('jqPlotRenderService', function () {
           graph.xrange.max,
           graph.yrange.min,
           graph.yrange.max);
+    } else if (layer.type === "section-label") {
+      return [
+        [layer.x, (graph.yrange.min + graph.yrange.max) / 2, layer.label]
+      ];
     } else {
       return layer.data;
     }
