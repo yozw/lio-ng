@@ -174,44 +174,41 @@ MathUtil.getOptimalPoints = function (points, objVector) {
  * Calculates the two intersections between the two-dimensional line {@code normal . [x y] = rhs} and the two-dimensional
  * box given by {@code minX <= x <= maxX} and {@code minY <= y <= maxY}.
  *
- * @param normal
- * @param rhs
- * @param minX
- * @param maxX
- * @param minY
- * @param maxY
- * @returns {*[]}
+ * @param normal {[]}
+ * @param rhs {Number}
+ * @param bounds {{minX: Number, maxX: Number, minY: Number, maxY: Number}}
+ * @returns {![]}
  */
 
-MathUtil.getLineEndpoints = function(normal, rhs, minX, maxX, minY, maxY) {
+MathUtil.getLineEndpoints = function(normal, rhs, bounds) {
   var a = normal[0], b = normal[1];
   var x1, y1, x2, y2;
 
   // solve equation ax + by = c, staying inside the bounds
   // set by minX, maxX, minY, maxY
   if (b === 0) {
-    return [ [rhs / a, minY], [rhs / a, maxY] ];
+    return [ [rhs / a, bounds.minY], [rhs / a, bounds.maxY] ];
   } else if (a === 0) {
-    return [ [minX, rhs / b], [maxX, rhs / b] ];
+    return [ [bounds.minX, rhs / b], [bounds.maxX, rhs / b] ];
   }
 
-  x1 = minX;
-  x2 = maxX;
+  x1 = bounds.minX;
+  x2 = bounds.maxX;
   y1 = (rhs - a * x1) / b;
   y2 = (rhs - a * x2) / b;
-  if (y1 > maxY) {
-    y1 = maxY;
+  if (y1 > bounds.maxY) {
+    y1 = bounds.maxY;
     x1 = (rhs - b * y1) / a;
-  } else if (y1 < minY) {
-    y1 = minY;
+  } else if (y1 < bounds.minY) {
+    y1 = bounds.minY;
     x1 = (rhs - b * y1) / a;
   }
 
-  if (y2 > maxY) {
-    y2 = maxY;
+  if (y2 > bounds.maxY) {
+    y2 = bounds.maxY;
     x2 = (rhs - b * y2) / a;
-  } else if (y2 < minY) {
-    y2 = minY;
+  } else if (y2 < bounds.minY) {
+    y2 = bounds.minY;
     x2 = (rhs - b * y2) / a;
   }
   return [ [x1, y1], [x2, y2] ];

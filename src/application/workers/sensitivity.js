@@ -106,6 +106,7 @@ var SensitivityAnalysis = function () {
       }
 
       self.columnName = name;
+      self.isMaximizing = GlpkUtil.isMaximizing(result.lp);
       return value;
     }
   };
@@ -220,6 +221,18 @@ var SensitivityAnalysis = function () {
  */
 function actionSensitivity(e) {
 
+  function getInfinityLabel(objValue, isMaximizing) {
+    if ((isMaximizing && objValue <= -Number.MAX_VALUE)
+        || (!isMaximizing && objValue >= Number.MAX_VALUE)) {
+      return "infeasible";
+    } else if ((isMaximizing && objValue >= Number.MAX_VALUE)
+        || (!isMaximizing && objValue <= -Number.MAX_VALUE)) {
+      return "unbounded";
+    } else {
+      return "";
+    }
+  }
+
   checkDefined(e.data);
   checkDefined(e.data.minValue);
   checkDefined(e.data.maxValue);
@@ -263,16 +276,14 @@ function actionSensitivity(e) {
     var x = (dataAfter[0][0] + dataBefore[dataBefore.length - 1][0]) / 2;
     graph.addLine([1, 0], x);
 
-    if (dataBefore[0][1] <= -Number.MAX_VALUE) {
-      graph.addSectionLabel(x, 'infeasible', {location: 'c', xpadding: -32, rotate: 270});
-    } else if (dataBefore[0][1] >= Number.MAX_VALUE) {
-      graph.addSectionLabel(x, 'unbounded', {location: 'c', xpadding: -32, rotate: 270});
+    var beforeLabel = getInfinityLabel(dataBefore[0][1], analysis.isMaximizing);
+    if (beforeLabel.length > 0) {
+      graph.addSectionLabel(x, beforeLabel, {location: 'w', xpadding: 0, rotate: 270});
     }
 
-    if (dataAfter[0][1] <= -Number.MAX_VALUE) {
-      graph.addSectionLabel(x, 'infeasible', {location: 'c', xpadding: -14, rotate: 90});
-    } else if (dataAfter[0][1] >= Number.MAX_VALUE) {
-      graph.addSectionLabel(x, 'unbounded', {location: 'c', xpadding: -14, rotate: 90});
+    var afterLabel = getInfinityLabel(dataAfter[0][1], analysis.isMaximizing);
+    if (afterLabel.length > 0) {
+      graph.addSectionLabel(x, afterLabel, {location: 'e', xpadding: 0, rotate: 90});
     }
   }
 

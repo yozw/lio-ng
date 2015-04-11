@@ -1,4 +1,9 @@
 /**
+ * This file is a customized version of jquery.pointLabels.js that allows for rotated
+ * labels.
+ *
+ * --------------------------------------------------------------------------------------
+ *
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
@@ -197,7 +202,7 @@
     }
     var height = elem.outerHeight(true);
     var theta = rotate / 180 * Math.PI;
-    return width * Math.cos(theta) + height * Math.sin(theta);
+    return width * Math.abs(Math.cos(theta)) + height * Math.abs(Math.sin(theta));
   };
 
   $.jqplot.PointLabels.prototype.getActualHeight = function(elem, rotate) {
@@ -207,29 +212,30 @@
     }
     var width = elem.outerWidth(true);
     var theta = rotate / 180 * Math.PI;
-    return width * Math.sin(theta) + height * Math.cos(theta);
+    return width * Math.abs(Math.sin(theta)) + height * Math.abs(Math.cos(theta));
   };
 
   $.jqplot.PointLabels.prototype.xOffset = function(elem, location, padding, rotate) {
     location = location || this.location;
     padding = padding || this.xpadding;
 
-    var offset;
+    // offset to align the center of the label with the data point
+    var offset = -elem.outerWidth(true) / 2;
 
     switch (location) {
       case 's':
       case 'n':
-        return -elem.outerWidth(true);
       case 'c':
+        return offset;
       case 'ne':
       case 'e':
       case 'se':
-        return padding;
+        return offset + this.getActualWidth(elem, rotate) / 2 + padding;
       case 'nw':
       case 'sw':
       case 'w':
       default: // same as 'nw'
-        return -elem.outerWidth(true) - padding;
+        return offset - this.getActualWidth(elem, rotate) / 2 - padding;
     }
   };
 
@@ -237,20 +243,23 @@
     location = location || this.location;
     padding = padding || this.xpadding;
 
+    // offset to align the center of the label with the data point
+    var offset = -elem.outerHeight(true) / 2;
+
     switch (location) {
       case 'e':
       case 'w':
-        return -this.getActualHeight(elem, rotate)/2;
       case 'c':
+        return offset;
       case 'se':
       case 's':
       case 'sw':
-        return padding;
+        return offset + this.getActualHeight(elem, rotate) / 2 + padding;
       case 'nw':
       case 'n':
       case 'ne':
       default: // same as 'nw'
-        return -this.getActualHeight(elem, rotate) - padding;
+        return offset - this.getActualHeight(elem, rotate) / 2 - padding;
     }
   };
 
@@ -302,6 +311,7 @@
           elem.css('transform', 'rotate(' + p.rotate + 'deg)');
           elem.css('-ms-transform', 'rotate(' + p.rotate + 'deg)');
           elem.css('-webkit-transform', 'rotate(' + p.rotate + 'deg)');
+          elem.css('transform-origin', '50% 50%');
         }
         elem.insertAfter(sctx.canvas);
 
@@ -317,7 +327,6 @@
         }
 
 
-        p.rotate = 0;
         var ell = xax.u2p(pd[i][0]) + p.xOffset(elem, location, p.xpadding, p.rotate);
         var elt = yax.u2p(pd[i][1]) + p.yOffset(elem, location, p.ypadding, p.rotate);
 

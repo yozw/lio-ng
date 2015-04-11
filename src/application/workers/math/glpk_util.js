@@ -125,6 +125,20 @@ GlpkUtil.getObjectiveVector = function (lp) {
 };
 
 /**
+ * Return true if the model is a maximizing model, and false if it is a minimizing model.
+ * @param lp
+ * @returns {boolean}
+ */
+GlpkUtil.isMaximizing = function (lp) {
+  "use strict";
+  var direction = glp_get_obj_dir(lp);
+  if ((direction !== GLP_MIN) && (direction !== GLP_MAX)) {
+    throw "Invalid objective direction: " + direction;
+  }
+  return direction === GLP_MAX;
+}
+
+/**
  * Returns the objective vector of a GLPK lp model, as if it were a maximizing model.
  * That is, the function returns the same as GlpkUtil.getObjectiveVector if the model
  * is maximizing; it returns the negative of GlpkUtil.getObjectiveVector if the model
@@ -134,7 +148,7 @@ GlpkUtil.getObjectiveVector = function (lp) {
  */
 GlpkUtil.getMaximizingObjectiveVector = function (lp) {
   "use strict";
-  var factor = glp_get_obj_dir(lp) === GLP_MIN ? -1 : 1;
+  var factor = GlpkUtil.isMaximizing(lp) ? 1 : -1;
   var vector = [];
   for (var j = 1; j <= glp_get_num_cols(lp); j++) {
     vector.push(factor * glp_get_obj_coef(lp, j));

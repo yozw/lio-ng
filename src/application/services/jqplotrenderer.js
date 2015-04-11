@@ -93,13 +93,12 @@ app.service('jqPlotRenderService', function () {
 
   function getSeriesData(layer, graph) {
     if (layer.type === "line") {
-      return MathUtil.getLineEndpoints(
-          layer.normal,
-          layer.rhs,
-          graph.xrange.min,
-          graph.xrange.max,
-          graph.yrange.min,
-          graph.yrange.max);
+      var bounds = {
+        minX: graph.xrange.min, maxX: graph.xrange.max,
+        minY: graph.yrange.min, maxY: graph.yrange.max
+      };
+      bounds = MathUtil.expandBounds(bounds, 0.5, 1);
+      return MathUtil.getLineEndpoints(layer.normal, layer.rhs, bounds);
     } else if (layer.type === "section-label") {
       return [
         [layer.x, (graph.yrange.min + graph.yrange.max) / 2, layer.label]

@@ -61,38 +61,44 @@ describe("MathUtil", function () {
 
   it('calculates intersections of a vertical line and box', function () {
     var a = [1, 0];
-    var b = [1];
-    expect(MathUtil.getLineEndpoints(a, b, -2, 2, -2, 2)).toEqual([[1, -2], [1, 2]]);
+    var b = 1;
+    var bounds = {minX: -2, maxX: 2, minY: -2, maxY: 2};
+    expect(MathUtil.getLineEndpoints(a, b, bounds)).toEqual([[1, -2], [1, 2]]);
   });
 
   it('calculates intersections of a horizontal line and box', function () {
     var a = [0, 1];
-    var b = [1];
-    expect(MathUtil.getLineEndpoints(a, b, -2, 2, -2, 2)).toEqual([[-2, 1], [2, 1]]);
+    var b = 1;
+    var bounds = {minX: -2, maxX: 2, minY: -2, maxY: 2};
+    expect(MathUtil.getLineEndpoints(a, b, bounds)).toEqual([[-2, 1], [2, 1]]);
   });
 
   it('calculates intersections of a diagonal line and box, case 1', function () {
     var a = [1, 1];
-    var b = [1];
-    expect(MathUtil.getLineEndpoints(a, b, -2, 2, -2, 2)).toEqual([[-1, 2], [2, -1]]);
+    var b = 1;
+    var bounds = {minX: -2, maxX: 2, minY: -2, maxY: 2};
+    expect(MathUtil.getLineEndpoints(a, b, bounds)).toEqual([[-1, 2], [2, -1]]);
   });
 
   it('calculates intersections of a diagonal line and box, case 2', function () {
     var a = [1, 1];
-    var b = [-1];
-    expect(MathUtil.getLineEndpoints(a, b, -2, 2, -2, 2)).toEqual([[-2, 1], [1, -2]]);
+    var b = -1;
+    var bounds = {minX: -2, maxX: 2, minY: -2, maxY: 2};
+    expect(MathUtil.getLineEndpoints(a, b, bounds)).toEqual([[-2, 1], [1, -2]]);
   });
 
   it('calculates intersections of a diagonal line and box, case 3', function () {
     var a = [1, -1];
-    var b = [1];
-    expect(MathUtil.getLineEndpoints(a, b, -2, 2, -2, 2)).toEqual([[-1, -2], [2, 1]]);
+    var b = 1;
+    var bounds = {minX: -2, maxX: 2, minY: -2, maxY: 2};
+    expect(MathUtil.getLineEndpoints(a, b, bounds)).toEqual([[-1, -2], [2, 1]]);
   });
 
   it('calculates intersections of a diagonal line and box, case 3', function () {
     var a = [1, -1];
-    var b = [-1];
-    expect(MathUtil.getLineEndpoints(a, b, -2, 2, -2, 2)).toEqual([[-2, -1], [1, 2]]);
+    var b = -1;
+    var bounds = {minX: -2, maxX: 2, minY: -2, maxY: 2};
+    expect(MathUtil.getLineEndpoints(a, b, bounds)).toEqual([[-2, -1], [1, 2]]);
   });
 
   it('getBounds retrieves the bounds of a set of points', function () {
