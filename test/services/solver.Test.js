@@ -82,6 +82,8 @@ var TRIVIAL_IP = "var x >= 2, integer; printf 'hello\\n'; minimize z: x; solve; 
 
 var INVALID_BOUNDS = "var x >= 1.5, integer; printf 'hello\\n'; minimize z: x; solve; printf 'x=%0.2f\\n', x; end;\n";
 
+var ERROR_MODEL = "param N; var x{1..N} binary; subject to total: sum{i in 1..N} x[i] = 1;";
+
 describe("solverService", function () {
 
   var solverService;
@@ -335,6 +337,23 @@ describe("solverService", function () {
           expect(finished).toEqual(true);
           expect(errors).toEqual(["The model contains one or more variables with invalid bounds."]);
           expect(output).toEqual(["hello"]);
+        })
+      });
+
+  it('correctly handles a model with a parameter with no value',
+      function () {
+        runs(function() {
+          solverService.solve(ERROR_MODEL, callback);
+        });
+
+        waitsFor(function() {
+          return finished;
+        }, 2000);
+
+        runs(function() {
+          expect(finished).toEqual(true);
+          expect(errors).toEqual(["Error in line 1: no value for N"]);
+          expect(successMessages).toEqual([]);
         })
       });
 });

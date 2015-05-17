@@ -7,7 +7,8 @@ var GlpkUtil = Object();
 //-----------------------------------------------------------------------------
 
 GlpkUtil.MODEL_NAME = "editor.mod";
-GlpkUtil.ERROR_MSG_RE = new RegExp(GlpkUtil.MODEL_NAME.replace(".", "\\.") + ":([0-9]+):(.*)");
+GlpkUtil.ERROR_MSG_RE_WITH_MODEL_NAME = new RegExp(GlpkUtil.MODEL_NAME.replace(".", "\\.") + ":([0-9]+):(.*)");
+GlpkUtil.ERROR_MSG_RE_WITHOUT_MODEL_NAME = new RegExp("([0-9]+):(.*)");
 
 GlpkUtil.STATUS_OPTIMAL = 1;
 GlpkUtil.STATUS_INFEASIBLE = 2;
@@ -97,9 +98,16 @@ GlpkUtil.error = function(error) {
   }
 
   if (error.hasOwnProperty('line')) {
-    var match = GlpkUtil.ERROR_MSG_RE.exec(error.message);
-    if (match !== undefined && match.length >= 3) {
+    var match = GlpkUtil.ERROR_MSG_RE_WITH_MODEL_NAME.exec(message);
+    if (match !== undefined && match !== null && match.length >= 3) {
       message = "Error in line " + match[1] + ": " + match[2].trim();
+    } else {
+      // For some reason, whenever a parameter has no value, the error message
+      // does not include the model name.
+      match = GlpkUtil.ERROR_MSG_RE_WITHOUT_MODEL_NAME.exec(message);
+      if (match !== undefined && match !== null && match.length >= 3) {
+        message = "Error in line " + match[1] + ": " + match[2].trim();
+      }
     }
   }
   GlpkUtil._logErrorFunction(message, error);
