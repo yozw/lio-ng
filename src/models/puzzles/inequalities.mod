@@ -1,11 +1,12 @@
 /**
-# A puzzle
+# A number puzzle with inequalities
 Source: Nicky van Foreest (http://nicky.vanforeest.com/misc/numberPuzzle/puzzle.html)
 
-Consider the following puzzle: Chose numbers 1 to 5 such that in the diagram below each number
+Consider the following puzzle: Choose numbers 1 to 5 such that in the diagram below each number
 is contained exactly once in each row and each column. The numbers in the fields should respect
 any inequality between two fields.
 
+<div align="center">
 <table border=0 style="border-collapse: collapse; text-align: center;">
   <tr style="height: 40px">
     <td style="width:40px; border: 1px solid black; background-color: #6af;"></td>
@@ -107,6 +108,7 @@ any inequality between two fields.
     <td style="width:40px; border: 1px solid black; background-color: #6af;"></td>
   </tr>
 </table>
+</div>
 
 ## The decision variables
 As decision variables we use $x_{r,c,k}$ such that $x_{r,c,k}=1$ if $k$ appears in the field

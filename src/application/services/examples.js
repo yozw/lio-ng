@@ -22,6 +22,10 @@ app.factory('examples', function () {
     {name: 'Financial', subItems: [
       {name: 'Portfolio optimization using mean absolute deviation', url: 'builtin:glpk/PortfolioMAD.mod'}
     ]},
-    {name: 'A puzzle', url: 'builtin:puzzle.mod'}
+    {name: 'Puzzles', subItems: [
+      {name: 'Number puzzle with inequalities', url: 'builtin:puzzles/inequalities.mod'},
+      {name: 'Skyscrapers 2D', url: 'builtin:puzzles/towers2d.mod'},
+      {name: 'Skyscrapers 3D', url: 'builtin:puzzles/towers3d.mod'}
+    ]}
   ];
 });
