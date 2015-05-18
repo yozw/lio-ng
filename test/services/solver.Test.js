@@ -58,12 +58,30 @@ var UNBOUNDED_IP = "var x1 >= 0, integer;\n"
     + "subject to c14: x2 >=  6;\n"
     + "end;";
 
+// This model is infeasible, and this fact is established in the preprocessing phase
 var INFEASIBLE_IP = "var x1 >= 0, integer;\n"
     + "var x2 >= 0, integer;\n"
     + "maximize z: 3*x1 + 2*x2;\n"
     + "subject to c11: x1 + x2 <= 9;\n"
     + "subject to c12: x1 + x2 >= 10;\n"
     + "end;";
+
+// This model is infeasible, but this fact is not established in the preprocessing phase
+var INFEASIBLE_IP_2 = "param N; var x{1..N, 1..N} binary;\n"
+    + "var vl{1..N} binary; var vr{1..N} binary;\n"
+    + "subject to tower{i in 1..N}: sum{k in 1..N} x[i, k] = 1;\n"
+    + "subject to heights{k in 1..N}: sum{i in 1..N} x[i, k] = 1;\n"
+    + "subject to vl1{i in 1..N, k in 1..N}:\n"
+    + "vl[i] >= x[i, k] - sum{a in 1..(i-1), b in k..N} x[a, b];\n"
+    + "subject to vl2{i in 1..N, k in 1..N}:\n"
+    + "vl[i] <= 2 - x[i, k] - sum{a in 1..(i-1), b in k..N} x[a, b] / 25;\n"
+    + "subject to vr1{i in 1..N, k in 1..N}:\n"
+    + "vr[i] >= x[i, k] - sum{a in (i+1)..N, b in k..N} x[a, b];\n"
+    + "subject to vr2{i in 1..N, k in 1..N}:\n"
+    + "vr[i] <= 2 - x[i, k] - sum{a in (i+1)..N, b in k..N} x[a, b] / 25;\n"
+    + "subject to left: sum{i in 1..N} vl[i] = N;\n"
+    + "subject to right: sum{i in 1..N} vr[i] = N;\n"
+    + "data; param N := 2; end;";
 
 var BOUNDED_IP_WITH_PRINT = "var x1 >= 0, integer;\n"
     + "var x2 >= 0, integer;\n"
@@ -204,10 +222,27 @@ describe("solverService", function () {
         })
       });
 
-  it('correctly handles an infeasible integer optimization model',
+  it('correctly handles an infeasible integer optimization model (preprocessor)',
       function () {
         runs(function() {
           solverService.solve(INFEASIBLE_IP, callback);
+        });
+
+        waitsFor(function() {
+          return finished;
+        }, 2000);
+
+        runs(function() {
+          expect(finished).toEqual(true);
+          expect(errors).toEqual([]);
+          expect(successMessages).toEqual(["The model is infeasible"]);
+        })
+      });
+
+  it('correctly handles an infeasible integer optimization model (non-preprocessor)',
+      function () {
+        runs(function() {
+          solverService.solve(INFEASIBLE_IP_2, callback);
         });
 
         waitsFor(function() {

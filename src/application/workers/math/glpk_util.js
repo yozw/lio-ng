@@ -144,7 +144,7 @@ GlpkUtil.isMaximizing = function (lp) {
     throw "Invalid objective direction: " + direction;
   }
   return direction === GLP_MAX;
-}
+};
 
 /**
  * Returns the objective vector of a GLPK lp model, as if it were a maximizing model.
@@ -339,46 +339,91 @@ GlpkUtil.solveGmpl = function (code) {
 
   GlpkUtil.installLogFunction();
 
-  function getSolverStatus(glpStatus, lp) {
-    var isMinimizing;
+  function statusOptimal(lp) {
+    return {
+      lp: lp,
+      status: GlpkUtil.STATUS_OPTIMAL,
+      statusMessage: "Optimal",
+      objectiveValue: GlpkUtil.getObjectiveValue(lp)
+    }
+  }
 
-    if (glp_get_obj_dir(lp) == GLP_MIN) {
-      isMinimizing = true;
-    } else if (glp_get_obj_dir(lp) == GLP_MAX) {
-      isMinimizing = false;
+  function statusInfeasible(lp) {
+    var isMaximizing = GlpkUtil.isMaximizing(lp);
+    return {
+      lp: lp,
+      status: GlpkUtil.STATUS_INFEASIBLE,
+      statusMessage: "The model is infeasible",
+      objectiveValue: isMaximizing ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY
+    }
+  }
+
+  function statusUnbounded(lp) {
+    var isMaximizing = GlpkUtil.isMaximizing(lp);
+    return {
+      lp: lp,
+      status: GlpkUtil.STATUS_UNBOUNDED,
+      statusMessage: "The model is unbounded",
+      objectiveValue: isMaximizing ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY
+    }
+  }
+
+  function statusError(lp, error) {
+    var message;
+
+    if (typeof error === "string") {
+      message = error;
+    } else if (GlpkUtil.GLP_SOLVER_STATUS.hasOwnProperty(error)) {
+      message = GlpkUtil.GLP_SOLVER_STATUS[error];
     } else {
-      throw "Invalid optimization direction";
+      message = "Solver algorithm returned an unknown status (" + error + ")";
     }
 
-    var status, statusMessage;
-    var objectiveValue;
+    return {
+      lp: lp,
+      status: GlpkUtil.STATUS_ERROR,
+      statusMessage: message,
+      objectiveValue: NaN
+    }
+  }
 
+  function getMipStatus(glpStatus, lp) {
+    switch (glpStatus) {
+      case 0:
+        // continue to the next switch statement
+        break;
+      case GLP_ENOPFS:
+        return statusInfeasible(lp);
+      case GLP_ENODFS:
+        return statusUnbounded(lp);
+      default:
+        return statusError(lp, glpStatus);
+    }
+
+    var mipStatus = glp_mip_status(lp);
+    switch (mipStatus) {
+      case GLP_NOFEAS:
+        return statusInfeasible(lp);
+      case GLP_OPT:
+        return statusOptimal(lp);
+      case GLP_UNDEF:
+        return statusError(lp, "MIP solution is undefined.");
+      default:
+        return statusError(lp, mipStatus);
+    }
+  }
+
+  function getLpStatus(glpStatus, lp) {
     switch (glpStatus) {
       case GLP_ENOPFS:
-        status = GlpkUtil.STATUS_INFEASIBLE;
-        statusMessage = "The model is infeasible";
-        objectiveValue = isMinimizing ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
-        break;
+        return statusInfeasible(lp);
       case GLP_ENODFS:
-        status = GlpkUtil.STATUS_UNBOUNDED;
-        statusMessage = "The model is unbounded";
-        objectiveValue = isMinimizing ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
-        break;
+        return statusUnbounded(lp);
       case 0:
-        status = GlpkUtil.STATUS_OPTIMAL;
-        statusMessage = "Optimal";
-        objectiveValue = GlpkUtil.getObjectiveValue(lp);
-        break;
+        return statusOptimal(lp);
       default:
-        status = GlpkUtil.STATUS_ERROR;
-        statusMessage = GlpkUtil.GLP_SOLVER_STATUS[glpStatus];
-        objectiveValue = NaN;
-        if (status == null) {
-          statusMessage = "Solver algorithm returned an unknown status (" + glpStatus + ")";
-        }
+        return statusError(lp, glpStatus);
     }
-
-    return {lp: lp, status: status, statusMessage: statusMessage, objectiveValue: objectiveValue};
   }
 
   try {
@@ -387,24 +432,25 @@ GlpkUtil.solveGmpl = function (code) {
     glp_mpl_build_prob(workspace, lp);
     glp_scale_prob(lp, GLP_SF_AUTO);
 
-    var info;
+    var status;
     var glpkStatus;
     var isMip = GlpkUtil.isMip(lp);
     if (!isMip) {
       GlpkUtil.info("Solving the model using the simplex optimizer");
       var smcp = new SMCP({presolve: GLP_ON});
       glpkStatus = glp_simplex(lp, smcp);
+      status = getLpStatus(glpkStatus, lp);
     } else {
       GlpkUtil.info("The model has integer variables: solving the model using the mixed-integer optimizer");
       var iocp = new IOCP({presolve: GLP_ON});
       glpkStatus = glp_intopt(lp, iocp);
+      status = getMipStatus(glpkStatus, lp);
     }
 
-    info = getSolverStatus(glpkStatus, lp);
-    if (info.status !== GlpkUtil.STATUS_ERROR) {
+    if (status.status !== GlpkUtil.STATUS_ERROR) {
       glp_mpl_postsolve(workspace, lp, isMip ? GLP_MIP : GLP_SOL);
     }
-    return info;
+    return status;
   } catch (error) {
     GlpkUtil.error(error);
     return null;
