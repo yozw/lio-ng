@@ -99,7 +99,7 @@ app.service('googleApiService', function ($log, messageService, retryService) {
     },
     getOauthToken: function() {
       if (!oauthToken) {
-        throw "Requested OAuth token, authorization has not finishes yet.";
+        throw new Error("Requested OAuth token, authorization has not finishes yet.");
       }
       return oauthToken;
     },

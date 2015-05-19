@@ -141,7 +141,7 @@ GlpkUtil.isMaximizing = function (lp) {
   "use strict";
   var direction = glp_get_obj_dir(lp);
   if ((direction !== GLP_MIN) && (direction !== GLP_MAX)) {
-    throw "Invalid objective direction: " + direction;
+    throw new Error("Invalid objective direction: " + direction);
   }
   return direction === GLP_MAX;
 };
@@ -201,7 +201,7 @@ GlpkUtil.getColumnValue = function(lp, column) {
         ? glp_mip_col_val(lp, column)
         : glp_get_col_prim(lp, column)
   } else {
-    throw "Invalid column index: " + column;
+    throw new Error("Invalid column index: " + column);
   }
 };
 

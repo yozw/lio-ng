@@ -39,9 +39,9 @@ function actionSolve(e) {
       return "An optimal solution was found.";
 
     case GlpkUtil.STATUS_ERROR:
-      throw result.statusMessage;
+      throw new Error(result.statusMessage);
 
     default:
-      throw "Unknown status.";
+      throw new Error("Unknown status.");
   }
 }

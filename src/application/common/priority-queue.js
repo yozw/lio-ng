@@ -10,10 +10,10 @@
 /////////////////////////////////
 function AbstractPriorityQueue(options) {
   if ((options != null ? options.strategy : void 0) == null) {
-    throw 'Must pass options.strategy, a strategy';
+    throw new Error('Must pass options.strategy, a strategy');
   }
   if ((options != null ? options.comparator : void 0) == null) {
-    throw 'Must pass options.comparator, a comparator';
+    throw new Error('Must pass options.comparator, a comparator');
   }
   this.priv = new options.strategy(options);
   this.length = 0;
@@ -27,7 +27,7 @@ AbstractPriorityQueue.prototype.queue = function (value) {
 
 AbstractPriorityQueue.prototype.dequeue = function (value) {
   if (!this.length) {
-    throw 'Empty queue';
+    throw new Error('Empty queue');
   }
   this.length--;
   return this.priv.dequeue();
@@ -35,7 +35,7 @@ AbstractPriorityQueue.prototype.dequeue = function (value) {
 
 AbstractPriorityQueue.prototype.peek = function (value) {
   if (!this.length) {
-    throw 'Empty queue';
+    throw new Error('Empty queue');
   }
   return this.priv.peek();
 };
@@ -176,7 +176,7 @@ function BHeapStrategy(options) {
     shift += 1;
   }
   if (1 << shift !== this.pageSize) {
-    throw 'pageSize must be a power of two';
+    throw new Error('pageSize must be a power of two');
   }
   this._shift = shift;
   this._emptyMemoryPageTemplate = arr = [];

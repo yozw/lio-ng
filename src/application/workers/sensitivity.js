@@ -45,7 +45,7 @@ var SensitivityAnalysis = function () {
     } else if ((column >= 1) && (column <= glp_get_num_cols(lp))) {
       return glp_get_col_name(lp, column);
     } else {
-      throw "Invalid column index: " + column;
+      throw new Error("Invalid column index: " + column);
     }
   };
 

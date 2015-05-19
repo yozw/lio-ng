@@ -116,8 +116,8 @@ function getAction(e) {
 function onMessage(e) {
   GlpkUtil.setInfoLogFunction(postInfo);
   GlpkUtil.setOutputLogFunction(postOutput);
-  GlpkUtil.setErrorLogFunction(function(error) {
-    throw error;
+  GlpkUtil.setErrorLogFunction(function(errorMessage) {
+    throw new Error(errorMessage);
   });
 
   var actionFn = getAction(e);

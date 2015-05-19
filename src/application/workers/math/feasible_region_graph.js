@@ -91,7 +91,7 @@ FeasibleRegionGraph._drawFeasibleRegion = function(graph, lp) {
 FeasibleRegionGraph.create = function (lp) {
   "use strict";
   if (glp_get_num_cols(lp) !== 2) {
-    throw "FeasibleRegionGraph is only possible for two-dimensional models";
+    throw new Error("FeasibleRegionGraph is only possible for two-dimensional models");
   }
 
   var graph = new Graph();

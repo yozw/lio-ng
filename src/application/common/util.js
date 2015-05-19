@@ -2,7 +2,7 @@
 
 function checkDefined(obj) {
   if (obj === undefined) {
-    throw "checkDefined failed";
+    throw new Error("checkDefined failed");
   }
   return obj;
 }

@@ -8,8 +8,8 @@
 function actionModelInfo(e) {
   var code = e.data.code;
   var result = GlpkUtil.loadGmpl(code);
-  if (result === null || result === undefined) {
-    throw "Model could not be loaded";
+  if (!result) {
+    throw new Error("Model could not be loaded");
   }
 
   var lp = result.lp;
