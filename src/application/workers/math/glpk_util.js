@@ -334,10 +334,6 @@ GlpkUtil.loadGmpl = function (code) {
  */
 GlpkUtil.solveGmpl = function (code) {
   "use strict";
-  var workspace = glp_mpl_alloc_wksp();
-  var lp = glp_create_prob();
-
-  GlpkUtil.installLogFunction();
 
   function statusOptimal(lp) {
     return {
@@ -426,9 +422,18 @@ GlpkUtil.solveGmpl = function (code) {
     }
   }
 
+  var workspace = glp_mpl_alloc_wksp();
+  var lp = glp_create_prob();
+
+  GlpkUtil.installLogFunction();
+  var tableDrivers = new TableHandlerRegistry();
+  tableDrivers.install(new GoogleChartsHandler());
+  tableDrivers.install(new JsonTableHandler());
+  tableDrivers.install(new CsvTableHandler());
+
   try {
     glp_mpl_read_model_from_string(workspace, GlpkUtil.MODEL_NAME, code);
-    glp_mpl_generate(workspace, GlpkUtil.MODEL_NAME, GlpkUtil.output, null);
+    glp_mpl_generate(workspace, GlpkUtil.MODEL_NAME, GlpkUtil.output, tableDrivers.getCallback());
     glp_mpl_build_prob(workspace, lp);
     glp_scale_prob(lp, GLP_SF_AUTO);
 
