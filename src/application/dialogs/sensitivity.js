@@ -154,7 +154,8 @@ app.factory('sensitivityDialog', function ($modal, $log, errorDialog, messageSer
           .then(function (modelInfo) {
             $modal.open({
               template: TEMPLATE,
-              controller: modalController(selection, modelInfo.variables)
+              controller: modalController(selection, modelInfo.variables),
+              backdrop: 'static'
             });
           })
           .catch(function (message) {

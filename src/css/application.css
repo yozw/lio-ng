@@ -89,8 +89,8 @@ button.btn {
 }
 
 #model-doc table.lo-model {
-  margin-left:auto;
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #model-doc table.lo-model > tbody > tr > td {
@@ -300,4 +300,17 @@ pre.no-border {
   padding-right: 2px;
   padding-bottom: 2px;
   font-size: 13px;
+}
+
+.quickstart-modal .modal-dialog {
+  margin-right: 30px !important;
+  margin-left: auto !important;
+}
+
+.modal {
+  overflow-y: auto !important;
+}
+
+.modal-backdrop.in {
+  opacity: 0.25 !important;
 }

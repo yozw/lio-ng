@@ -1,19 +1,21 @@
-app.factory('aboutDialog', function ($modal) {
+app.factory('welcomeDialog', function ($modal, quickStartDialog) {
   "use strict";
 
-  var TEMPLATE = '';
-
   return {
-    open: function () {
-
+    open: function (parentScope) {
       var modalController = function ($scope, $modalInstance) {
-        $scope.ok = function () {
+        $scope.close = function () {
           $modalInstance.close();
+        };
+
+        $scope.quickstart = function() {
+          $modalInstance.close();
+          quickStartDialog.open(parentScope);
         };
       };
 
       var modalInstance = $modal.open({
-        templateUrl: '/application/dialogs/about.html',
+        templateUrl: '/application/dialogs/welcome.html',
         controller: modalController,
         backdrop: 'static'
       });

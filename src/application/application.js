@@ -10,7 +10,8 @@ var app = angular.module('lio-ng',
       'directives.results.table',
       'directives.results.verbatim',
       'directives.mathjax',
-      'ngSanitize'
+      'ngSanitize',
+      'ngCookies'
     ]);
 
 app.config(['$locationProvider', function ($locationProvider) {
@@ -21,6 +22,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 app.controller('AppCtrl', function (
     $scope,
     $compile,
+    $cookies,
     model,
     examples,
     jqPlotRenderService,
@@ -32,6 +34,8 @@ app.controller('AppCtrl', function (
     exportDialog,
     sensitivityDialog,
     feedbackDialog,
+    welcomeDialog,
+    quickStartDialog,
     autosaveService) {
   "use strict";
 
@@ -113,8 +117,16 @@ app.controller('AppCtrl', function (
     aboutDialog.open();
   };
 
+  $scope.showQuickStart = function() {
+    quickStartDialog.open($scope);
+  };
+
   $scope.showFeedback = function () {
     feedbackDialog.open();
+  };
+
+  $scope.showWelcome = function() {
+    welcomeDialog.open($scope);
   };
 
   $scope.showSensitivityDialog = function () {
@@ -159,6 +171,13 @@ app.controller('AppCtrl', function (
   $scope.model = model;
   $scope.isComputing = false;
   $scope.clearResults();
+
+  // TODO: In newer versions of angular, use .get()
+  var visitedBefore = $cookies.visitedBefore;
+  if (visitedBefore !== "true") {
+    $scope.showWelcome();
+  }
+  $cookies.visitedBefore = "true";
 });
 
 app.factory('model', function () {

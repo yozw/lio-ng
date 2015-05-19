@@ -40,7 +40,8 @@ app.factory('feedbackDialog', function ($modal, $log) {
 
       var modalInstance = $modal.open({
         template: TEMPLATE,
-        controller: "FeedbackDialogCtrl"
+        controller: "FeedbackDialogCtrl",
+        backdrop: 'static'
       });
 
       modalInstance.result.then(

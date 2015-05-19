@@ -47,7 +47,8 @@ app.factory('exportDialog', function ($modal, $log, errorDialog, solverService) 
     open: function (model) {
       $modal.open({
         template: TEMPLATE,
-        controller: modalController(model)
+        controller: modalController(model),
+        backdrop: 'static'
       });
     }};
 });

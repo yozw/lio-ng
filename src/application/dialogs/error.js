@@ -28,7 +28,8 @@ app.factory('errorDialog', function ($modal) {
 
       var modalInstance = $modal.open({
         template: TEMPLATE,
-        controller: modalController
+        controller: modalController,
+        backdrop: 'static'
       });
 
       modalInstance.result.then(
