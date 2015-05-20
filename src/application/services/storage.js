@@ -70,7 +70,7 @@ app.service('storageService',
 
   $rootScope.$on('$locationChangeSuccess', function (next, current) {
     var url = $location.search().model;
-    if (url === undefined || url === "") {
+    if (!url || url === "") {
       url = "builtin:default.mod";
     }
     readModel(url);

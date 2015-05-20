@@ -144,7 +144,7 @@ app.controller('AppCtrl', function (
   };
 
   $scope.loadModel = function (url) {
-    if (url !== undefined) {
+    if (url) {
       storageService.readModel(url);
       $scope.clearResults();
     }

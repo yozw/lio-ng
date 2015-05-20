@@ -74,7 +74,7 @@ Function.prototype.memoize = function () {
  * @returns {*}
  */
 function extend(options, extraOptions) {
-  if (extraOptions !== undefined && extraOptions !== null) {
+  if (extraOptions) {
     for (var key in extraOptions) {
       if (extraOptions.hasOwnProperty(key)) {
         options[key] = extraOptions[key];

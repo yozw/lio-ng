@@ -51,7 +51,7 @@ app.service('jobRunnerService', function ($q, $log) {
     job.stopWatch = new Stopwatch();
     job.stopWatch.start();
     job.worker.postMessage(parameters);
-    if (job.callback.start !== undefined) {
+    if (job.callback.start) {
       job.callback.start(parameters);
     }
     return job;

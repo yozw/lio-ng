@@ -11,7 +11,7 @@ Interval.prototype.toString = function () {
 };
 
 Interval.prototype.subdivide = function (midpoint) {
-  if (midpoint === undefined) {
+  if (!midpoint) {
     midpoint = (this.start + this.end) / 2;
   }
 
@@ -23,10 +23,10 @@ Interval.prototype.subdivide = function (midpoint) {
   right.previous = left;
   right.next = this.next;
 
-  if (this.previous !== undefined) {
+  if (this.previous) {
     this.previous.next = left;
   }
-  if (this.next !== undefined) {
+  if (this.next) {
     this.next.previous = right;
   }
 
@@ -91,11 +91,11 @@ var AdaptiveFunctionEstimation = function () {
     }
 
     if (startValueType === 0 && endValueType === 0) {
-      if (interval.previous !== undefined) {
+      if (interval.previous) {
         weight = Math.max(weight,
             interval.length * Math.abs(derivative(f, interval) - derivative(f, interval.previous)));
       }
-      if (interval.next !== undefined) {
+      if (interval.next) {
         weight = Math.max(weight,
             interval.length * Math.abs(derivative(f, interval) - derivative(f, interval.next)));
       }
@@ -134,7 +134,7 @@ var AdaptiveFunctionEstimation = function () {
     var f = oracle.memoize();
     var minimumIntervalLength = Math.abs(end - start) * PRECISION;
 
-    if (PriorityQueue === undefined) {
+    if (!PriorityQueue) {
       throw new Error("PriorityQueue is not defined.")
     }
 
@@ -210,7 +210,7 @@ var AdaptiveFunctionEstimation = function () {
    * @returns {Function}
    */
   this.linearInterpolant = function() {
-    if (data === undefined) {
+    if (!data) {
       throw new Error("estimate() should be run first");
     }
     var minX = data[0][0];

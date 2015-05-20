@@ -47,7 +47,7 @@ function postError(value, data) {
 
   console.error(value);
 
-  if (data !== undefined) {
+  if (data) {
     for (var key in data) {
       if (data.hasOwnProperty(key)) {
         message[key] = data[key];
@@ -56,7 +56,7 @@ function postError(value, data) {
   }
 
   message['action'] = 'error';
-  if (value === undefined) {
+  if (!value) {
     message['message'] = "Undefined error";
   } else if (value.hasOwnProperty("message")) {
     message['message'] = value.message;
@@ -125,7 +125,7 @@ function onMessage(e) {
   });
 
   var actionFn = getAction(e);
-  if (actionFn === undefined) {
+  if (!actionFn) {
     console.warn('Unknown action: ', JSON.stringify(e.data.action));
   }
 

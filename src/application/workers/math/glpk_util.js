@@ -99,13 +99,13 @@ GlpkUtil.error = function(error) {
 
   if (error.hasOwnProperty('line')) {
     var match = GlpkUtil.ERROR_MSG_RE_WITH_MODEL_NAME.exec(message);
-    if (match !== undefined && match !== null && match.length >= 3) {
+    if (match && match.length >= 3) {
       message = "Error in line " + match[1] + ": " + match[2].trim();
     } else {
       // For some reason, whenever a parameter has no value, the error message
       // does not include the model name.
       match = GlpkUtil.ERROR_MSG_RE_WITHOUT_MODEL_NAME.exec(message);
-      if (match !== undefined && match !== null && match.length >= 3) {
+      if (match && match.length >= 3) {
         message = "Error in line " + match[1] + ": " + match[2].trim();
       }
     }

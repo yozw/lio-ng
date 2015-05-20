@@ -159,7 +159,7 @@ var SensitivityAnalysis = function () {
     };
 
     var methodFunc = methods[method];
-    if (methodFunc === undefined) {
+    if (!methodFunc) {
       throw new Error("Unknown sensitivity analysis method: " + method);
     }
     selectedAlgorithm = methodFunc;

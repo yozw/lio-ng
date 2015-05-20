@@ -5,10 +5,10 @@ function TableHandlerRegistry() {
 }
 
 TableHandlerRegistry.prototype.install = function (handler) {
-  if (handler.name === undefined) {
-    throw new Error("Table handler has no name.");
+  if (!handler || !handler.name) {
+    throw new Error("Invalid table handler.");
   }
-  if (this.drivers[handler.name] !== undefined) {
+  if (this.drivers[handler.name]) {
     throw new Error("Table handler with name " + handler.name + " is already installed.");
   }
   this.drivers[handler.name] = handler;

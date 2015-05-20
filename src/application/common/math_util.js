@@ -15,7 +15,7 @@ MathUtil.almostEqual = function (a, b, eps) {
     return true;
   }
 
-  if (eps === undefined) {
+  if (!eps) {
     eps = 1e-10;
   }
 

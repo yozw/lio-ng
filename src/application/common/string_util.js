@@ -39,7 +39,7 @@ StringUtil.repeat = function (str, times) {
  * @returns {string}
  */
 StringUtil.formatNumberFixedWidth = function(x, width, decimals) {
-  if (decimals === undefined) {
+  if (!decimals) {
     decimals = 3;
   }
 

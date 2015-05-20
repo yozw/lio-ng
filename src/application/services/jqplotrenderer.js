@@ -111,7 +111,7 @@ app.service('jqPlotRenderService', function () {
   function getSeriesOptions(layer) {
     // Make a deep copy of the default options
     var options = jQuery.extend(true, {}, defaultSeriesOptions[layer.type]);
-    if (layer.options !== undefined) {
+    if (layer.options) {
       options = jQuery.extend(true, options, layer.options);
     }
     return options;
