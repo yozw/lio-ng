@@ -58,15 +58,28 @@ app.controller('AppCtrl', function (
     $scope.model.results[target].push(item);
   }
 
+  function emitOutput(target, type, data) {
+    switch (type) {
+      case "verbatim":
+        pushResult(target, {type: 'verbatim', text: data});
+        break;
+      case "table":
+        pushResult(target, {type: 'table', table: data});
+        break;
+      case "graph":
+        pushResult(target, {type: 'graph', graph: jqPlotRenderService.render(data)});
+        return;
+      default:
+        console.error("Unknown output type: " + type);
+    }
+    $scope.$apply();
+  }
+
   // Bind solver service callback
   solverService.setCallback({
     start: function() {
       $scope.clearResults();
       $scope.isComputing = true;
-    },
-    output: function(message) {
-      pushResult('output', {type: 'verbatim', text: message});
-      $scope.$apply();
     },
     log: function (message) {
       model.log += message + "\n";
@@ -84,14 +97,7 @@ app.controller('AppCtrl', function (
       $scope.isComputing = false;
       messageService.set("Solving finished. " + message);
     },
-    emitTable: function (message, target) {
-      pushResult(target, {type: 'table', table: message});
-      $scope.$apply();
-    },
-    emitGraph: function (message, target) {
-      pushResult(target, {type: 'graph', graph: jqPlotRenderService.render(message)});
-      $scope.$apply();
-    }
+    output: emitOutput
   });
 
   $scope.clearResults = function() {
@@ -212,4 +218,3 @@ app.controller('EditorTabCtrl', function ($scope) {
     aceEditorElement.focus();
   };
 });
-

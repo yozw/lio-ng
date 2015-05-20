@@ -6,8 +6,23 @@ function GoogleChartsHandler() {
 
 GoogleChartsHandler.prototype.write = function (arg, data) {
   var title = arg[2];
-  var chartType = (arg.length > 3) ? arg[3] : 'Table';
-  var options = (arg.length > 4) ? arg[4] : {};
+  var chartType = arg[3];
+  var options = arg[4];
 
-  postOutput("Insert Google Chart here (title = " + title + ")");
+  if (!title) {
+    title = "";
+  }
+  if (!chartType) {
+    chartType = "Table";
+  }
+  if (!options) {
+    options = {}
+  }
+
+  postOutputObject('google-chart', {
+    title: title,
+    chartType: chartType,
+    options: options,
+    data: data
+  });
 };

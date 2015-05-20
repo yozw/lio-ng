@@ -26,5 +26,5 @@ JsonTableHandler.prototype.write = function (args, data) {
   } else {
     jsonCode = JSON.stringify(data, null, 0)
   }
-  postOutput(jsonCode);
+  postVerbatim(jsonCode);
 };

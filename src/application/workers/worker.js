@@ -32,18 +32,6 @@ function postInfo(value) {
 }
 
 /**
- * Send an output message back to the main thread.
- */
-function postOutput(value) {
-  "use strict";
-  var message = {};
-  message.target = 'output';
-  message.action = 'output';
-  message.message = value;
-  self.postMessage(message);
-}
-
-/**
  * Sends a "success" message back to the main thread.
  */
 function postSuccess(returnValue) {
@@ -78,18 +66,34 @@ function postError(value, data) {
   self.postMessage(message);
 }
 
+function postOutput(target, type, data) {
+  var message = {};
+  message.action = 'output';
+  message.target = target;
+  message.type = type;
+  message.data = data;
+  self.postMessage(message);
+}
+
+/**
+ * Send an output message back to the main thread.
+ */
+function postVerbatim(text) {
+  postOutput('output', 'verbatim', text);
+}
+
 /**
  * Sends a table back to the main thread.
  */
 function postTable(target, table) {
-  self.postMessage({action: 'emit-table', target: target, table: table.serialize()});
+  postOutput(target, 'table', table.serialize());
 }
 
 /**
  * Sends a graph back to the main thread.
  */
 function postGraph(target, graph) {
-  self.postMessage({action: 'emit-graph', target: target, graph: graph.serialize()});
+  postOutput(target, 'graph', graph.serialize());
 }
 
 /**
@@ -115,7 +119,7 @@ function getAction(e) {
  */
 function onMessage(e) {
   GlpkUtil.setInfoLogFunction(postInfo);
-  GlpkUtil.setOutputLogFunction(postOutput);
+  GlpkUtil.setOutputLogFunction(postVerbatim);
   GlpkUtil.setErrorLogFunction(function(errorMessage) {
     throw new Error(errorMessage);
   });

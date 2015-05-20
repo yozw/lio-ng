@@ -10,49 +10,44 @@ app.service('jobRunnerService', function ($q, $log) {
     currentJob = {};
   }
 
+  function getMessageHandler(job, callback) {
+    return function (e) {
+      var obj = e.data;
+      switch (obj.action) {
+        case 'log':
+          if (callback.log) {
+            callback.log(obj.message);
+          }
+          break;
+        case 'error':
+          onJobStopped(job);
+          if (callback.error) {
+            callback.error(obj.message);
+          }
+          break;
+        case 'success':
+          onJobStopped(job);
+          if (callback.success) {
+            callback.success(obj.returnValue);
+          }
+          break;
+        case 'output':
+          if (callback.output) {
+            callback.output(obj.target, obj.type, obj.data);
+          }
+          break;
+        default:
+          console.log("Job sent message of unknown type " + obj.action);
+      }
+    };
+  }
+
   function startJob(parameters, callback) {
     var job = {};
     job.parameters = parameters;
     job.callback = callback;
     job.worker = new Worker("/application/workers/worker.js");
-    job.worker.onmessage = function (e) {
-      var obj = e.data;
-      switch (obj.action) {
-        case 'log':
-          if (callback.log !== undefined) {
-            callback.log(obj.message);
-          }
-          break;
-        case 'output':
-          if (callback.output !== undefined) {
-            callback.output(obj.message);
-          }
-          break;
-        case 'error':
-          onJobStopped(job);
-          if (callback.error !== undefined) {
-            callback.error(obj.message);
-          }
-          break;
-        case 'emit-table':
-          if (callback.emitTable !== undefined) {
-            callback.emitTable(obj.table, obj.target);
-          }
-          break;
-        case 'emit-graph':
-          if (callback.emitGraph !== undefined) {
-            callback.emitGraph(obj.graph, obj.target);
-          }
-          break;
-        case 'success':
-          onJobStopped(job);
-          if (callback.success !== undefined) {
-            callback.success(obj.returnValue);
-          }
-          break;
-      }
-    };
-
+    job.worker.onmessage = getMessageHandler(job, callback);
     job.stopWatch = new Stopwatch();
     job.stopWatch.start();
     job.worker.postMessage(parameters);
@@ -66,7 +61,7 @@ app.service('jobRunnerService', function ($q, $log) {
     job.worker.onmessage = function () {};
     job.worker.terminate();
     $log.info("Terminating job");
-    if (job.callback.error !== undefined) {
+    if (job.callback.error) {
       job.callback.error("Cancelled by user.");
     }
   }
@@ -88,7 +83,7 @@ app.service('jobRunnerService', function ($q, $log) {
 
   return {
     runJob: function (parameters, callback) {
-      if (callback !== undefined) {
+      if (callback) {
         currentJob = startJob(parameters, callback);
       } else {
         return runJobAsPromise(parameters);
@@ -101,4 +96,3 @@ app.service('jobRunnerService', function ($q, $log) {
     }
   };
 });
-

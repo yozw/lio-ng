@@ -107,19 +107,17 @@ describe("solverService", function () {
   var solverService;
   var finished;
   var started;
-  var tables;
-  var graphs;
-  var errors;
   var output;
+  var errors;
   var logMessages;
   var successMessages;
   var callback = Object();
   callback.start = function() { started = true; };
-  callback.output = function(message) { output.push(message); };
   callback.log = function(message) { logMessages.push(message); };
   callback.success = function(message) { finished = true; successMessages.push(message)};
-  callback.emitTable = function(table) { tables.push(table); };
-  callback.emitGraph = function(graph) { graphs.push(graph); };
+  callback.output = function(target, type, data) {
+    output[type].push(data);
+  };
   callback.error = function(error) { finished = true; errors.push(error); };
 
   beforeEach(function () {
@@ -127,10 +125,8 @@ describe("solverService", function () {
     solverService = $injector.get('solverService');
     finished = false;
     started = false;
-    tables = [];
-    graphs = [];
+    output = {table: [], graph: [], verbatim: []};
     errors = [];
-    output = [];
     logMessages = [];
     successMessages = [];
   });
@@ -149,7 +145,7 @@ describe("solverService", function () {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
           expect(successMessages).toEqual(["An optimal solution was found."]);
-          expect(output).toEqual([]);
+          expect(output.verbatim).toEqual([]);
         })
       });
 
@@ -201,7 +197,7 @@ describe("solverService", function () {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
           expect(successMessages).toEqual(["An optimal solution was found."]);
-          expect(output).toEqual([]);
+          expect(output.verbatim).toEqual([]);
         })
       });
 
@@ -303,7 +299,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["z=22.50", "x1=4.50", "x2=4.50"]);
+          expect(output.verbatim).toEqual(["z=22.50", "x1=4.50", "x2=4.50"]);
         })
       });
 
@@ -320,7 +316,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["hello", "x=1"]);
+          expect(output.verbatim).toEqual(["hello", "x=1"]);
         })
       });
 
@@ -337,7 +333,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["z=22.00", "x1=4.00", "x2=5.00"]);
+          expect(output.verbatim).toEqual(["z=22.00", "x1=4.00", "x2=5.00"]);
         })
       });
 
@@ -354,7 +350,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual([]);
-          expect(output).toEqual(["hello", "x=2.00"]);
+          expect(output.verbatim).toEqual(["hello", "x=2.00"]);
         })
       });
 
@@ -371,7 +367,7 @@ describe("solverService", function () {
         runs(function() {
           expect(finished).toEqual(true);
           expect(errors).toEqual(["The model contains one or more variables with invalid bounds."]);
-          expect(output).toEqual(["hello"]);
+          expect(output.verbatim).toEqual(["hello"]);
         })
       });
 

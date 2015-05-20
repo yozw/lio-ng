@@ -25,6 +25,6 @@ CsvTableHandler.prototype.write = function (args, data) {
     for (var c = 0; c < row.length; ++c) {
       line.push(row[c]);
     }
-    postOutput(line.join(options.delimiter));
+    postVerbatim(line.join(options.delimiter));
   }
 };

@@ -13,5 +13,3 @@ module.directive('resultsVerbatim', function () {
     template: '<div class="output-verbatim">{{ngModel.text}}</div>'
   };
 });
-
-
