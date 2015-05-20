@@ -1,7 +1,9 @@
 #!/bin/bash
 TMPFILE=".gmpl.tmp"
-OUTDIR="../../appengine/static/doc/gmpl"
+OUTDIR="../../../appengine/doc/gmpl"
 python pre_process_test.py
+
+mkdir -p ${OUTDIR}
 
 # Pre-process texinfo file
 python pre_process.py > $TMPFILE

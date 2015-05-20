@@ -33,6 +33,11 @@ cp *.yaml $DEST                                          || error "Error copying
 cp *.py $DEST                                            || error "Error copying files"
 cd ..
 
+log "Generating documentation ..."
+cd src/doc/gmpl
+./make.sh || error "Error generating documentation"
+cd ../../..
+
 log "Updating version app.yaml ..."
 sed -i -e "s/^version: 1/version: ${VERSION}/g" ${DEST}/app.yaml || error "Error running sed"
 
