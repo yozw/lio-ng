@@ -31,8 +31,12 @@ function actionSolve(e) {
       return result.statusMessage;
 
     case GlpkUtil.STATUS_OPTIMAL:
-      postTable('primal', GlpkUtil.getPrimalSolutionTable(lp));
-      postTable('dual', GlpkUtil.getConstraintsTable(lp));
+      if (glp_get_num_cols(lp) > 0) {
+        postTable('primal', GlpkUtil.getPrimalSolutionTable(lp));
+      }
+      if (glp_get_num_rows(lp) > 0) {
+        postTable('dual', GlpkUtil.getConstraintsTable(lp));
+      }
       if (glp_get_num_cols(lp) === 2) {
         postGraph('overview', FeasibleRegionGraph.create(lp));
       }
