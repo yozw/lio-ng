@@ -22,8 +22,7 @@ TableHandlerRegistry.prototype.getCallback = function () {
     var name = arg[1];
     var handler = drivers[name];
     if (!handler) {
-      throw new Error("Invalid table driver: " + name + ". Valid driver names are: "
-          + driverNames.join(", "));
+      throw new Error("Invalid table driver: " + name + ".");
     }
 
     switch (mode) {
