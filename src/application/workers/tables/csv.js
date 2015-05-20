@@ -9,10 +9,13 @@ CsvTableHandler.prototype.write = function (args, data) {
     delimiter: ","
   };
 
-  if (args.length > 2) {
+  if (args.length > 3) {
     var parsedOptions;
     try {
-      parsedOptions = JSON.parse(args[2])
+      var passedArgs = args[3].trim();
+      if (passedArgs.length > 0) {
+        parsedOptions = JSON.parse(passedArgs)
+      }
     } catch (e) {
       throw new Error("Could not parse CSV table driver options. " + e);
     }

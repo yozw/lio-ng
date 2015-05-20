@@ -10,10 +10,13 @@ JsonTableHandler.prototype.write = function (args, data) {
     format: true
   };
 
-  if (args.length > 2) {
-    var parsedOptions;
+  if (args.length > 3) {
+    var parsedOptions = {};
     try {
-      parsedOptions = JSON.parse(args[2])
+      var passedArgs = args[3].trim();
+      if (passedArgs.length > 0) {
+        parsedOptions = JSON.parse(passedArgs)
+      }
     } catch (e) {
       throw new Error("Could not parse JSON table driver options. " + e);
     }

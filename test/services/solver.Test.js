@@ -387,5 +387,53 @@ describe("solverService", function () {
           expect(successMessages).toEqual([]);
         })
       });
+
+  it('correctly outputs a JSON table',
+      function () {
+        runs(function() {
+          var model = 'table t01 {x in 0..10 by 5} OUT "JSON" "title": x~Radians, sin(x), cos(x);';
+          solverService.solve(model, callback);
+        });
+
+        waitsFor(function() {
+          return finished;
+        }, 2000);
+
+        runs(function() {
+          var expectedJson = [
+            ["Radians", "sin", "cos"],
+            [0, 0, 1],
+            [5, -0.9589242746631385, 0.28366218546322625],
+            [10, -0.5440211108893698, -0.8390715290764524]];
+          expect(finished).toEqual(true);
+          expect(errors).toEqual([]);
+          expect(successMessages).toEqual(["An optimal solution was found."]);
+          expect(output.verbatim.length).toEqual(1);
+          expect(JSON.parse(output.verbatim[0])).toEqual(expectedJson);
+        })
+      });
+
+  it('correctly outputs a CSV table',
+      function () {
+        runs(function() {
+          var model = 'table t01 {x in 0..10 by 5} OUT "CSV" "title": x~Radians, sin(x), cos(x);';
+          solverService.solve(model, callback);
+        });
+
+        waitsFor(function() {
+          return finished;
+        }, 2000);
+
+        runs(function() {
+          expect(finished).toEqual(true);
+          expect(errors).toEqual([]);
+          expect(successMessages).toEqual(["An optimal solution was found."]);
+          expect(output.verbatim.length).toEqual(4);
+          expect(output.verbatim[0]).toEqual("Radians,sin,cos");
+          expect(output.verbatim[1]).toEqual("0,0,1");
+          expect(output.verbatim[2]).toEqual("5,-0.9589242746631385,0.28366218546322625");
+          expect(output.verbatim[3]).toEqual("10,-0.5440211108893698,-0.8390715290764524");
+        })
+      });
 });
 
