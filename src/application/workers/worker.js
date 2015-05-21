@@ -97,6 +97,13 @@ function postGraph(target, graph) {
 }
 
 /**
+ * Sends a Google Chart back to the main thread.
+ */
+function postGoogleChart(data) {
+  postOutput("output", 'google-chart', data);
+}
+
+/**
  * Determine which action (subroutine) the worker should execute.
  */
 function getAction(e) {

@@ -6,6 +6,7 @@ var app = angular.module('lio-ng',
       'directives.tabs',
       'directives.resizable',
       'directives.results.container',
+      'directives.results.google_chart',
       'directives.results.graph',
       'directives.results.table',
       'directives.results.verbatim',
@@ -66,6 +67,9 @@ app.controller('AppCtrl', function (
       case "table":
         pushResult(target, {type: 'table', table: data});
         break;
+      case "google-chart":
+        pushResult(target, {type: 'google-chart', data: data});
+        return;
       case "graph":
         pushResult(target, {type: 'graph', graph: jqPlotRenderService.render(data)});
         return;

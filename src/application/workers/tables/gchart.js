@@ -7,7 +7,17 @@ function GoogleChartsHandler() {
 GoogleChartsHandler.prototype.write = function (arg, data) {
   var title = arg[2];
   var chartType = arg[3];
-  var options = arg[4];
+  var options;
+
+  try {
+    if (arg[4] && arg[4].length > 0) {
+      options = eval("(" + arg[4] + ")");
+    } else {
+      options = {};
+    }
+  } catch (e) {
+    throw new Error("Could not parse options: " + e);
+  }
 
   if (!title) {
     title = "";
@@ -19,9 +29,9 @@ GoogleChartsHandler.prototype.write = function (arg, data) {
     options = {}
   }
 
-  postOutputObject('google-chart', {
+  postGoogleChart({
     title: title,
-    chartType: chartType,
+    type: chartType,
     options: options,
     data: data
   });
