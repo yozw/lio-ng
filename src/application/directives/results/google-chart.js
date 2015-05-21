@@ -11,6 +11,6 @@ module.directive('resultsGoogleChart', function () {
       ngModel: '='
     },
     template: '<h4>{{ngModel.title}}</h4>' +
-        '<div google-chart chart="ngModel" style="height:200px; width:100%;"></div>'
+        '<div google-chart chart="ngModel"></div>'
   };
 });
