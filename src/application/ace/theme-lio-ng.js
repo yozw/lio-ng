@@ -19,6 +19,9 @@ color: #336c9d; \
 .ace-lio-ng .ace_string {\
 color: #2a9d2a;\
 }\
+.ace-lio-ng .ace_mstring {\
+color: #9d2a9d;\
+}\
 .ace-lio-ng .ace_variable.ace_class {\
 color: teal;\
 }\

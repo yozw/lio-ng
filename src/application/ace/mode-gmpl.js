@@ -71,6 +71,12 @@ ace.define(
               regex: "s\\.t\\."
             },
             {
+              token : "mstring", // multi line string
+              regex : '"""',
+              merge: true,
+              next : "mstring"
+            },
+            {
               token: "string",           // " string
               regex: '".*?"'
             },
@@ -110,6 +116,17 @@ ace.define(
               next : "start"
             }, {
               token : "comment", // comment spanning whole line
+              regex : ".+"
+            }
+          ],
+          "mstring" : [
+            {
+              token : "mstring", // closing comment
+              regex : '.*?"""',
+              next : "start"
+            }, {
+              token : "mstring",
+              merge : true,
               regex : ".+"
             }
           ]
