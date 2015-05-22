@@ -1,6 +1,7 @@
 "use strict";
 
 importScripts('/lib/glpk/glpk.js');
+importScripts('/lib/jsonlite/jsonlite.js');
 importScripts('/application/common/table.js');
 importScripts('/application/common/graph.js');
 importScripts('/application/common/math_util.js');
@@ -13,6 +14,7 @@ importScripts('/application/workers/math/glpk_util.js');
 importScripts('/application/workers/math/convex_hull.js');
 importScripts('/application/workers/tables/table_handler_registry.js');
 importScripts('/application/workers/tables/table_driver.js');
+importScripts('/application/workers/tables/table_util.js');
 importScripts('/application/workers/tables/gchart.js');
 importScripts('/application/workers/tables/json.js');
 importScripts('/application/workers/tables/csv.js');

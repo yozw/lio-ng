@@ -9,17 +9,10 @@ CsvTableHandler.prototype.write = function (args, data) {
     delimiter: ","
   };
 
-  if (args.length > 3) {
-    var parsedOptions;
-    try {
-      var passedArgs = args[3].trim();
-      if (passedArgs.length > 0) {
-        parsedOptions = JSON.parse(passedArgs)
-      }
-    } catch (e) {
-      throw new Error("Could not parse CSV table driver options. " + e);
-    }
-    options = extend(options, parsedOptions);
+  try {
+    options = TableUtil.extendOptions(options, args[3]);
+  } catch (e) {
+    throw new Error("Could not parse CSV table driver options. " + e);
   }
 
   for (var r = 0; r < data.length; ++r) {

@@ -4,35 +4,19 @@ function GoogleChartsHandler() {
   this.name = "GCHART";
 }
 
-GoogleChartsHandler.prototype.write = function (arg, data) {
-  var title = arg[2];
-  var chartType = arg[3];
-  var options;
+GoogleChartsHandler.prototype.write = function (args, data) {
+  var chartData = {
+    title: args[2] || "",
+    type: args[3] || "Table",
+    options: {},
+    data: data
+  };
 
   try {
-    if (arg[4] && arg[4].length > 0) {
-      options = eval("(" + arg[4] + ")");
-    } else {
-      options = {};
-    }
+    chartData.options = TableUtil.extendOptions(chartData.options, args[4]);
   } catch (e) {
-    throw new Error("Could not parse options: " + e);
+    throw new Error("Could not parse GCHART table driver options. " + e);
   }
 
-  if (!title) {
-    title = "";
-  }
-  if (!chartType) {
-    chartType = "Table";
-  }
-  if (!options) {
-    options = {}
-  }
-
-  postGoogleChart({
-    title: title,
-    type: chartType,
-    options: options,
-    data: data
-  });
+  postGoogleChart(chartData);
 };
