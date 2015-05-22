@@ -32,6 +32,7 @@ module.exports = function(config) {
       'src/lib/marked/angular-marked.js',
       'src/lib/glpk/glpk.js',
       'src/lib/ace/ace.js',
+      'src/lib/ng-google-chart/ng-google-chart.js',
       'src/lib/ui-bootstrap/ui-bootstrap.js',
       'src/lib/ui-chart/chart.js',
       'src/lib/ui-grid/ui-grid-stable.js',

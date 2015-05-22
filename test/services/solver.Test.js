@@ -125,7 +125,7 @@ describe("solverService", function () {
     solverService = $injector.get('solverService');
     finished = false;
     started = false;
-    output = {table: [], graph: [], verbatim: []};
+    output = {table: [], graph: [], verbatim: [], 'google-chart': []};
     errors = [];
     logMessages = [];
     successMessages = [];
@@ -433,6 +433,35 @@ describe("solverService", function () {
           expect(output.verbatim[1]).toEqual("0,0,1");
           expect(output.verbatim[2]).toEqual("5,-0.9589242746631385,0.28366218546322625");
           expect(output.verbatim[3]).toEqual("10,-0.5440211108893698,-0.8390715290764524");
+        })
+      });
+
+  it('correctly outputs a Google Chart table',
+      function () {
+        runs(function() {
+          var model = 'table t01 {x in 0..10 by 5} OUT "GCHART" "title": x~Radians, sin(x), cos(x);';
+          solverService.solve(model, callback);
+        });
+
+        waitsFor(function() {
+          return finished;
+        }, 2000);
+
+        runs(function() {
+          expect(finished).toEqual(true);
+          expect(errors).toEqual([]);
+          expect(successMessages).toEqual(["An optimal solution was found."]);
+          expect(output['google-chart'].length).toEqual(1);
+          expect(output['google-chart'][0]).toEqual({
+            title: 'title',
+            type: 'Table',
+            options: {},
+            data: [
+              ['Radians', 'sin', 'cos'],
+              [0, 0, 1],
+              [5, -0.9589242746631385, 0.28366218546322625],
+              [10, -0.5440211108893698, -0.8390715290764524]]
+          });
         })
       });
 });
