@@ -7,7 +7,7 @@ TableUtil.extendOptions = function(options, args) {
 
   var parsedOptions;
   try {
-    parsedOptions = jsonlite.parse(args);
+    parsedOptions = eval("(" + args + ")");
   } catch (e) {
     throw new Error(e.message);
   }
