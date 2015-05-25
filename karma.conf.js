@@ -31,6 +31,7 @@ module.exports = function(config) {
       'src/lib/angular/angular-sanitize.js',
       'src/lib/marked/angular-marked.js',
       'src/lib/glpk/glpk.js',
+      'src/lib/jsonic/jsonic.js',
       'src/lib/ace/ace.js',
       'src/lib/ng-google-chart/ng-google-chart.js',
       'src/lib/ui-bootstrap/ui-bootstrap.js',

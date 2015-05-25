@@ -1,6 +1,7 @@
 "use strict";
 
 importScripts('/lib/glpk/glpk.js');
+importScripts('/lib/jsonic/jsonic.js');
 importScripts('/application/common/table.js');
 importScripts('/application/common/graph.js');
 importScripts('/application/common/math_util.js');

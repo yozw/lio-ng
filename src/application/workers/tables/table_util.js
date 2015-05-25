@@ -7,9 +7,9 @@ TableUtil.extendOptions = function(options, args) {
 
   var parsedOptions;
   try {
-    parsedOptions = eval("(" + args + ")");
+    parsedOptions = jsonic(args.trim());
   } catch (e) {
-    throw new Error(e.message);
+    throw new Error("Cannot parse " + args + " " + e.message);
   }
   return extend(options, parsedOptions);
 };
