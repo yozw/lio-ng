@@ -1,0 +1,113 @@
+\documentclass{standalone}
+
+\usepackage{tikz,tikz-3dplot}
+
+\tdplotsetmaincoords{70}{145}
+
+\definecolor{plotblue}{RGB}{60,120,200}
+
+\tikzstyle{face}=[fill=plotblue]
+\tikzstyle{edge}=[draw, black, line width=1.5pt]
+\tikzstyle{dedge}=[draw, dashed, line width=1.5pt]
+\tikzstyle{vertex}=[fill=none, draw=none, inner sep=0.5pt, circle]
+\tikzstyle{dvertex}=[gray, fill, inner sep=0.5pt, circle]
+
+\begin{document}
+\begin{tikzpicture}[scale=1,tdplot_main_coords,>=stealth]
+\coordinate (v0) at (0.60706,0.00000,0.79465);
+\coordinate (v1) at (0.18759,0.57735,0.79465);
+\coordinate (v2) at (-0.49112,0.35682,0.79465);
+\coordinate (v3) at (-0.49112,-0.35682,0.79465);
+\coordinate (v4) at (0.18759,-0.57735,0.79465);
+\coordinate (v5) at (0.98225,0.00000,0.18759);
+\coordinate (v6) at (0.30353,0.93417,0.18759);
+\coordinate (v7) at (-0.79465,0.57735,0.18759);
+\coordinate (v8) at (-0.79465,-0.57735,0.18759);
+\coordinate (v9) at (0.30353,-0.93417,0.18759);
+\coordinate (v10) at (0.79465,0.57735,-0.18759);
+\coordinate (v11) at (-0.30353,0.93417,-0.18759);
+\coordinate (v12) at (-0.98225,0.00000,-0.18759);
+\coordinate (v13) at (-0.30353,-0.93417,-0.18759);
+\coordinate (v14) at (0.79465,-0.57735,-0.18759);
+\coordinate (v15) at (0.49112,0.35682,-0.79465);
+\coordinate (v16) at (-0.18759,0.57735,-0.79465);
+\coordinate (v17) at (-0.60706,0.00000,-0.79465);
+\coordinate (v18) at (-0.18759,-0.57735,-0.79465);
+\coordinate (v19) at (0.49112,-0.35682,-0.79465);
+\coordinate (O) at (-1.00000,-1.00000,-1.00000);
+\coordinate (O1) at (1.00000,-1.00000,-1.00000);
+\coordinate (O2) at (-1.00000,1.00000,-1.00000);
+\coordinate (O3) at (-1.00000,-1.00000,1.00000);
+%\draw[thick,->] (O) -- (O1);
+%\draw[thick,->]  (O) -- (O2);
+%\draw[thick,->]  (O) -- (O3);
+\fill[white, opacity=0.8] (v7) -- (v2) -- (v3) -- (v8) -- (v12) -- (v7) ;
+\fill[white, opacity=0.8] (v8) -- (v3) -- (v4) -- (v9) -- (v13) -- (v8) ;
+\fill[white, opacity=0.8] (v11) -- (v16) -- (v17) -- (v12) -- (v7) -- (v11) ;
+\fill[white, opacity=0.8] (v12) -- (v17) -- (v18) -- (v13) -- (v8) -- (v12) ;
+\fill[white, opacity=0.8] (v13) -- (v18) -- (v19) -- (v14) -- (v9) -- (v13) ;
+\fill[white, opacity=0.8] (v19) -- (v15) -- (v16) -- (v17) -- (v18) -- (v19) ;
+\draw[dedge] (v0) -- (v1);
+\draw[dedge] (v1) -- (v2);
+\draw[dedge] (v1) -- (v6);
+\draw[dedge] (v4) -- (v0);
+\draw[dedge] (v5) -- (v0);
+\draw[dedge] (v5) -- (v14);
+\draw[dedge] (v6) -- (v10);
+\draw[dedge] (v10) -- (v5);
+\draw[dedge] (v10) -- (v15);
+\draw[dedge] (v11) -- (v6);
+\node[dvertex] at (v0) {};
+\node[dvertex] at (v1) {};
+\node[dvertex] at (v5) {};
+\node[dvertex] at (v6) {};
+\node[dvertex] at (v10) {};
+\fill[face, opacity=0.16549] (v7) -- (v2) -- (v3) -- (v8) -- (v12) -- (v7) ;
+\fill[face, opacity=0.10186] (v8) -- (v3) -- (v4) -- (v9) -- (v13) -- (v8) ;
+\fill[face, opacity=0.24253] (v11) -- (v16) -- (v17) -- (v12) -- (v7) -- (v11) ;
+\fill[face, opacity=0.29082] (v12) -- (v17) -- (v18) -- (v13) -- (v8) -- (v12) ;
+\fill[face, opacity=0.17691] (v13) -- (v18) -- (v19) -- (v14) -- (v9) -- (v13) ;
+\fill[face, opacity=0.24746] (v19) -- (v15) -- (v16) -- (v17) -- (v18) -- (v19) ;
+\draw[edge] (v2) -- (v3);
+\draw[edge] (v2) -- (v7);
+\draw[edge] (v3) -- (v4);
+\draw[edge] (v3) -- (v8);
+\draw[edge] (v4) -- (v9);
+\draw[edge] (v7) -- (v11);
+\draw[edge] (v8) -- (v12);
+\draw[edge] (v9) -- (v13);
+\draw[edge] (v12) -- (v7);
+\draw[edge] (v13) -- (v8);
+\draw[edge] (v14) -- (v9);
+\draw[edge] (v15) -- (v16);
+\draw[edge] (v16) -- (v11);
+\draw[edge] (v16) -- (v17);
+\draw[edge] (v17) -- (v12);
+\draw[edge] (v17) -- (v18);
+\draw[edge] (v18) -- (v13);
+\draw[edge] (v18) -- (v19);
+\draw[edge] (v19) -- (v14);
+\draw[edge] (v19) -- (v15);
+\node[vertex] at (v2) {};
+\node[vertex] at (v3) {};
+\node[vertex] at (v4) {};
+\node[vertex] at (v7) {};
+\node[vertex] at (v8) {};
+\node[vertex] at (v9) {};
+\node[vertex] at (v11) {};
+\node[vertex] at (v12) {};
+\node[vertex] at (v13) {};
+\node[vertex] at (v14) {};
+\node[vertex] at (v15) {};
+\node[vertex] at (v16) {};
+\node[vertex] at (v17) {};
+\node[vertex] at (v18) {};
+\node[vertex] at (v19) {};
+%\node[anchor=north, inner sep=4pt] at (v8) {$\mbv_1$};
+%\node[anchor=east, inner sep=4pt] at (v12) {$\mbv_2$};
+%\node[anchor=south east, inner sep=2pt] at (v17) {$\mbv_3$};
+%\node[anchor=south west, inner sep=2pt] at (v18) {$\mbv_4$};
+%\node[anchor=north west, inner sep=2pt] at (v13) {$\mbv_5$};
+\end{tikzpicture}
+\end{document}
+
