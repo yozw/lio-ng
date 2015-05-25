@@ -30,6 +30,7 @@ app.controller('AppCtrl', function (
     solverService,
     storageService,
     messageService,
+    uiChartRefreshService,
     googlePickerService,
     aboutDialog,
     exportDialog,
@@ -176,18 +177,35 @@ app.controller('AppCtrl', function (
     tabScope.setActiveTab(id);
   };
 
+  $scope.refresh = function() {
+    uiChartRefreshService.refreshAll();
+    window.setTimeout(function(){
+      // Slightly hacky way to make ui-grid tables refresh
+      $(window).resize();
+    }, 50);
+  };
+
+  $scope.focusOnEditor = function() {
+    var aceEditorElement = angular.element('textarea.ace_text-input');
+    aceEditorElement.focus();
+  };
+
   // Initialize scope variables
   $scope.examples = examples;
   $scope.model = model;
   $scope.isComputing = false;
   $scope.clearResults();
 
-  // TODO: In newer versions of angular, use .get()
-  var visitedBefore = $cookies.visitedBefore;
+  // Check cookie to see if the user has visited before;
+  // if not, show the welcome dialog.
+  var visitedBefore = $cookies.get('visitedBefore');
   if (visitedBefore !== "true") {
     $scope.showWelcome();
   }
-  $cookies.visitedBefore = "true";
+  var now = new Date();
+  $cookies.put('visitedBefore', true, {
+    expire: new Date(now.getFullYear(), now.getMonth()+6, now.getDate())
+  });
 });
 
 app.factory('model', function () {
@@ -202,23 +220,4 @@ app.controller('ButterBarCtrl', function ($scope, messageService) {
   $scope.$watch('status.message', function (value) {
     $scope.isVisible = value.length > 0;
   });
-});
-
-app.controller('ResultsTabCtrl', function ($scope, uiChartRefreshService, $log) {
-  "use strict";
-  $scope.refresh = function() {
-    uiChartRefreshService.refreshAll();
-    window.setTimeout(function(){
-      // Slightly hacky way to make ui-grid tables refresh
-      $(window).resize();
-    }, 50);
-  };
-});
-
-app.controller('EditorTabCtrl', function ($scope) {
-  "use strict";
-  $scope.focusOnEditor = function() {
-    var aceEditorElement = angular.element('textarea.ace_text-input');
-    aceEditorElement.focus();
-  };
 });
