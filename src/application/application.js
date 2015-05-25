@@ -21,6 +21,7 @@ app.config(['$locationProvider', function ($locationProvider) {
 }]);
 
 app.controller('AppCtrl', function (
+    $rootScope,
     $scope,
     $compile,
     $cookies,
@@ -182,6 +183,7 @@ app.controller('AppCtrl', function (
     window.setTimeout(function(){
       // Slightly hacky way to make ui-grid tables refresh
       $(window).resize();
+      $rootScope.$emit('resizeMsg');
     }, 50);
   };
 
