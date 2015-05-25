@@ -27,6 +27,7 @@ find lib -name '*.css'            | cpio $CPIO_OPT $DEST || error "Error copying
 find lib -name '*.woff'           | cpio $CPIO_OPT $DEST || error "Error copying files"
 find lib -name '*.ttf'            | cpio $CPIO_OPT $DEST || error "Error copying files"
 find models -name '*.mod'         | cpio $CPIO_OPT $DEST || error "Error copying files"
+find images -name '*.ico'         | cpio $CPIO_OPT $DEST || error "Error copying files"
 find images -name '*.png'         | cpio $CPIO_OPT $DEST || error "Error copying files"
 find images -name '*.gif'         | cpio $CPIO_OPT $DEST || error "Error copying files"
 cp *.yaml $DEST                                          || error "Error copying files"
