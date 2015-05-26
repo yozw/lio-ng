@@ -206,7 +206,7 @@ app.controller('AppCtrl', function (
   }
   var now = new Date();
   $cookies.put('visitedBefore', true, {
-    expire: new Date(now.getFullYear(), now.getMonth()+6, now.getDate())
+    expires: new Date(now.getFullYear(), now.getMonth()+6, now.getDate())
   });
 });
 
