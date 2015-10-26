@@ -134,7 +134,7 @@ describe("GlpkUtil", function () {
     var nameColumn = table.getColumnByName("Variable");
     var valueColumn = table.getColumnByName("Value");
 
-    expect(table.getColumns().length).toEqual(5);
+    expect(table.getColumns().length).toEqual(4);
     expect(table.getRows().length).toEqual(2);
     expect(table.getRow(0).getValue(nameColumn)).toEqual("x1");
     expect(table.getRow(0).getValue(valueColumn)).toEqual(4);
@@ -148,13 +148,26 @@ describe("GlpkUtil", function () {
     var table = GlpkUtil.getConstraintsTable(lp);
     var nameColumn = table.getColumnByName("Name");
 
-    expect(table.getColumns().length).toEqual(5);
-    expect(table.getRows().length).toEqual(5);
-    expect(table.getRow(0).getValue(nameColumn)).toEqual("z");
-    expect(table.getRow(1).getValue(nameColumn)).toEqual("c11");
-    expect(table.getRow(2).getValue(nameColumn)).toEqual("c12");
-    expect(table.getRow(3).getValue(nameColumn)).toEqual("c13");
-    expect(table.getRow(4).getValue(nameColumn)).toEqual("c14");
+    expect(table.getColumns().length).toEqual(7);
+    expect(table.getRows().length).toEqual(4);
+    expect(table.getRow(0).getValue(nameColumn)).toEqual("c11");
+    expect(table.getRow(1).getValue(nameColumn)).toEqual("c12");
+    expect(table.getRow(2).getValue(nameColumn)).toEqual("c13");
+    expect(table.getRow(3).getValue(nameColumn)).toEqual("c14");
+    expect(table.options.showHeader).toEqual(true);
+  });
+
+  it('getConstraintsTable generates a valid table for MIP', function () {
+    var lp = GlpkUtil.solveGmpl(DOVETAIL_MIP).lp;
+    var table = GlpkUtil.getConstraintsTable(lp);
+    var nameColumn = table.getColumnByName("Name");
+
+    expect(table.getColumns().length).toEqual(4);
+    expect(table.getRows().length).toEqual(4);
+    expect(table.getRow(0).getValue(nameColumn)).toEqual("c11");
+    expect(table.getRow(1).getValue(nameColumn)).toEqual("c12");
+    expect(table.getRow(2).getValue(nameColumn)).toEqual("c13");
+    expect(table.getRow(3).getValue(nameColumn)).toEqual("c14");
     expect(table.options.showHeader).toEqual(true);
   });
 });

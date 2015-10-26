@@ -59,7 +59,7 @@ module.directive('resultsTable', function () {
 });
 
 module.filter('formatValue', function () {
-  return function (value) {
+  function format(value) {
     if (typeof value === "number") {
       if (value > 1e308) {
         return "Inf";
@@ -68,8 +68,16 @@ module.filter('formatValue', function () {
       } else {
         return parseFloat(value.toFixed(7));
       }
+    } else if (Object.prototype.toString.call(value) === '[object Array]') {
+      var result = [];
+      for (var i = 0; i < value.length; ++i) {
+        result.push(format(value[i]));
+      }
+      return "[" + result.join(", ") + "]";
     } else {
       return value;
     }
-  };
+  }
+
+  return format;
 });

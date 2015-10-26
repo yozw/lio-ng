@@ -538,6 +538,53 @@ GlpkUtil.getOverviewTable = function (lp, statusMessage) {
   return table;
 };
 
+
+/**
+ * Wrapper function around glp_analyze_coef, which performs sensitivity
+ * analysis for objective coefficient k of the given model.
+ *
+ * @param lp
+ * @param k
+ * @returns {coef1, var1, value1, coef2, var2, value2}
+ */
+GlpkUtil.analyzeCoef = function (lp, k) {
+  var result = {};
+
+  function callback(coef1, var1, value1, coef2, var2, value2) {
+    result.coef1 = coef1;
+    result.var1 = var1;
+    result.value1 = value1;
+    result.coef2 = coef2;
+    result.var2 = var2;
+    result.value2 = value2;
+  }
+  glp_analyze_coef(lp, k, callback);
+  return result;
+};
+
+/**
+ * Wrapper function around glp_analyze_bound, which performs sensitivity
+ * analysis for right-hand-side value of constraint k of the given model.
+ *
+ * @param lp
+ * @param k
+ * @returns {value1, var1, value2, var2}
+ */
+GlpkUtil.analyzeBound = function (lp, k) {
+  var result = {};
+
+  function callback(value1, var1, value2, var2) {
+    result.value1 = value1;
+    result.var1 = var1;
+    result.value2 = value2;
+    result.var2 = var2;
+
+  }
+  glp_analyze_bound(lp, k, callback);
+  return result;
+};
+
+
 /**
  * Constructs a primal solution table for the specified lp object.
  * @param lp
@@ -545,22 +592,21 @@ GlpkUtil.getOverviewTable = function (lp, statusMessage) {
  */
 GlpkUtil.getPrimalSolutionTable = function (lp) {
   "use strict";
-  var table = new Table();
-
   var isMip = GlpkUtil.isMip(lp);
 
+  var table = new Table();
   var varNameColumn = table.addColumn("Variable");
-  var valueColumn = table.addColumn("Value");
   var kindColumn = table.addColumn("Type");
-  var statusColumn;
+  var valueColumn = table.addColumn("Value");
+  var boundsColumn = table.addColumn("Value bounds");
 
-  var lbColumn = table.addColumn("Lower bound");
-  var ubColumn = table.addColumn("Upper bound");
-
-  var dualColumn;
+  var statusColumn, dualColumn, tolIntervalColumn;
   if (!isMip) {
-    dualColumn = table.addColumn("Sensitivity");
     statusColumn = table.addColumn("Status");
+    dualColumn = table.addColumn("Reduced obj coef");
+    tolIntervalColumn = table.addColumn("Obj coef tol interval");
+
+    glp_factorize(lp);
   }
 
   for (var c = 1; c <= glp_get_num_cols(lp); c++) {
@@ -569,12 +615,20 @@ GlpkUtil.getPrimalSolutionTable = function (lp) {
     row.setValue(valueColumn, isMip ? glp_mip_col_val(lp, c) : glp_get_col_prim(lp, c));
     var kind = glp_get_col_kind(lp, c);
     row.setValue(kindColumn, GlpkUtil.GLP_COL_KIND[kind]);
-    row.setValue(lbColumn, glp_get_col_lb(lp, c));
-    row.setValue(ubColumn, glp_get_col_ub(lp, c));
+    row.setValue(boundsColumn, [glp_get_col_lb(lp, c), glp_get_col_ub(lp, c)]);
+
+    // If the problem is not a MIP, then we calculate the reduced cost
+    // and do some sensitivity analysis.
     if (!isMip) {
       row.setValue(dualColumn, glp_get_col_dual(lp, c));
       var colStatus = glp_get_col_stat(lp, c);
       row.setValue(statusColumn, GlpkUtil.GLP_COL_STATUS[colStatus]);
+      try {
+        var coefAnalysis = GlpkUtil.analyzeCoef(lp, c);
+        row.setValue(tolIntervalColumn, [coefAnalysis.coef1, coefAnalysis.coef2]);
+      } catch (e) {
+        // ignore
+      }
     }
   }
 
@@ -588,31 +642,49 @@ GlpkUtil.getPrimalSolutionTable = function (lp) {
  */
 GlpkUtil.getConstraintsTable = function (lp) {
   "use strict";
-  var table = new Table();
-
-  var varNameColumn = table.addColumn("Name");
-  var valueColumn = table.addColumn("Rhs value");
-  var statusColumn;
-  if (!isMip) {
-    statusColumn = table.addColumn("Status");
-  }
-  var lbColumn = table.addColumn("Lower bound");
-  var ubColumn = table.addColumn("Upper bound");
-
   var isMip = GlpkUtil.isMip(lp);
 
-  for (var r = 1; r <= glp_get_num_rows(lp); r++) {
+  var table = new Table();
+  var varNameColumn = table.addColumn("Name");
+  var valueColumn = table.addColumn("Lhs value");
+  var boundsColumn = table.addColumn("Rhs bounds");
+  var slackColumn = table.addColumn("Slack");
+
+  var statusColumn, dualColumn, tolIntervalColumn;
+
+  if (!isMip) {
+    statusColumn = table.addColumn("Status");
+    dualColumn = table.addColumn("Dual value");
+    tolIntervalColumn = table.addColumn("Rhs tol interval");
+  }
+
+  for (var r = 2; r <= glp_get_num_rows(lp); r++) {
     var row = table.addRow();
     row.setValue(varNameColumn, glp_get_row_name(lp, r));
-    row.setValue(valueColumn, isMip ? glp_mip_row_val(lp, r) : glp_get_row_prim(lp, r));
+    var value = isMip ? glp_mip_row_val(lp, r) : glp_get_row_prim(lp, r);
+    var lb = glp_get_row_lb(lp, r);
+    var ub = glp_get_row_ub(lp, r);
+    row.setValue(valueColumn, value);
+    if (lb > -1e308) {
+      row.setValue(slackColumn, value - lb);
+    } else if (ub < 1e308) {
+      row.setValue(slackColumn, ub - value);
+    }
+    row.setValue(boundsColumn, [lb, ub]);
 
     if (!isMip) {
       var rowStatus = glp_get_row_stat(lp, r);
       row.setValue(statusColumn, GlpkUtil.GLP_ROW_STATUS[rowStatus]);
+      var dualValue = glp_get_row_dual(lp, r);
+      row.setValue(dualColumn, dualValue);
+      try {
+        var coefAnalysis = GlpkUtil.analyzeBound(lp, r);
+        row.setValue(tolIntervalColumn, [coefAnalysis.value1, coefAnalysis.value2]);
+      } catch (e) {
+        // ignore
+      }
     }
 
-    row.setValue(lbColumn, glp_get_row_lb(lp, r));
-    row.setValue(ubColumn, glp_get_row_ub(lp, r));
   }
 
   return table;
