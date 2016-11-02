@@ -5,8 +5,8 @@ app.service('googleDriveService', function ($q, $log, $compile, googleApiService
   function getFileInfo(fileId) {
     var defer = $q.defer();
     var request = gapi.client.drive.files.get({fileId: fileId});
-    request.then(function(file) {
-      defer.resolve(file);
+    request.then(function(response) {
+      defer.resolve(response.result);
     }, function(reason) {
       defer.reject(reason);
     });
