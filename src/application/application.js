@@ -33,6 +33,7 @@ app.controller('AppCtrl', function (
     messageService,
     uiChartRefreshService,
     googlePickerService,
+    saveToDriveDialog,
     aboutDialog,
     exportDialog,
     sensitivityDialog,
@@ -166,10 +167,16 @@ app.controller('AppCtrl', function (
   };
 
   $scope.loadModelFromDrive = function () {
-    googlePickerService.pickDriveModel(function (fileId) {
-      storageService.readModel('gdrive:' + fileId);
-      $scope.clearResults();
-    });
+    googlePickerService.pickModel()
+        .then(function (fileId) {
+          storageService.readModel('gdrive:' + fileId);
+          $scope.clearResults();
+        })
+        .catch(console.log);
+  };
+
+  $scope.saveModelToDrive = function () {
+    saveToDriveDialog.open(model);
   };
 
   $scope.activateTab = function(id) {
@@ -220,6 +227,16 @@ app.controller('ButterBarCtrl', function ($scope, messageService) {
   $scope.status = messageService.status;
   $scope.clear = messageService.clear;
   $scope.$watch('status.message', function (value) {
+    if (value === undefined) { value = ""; }
     $scope.isVisible = value.length > 0;
   });
+});
+
+app.directive('autofocus', function ($timeout) {
+  return {
+    restrict: 'A',
+    link: function (scope, element) {
+      $timeout(function() { element[0].focus();}, 100);
+    }
+  };
 });
