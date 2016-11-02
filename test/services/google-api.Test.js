@@ -39,7 +39,7 @@ describe("googleApiService", function () {
     var callbackCalled = false;
 
     runs(function() {
-      googleApiService.loadGoogleApisAndCall(["auth"], function() {
+      googleApiService.loadGoogleApis(["auth"]).then(function() {
         callbackCalled = true;
       });
 
@@ -64,7 +64,7 @@ describe("googleApiService", function () {
     var callbackCalled = false;
 
     runs(function() {
-      googleApiService.loadGoogleApisAndCall(["picker"], function() {
+      googleApiService.loadGoogleApis(["picker"]).then(function() {
         callbackCalled = true;
       });
 
@@ -89,7 +89,7 @@ describe("googleApiService", function () {
     var callbackCalled = false;
 
     runs(function() {
-      googleApiService.loadGoogleApisAndCall(["auth", "drive"], function() {
+      googleApiService.loadGoogleApis(["auth", "drive"]).then(function() {
         callbackCalled = true;
       });
 

@@ -1,8 +1,8 @@
-app.service('googleApiService', function ($log, messageService, retryService) {
+app.service('googleApiService', function ($q, $log, messageService, retryService) {
   "use strict";
 
   var clientId = '114623879330-hq1gs8ficrvt0n3ipp5s8q7u4svertt3.apps.googleusercontent.com';
-  var scope = ['https://www.googleapis.com/auth/drive.readonly'];
+  var scope = ['https://www.googleapis.com/auth/drive'];
   var developerKey = 'AIzaSyDci_n2EbZgchidWxuzkZPF9RIAzUgvw9k';
 
   var oauthToken;
@@ -43,63 +43,57 @@ app.service('googleApiService', function ($log, messageService, retryService) {
     window.gapi.client.load('drive', 'v2', callback);
   };
 
-  // Waits for window.gapi and window.gapi.client to be ready; once they are loaded, the callback is called.
-  function waitForGapiLoaded(callback) {
+  // Returns a promise that, once resolved, window.gapi and window.gapi.client are ready.
+  function loadBaseGapi() {
     function isGapiLoaded() {
       return window.gapi.load && window.gapi.client.load;
     }
+
+    var defer = $q.defer();
     retryService.retry()
         .timeout(100)
         .maxAttempts(100)
         .successCheck(isGapiLoaded)
-        .onSuccess(callback)
+        .onSuccess(defer.resolve)
+        .onFail(defer.reject)
         .run();
+    return defer.promise;
   }
 
-  // Waits for the given apis to be loaded; once they are loaded, the callback is called.
-  function waitForApiLoaded(apis, callback) {
+  // Returns a promise that, once resolved, the given APIs are loaded.
+  function loadGoogleApis(apis) {
     function loadApi(api) {
+      var defer = $q.defer();
       if (!apiLoaded[api]) {
+        console.log("Loading Google " + api + " API.");
         apiLoaders[api](function() {
           $log.info("Google " + api + " API loaded.");
           apiLoaded[api] = true;
+          defer.resolve();
         });
+      } else {
+        defer.resolve();
       }
+      return defer.promise;
     }
 
-    function areApisLoaded() {
-      for (var i = 0; i < apis.length; i++) {
-        if (!apiLoaded[apis[i]]) {
-          return false;
-        }
-      }
-      return true;
-    }
-
+    var promises = [];
     for (var i = 0; i < apis.length; i++) {
-      loadApi(apis[i]);
+      promises.push(loadApi(apis[i]));
     }
-
-    retryService.retry()
-        .timeout(100)
-        .maxAttempts(100)
-        .successCheck(areApisLoaded)
-        .onSuccess(callback)
-        .run();
+    return $q.all(promises);
   }
 
   return {
-    loadGoogleApisAndCall: function(apis, callback) {
+    loadGoogleApis: function(apis) {
       if (angular.isString(apis)) {
         apis = [apis];
       }
-      waitForGapiLoaded(function() {
-        waitForApiLoaded(apis, callback);
-      });
+      return loadBaseGapi().then(function() { return loadGoogleApis(apis); });
     },
     getOauthToken: function() {
       if (!oauthToken) {
-        throw new Error("Requested OAuth token, authorization has not finishes yet.");
+        throw new Error("Requested OAuth token; authorization has not finished yet.");
       }
       return oauthToken;
     },

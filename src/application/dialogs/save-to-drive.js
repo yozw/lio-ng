@@ -9,13 +9,13 @@ app.factory('saveToDriveDialog', function ($modal, $log) {
       <tr>\
       <td style="width: 12em;">File name:</td>\
       <td>\
-      <input class="form-control" type="text" ng-model="filename" autofocus>\
+      <input class="form-control" type="text" ng-model="target.title" autofocus>\
       </td>\
       </tr>\
       <tr>\
       <td style="width: 12em;">Location:</td>\
       <td>\
-      <b>{{folder.title}}<button style="float: right;" class="btn" ng-click="changeLocation()">Change ...</button>\
+      <b>{{parent.title}}<button style="float: right;" class="btn" ng-click="changeLocation()">Change ...</button>\
       </td>\
       </tr>\
       </table>\
@@ -26,12 +26,14 @@ app.factory('saveToDriveDialog', function ($modal, $log) {
       </div>';
 
   return {
-    open: function () {
-
+    open: function (model) {
       var modalInstance = $modal.open({
         template: TEMPLATE,
         controller: "SaveToDriveDialogCtrl",
-        backdrop: 'static'
+        backdrop: 'static',
+        resolve: {
+          model: function() { return model; }
+        }
       });
 
       modalInstance.result.then(
@@ -43,17 +45,31 @@ app.factory('saveToDriveDialog', function ($modal, $log) {
     }};
 });
 
-app.controller("SaveToDriveDialogCtrl", function ($scope, $modalInstance, googlePickerService, googleDriveService) {
+app.controller("SaveToDriveDialogCtrl", function (
+    $scope, $modalInstance,
+    googlePickerService, googleDriveService, messageService, storageService,
+    model) {
   "use strict";
 
   $scope.target = Object();
   $scope.disabled = false;
-  $scope.filename = "model.mod";
-  $scope.folder = Object();
-  $scope.folder.title = "My Drive";
+  $scope.target.title = "model.mod";
+  $scope.parent = Object();
+  $scope.parent.isRoot = true;
+  $scope.parent.title = "My Drive";
 
   $scope.save = function () {
-    $modalInstance.close();
+    $scope.disabled = true;
+    storageService.saveModelToGoogleDrive($scope.target.title, model, $scope.parent)
+        .then(function () {
+          $modalInstance.close();
+          messageService.set("Model saved as '" + $scope.target.title
+              + "' on Google Drive.");
+        })
+        .finally(function() {
+          $scope.disabled = false;
+        })
+        .catch(messageService.set);
   };
 
   $scope.changeLocation = function() {
@@ -61,8 +77,10 @@ app.controller("SaveToDriveDialogCtrl", function ($scope, $modalInstance, google
     googlePickerService.pickLocation()
         .then(googleDriveService.getFileInfo)
         .then(function (file) {
-          $scope.target.folder = file;
-        }).finally(function () {
+          $scope.parent = file;
+        })
+        .catch(console.log)
+        .finally(function () {
           $scope.disabled = false;
         });
   };

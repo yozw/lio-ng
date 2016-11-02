@@ -1,68 +1,7 @@
-app.service('storageUtil', function () {
-  "use strict";
-
-  function splitUrl (url) {
-    var index = url.indexOf(":");
-    if (index < 0) {
-      return {scheme: "", location: url};
-    } else {
-      return {scheme: url.substring(0, index), location: url.substring(index + 1)};
-    }
-  }
-
-  function splitModel (data) {
-    // This regex matches a javadoc-style comment of the form "/** <comment> */"
-    // and any whitespace surrounding it.
-    var regex = /^\s*((?:\/\*\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:\/\/.*))\s*/;
-
-    var match = data.match(regex);
-    if (match == null) {
-      return {doc: "", code: data.trim() + "\n"};
-    } else {
-      // determine the contents of the /** <contents> */
-      var doc = match[1];  // the full comment, without trailing spaces
-      var start = 1;
-      var end = doc.length - 2;
-
-      // note that these loops are guaranteed to end because of the
-      // leading and trailing slashes
-      while (doc[start] == '*') {
-        start++;
-      }
-      while (doc[end] == '*') {
-        end--;
-      }
-
-      if (start < end) {
-        doc = doc.substring(start, end + 1);
-      } else {
-        doc = "";
-      }
-
-      var code = data.substring(match[0].length).trim() + "\n";
-
-      return {doc: doc, code: code}
-    }
-  }
-
-  function combineModel (model) {
-    if (model.doc.trim().length == 0) {
-      return model.code.trim() + "\n";
-    } else {
-      return "/**" + model.doc + "*/\n\n" + model.code.trim() + "\n";
-    }
-  }
-
-  return {
-    splitUrl: splitUrl,
-    splitModel: splitModel,
-    combineModel: combineModel
-  }
-});
-
 // TODO: Write unit tests
 app.service('storageService',
-    function ($log, $rootScope, $http, $location, messageService, googleDriveService, storageUtil) {
+    function ($q, $log, $rootScope, $http, $location, messageService,
+              googleDriveService, serializationService) {
   "use strict";
   var cache = {};
   var onModelLoaded = [];
@@ -76,9 +15,18 @@ app.service('storageService',
     readModel(url);
   });
 
+  function getSchemeAndLocation(url) {
+    var index = url.indexOf(":");
+    if (index < 0) {
+      return {scheme: "", location: url};
+    } else {
+      return {scheme: url.substring(0, index), location: url.substring(index + 1)};
+    }
+  }
+
   function saveModelWithKey(model, key) {
     var data = Object();
-    data.code = storageUtil.combineModel(model);
+    data.code = serializationService.serializeModel(model);
     cache['ms:' + key] = data.code;
 
     $http
@@ -103,7 +51,7 @@ app.service('storageService',
 
   function saveModelToModelStorage(model) {
     var url = $location.search().model;
-    var splitUrl = storageUtil.splitUrl(url);
+    var splitUrl = getSchemeAndLocation(url);
     if (splitUrl.scheme === "ms") {
       saveModelWithKey(model, splitUrl.location);
     } else {
@@ -135,7 +83,7 @@ app.service('storageService',
       cache[url] = data;
       $location.search('model', url);
       messageService.dismiss(msgId);
-      var model = storageUtil.splitModel(data);
+      var model = serializationService.deserializeModel(data);
       for (var i = 0; i < onModelLoaded.length; i++) {
         onModelLoaded[i](model);
       }
@@ -150,38 +98,44 @@ app.service('storageService',
       return;
     }
 
-    var splitUrl = storageUtil.splitUrl(url);
+    var splitUrl = getSchemeAndLocation(url);
+    var promise;
     if (splitUrl.scheme === "builtin") {
       msgId = messageService.set("Loading example model ...");
-      loadBuiltinModel(splitUrl.location, modelLoaded, loadError);
+      promise = loadBuiltinModel(splitUrl.location);
     } else if (splitUrl.scheme === "gdrive") {
       msgId = messageService.set("Loading model from Google Drive ...");
-      loadGoogleDriveModel(splitUrl.location, modelLoaded, loadError);
+      promise = loadGoogleDriveModel(splitUrl.location);
     } else if (splitUrl.scheme === "http" || splitUrl.scheme === "https") {
       msgId = messageService.set("Loading model ...");
-      loadWebModel(url, modelLoaded, loadError);
+      promise = loadWebModel(url);
     } else if (splitUrl.scheme === "ms") {
       msgId = messageService.set("Loading model ...");
-      loadModelStorageModel(splitUrl.location, modelLoaded, loadError);
+      promise = loadModelStorageModel(splitUrl.location);
     } else {
       loadError("Could not load specified model: the URL was not recognized.");
     }
+
+    promise.then(modelLoaded).catch(loadError);
   }
 
-  function loadBuiltinModel(url, modelLoaded, loadError) {
+  function loadBuiltinModel(url) {
+    var defer = $q.defer();
     $log.info("Loading built-in model: " + url);
     $http.get("/models/" + url)
         .success(function (data, status) {
           if (data && status === 200) {
-            modelLoaded(data);
+            defer.resolve(data);
           }
         })
         .error(function () {
-          loadError("Could not load model");
+          defer.reject("Could not load model");
         });
+    return defer.promise;
   }
 
-  function loadWebModel(url, modelLoaded, loadError) {
+  function loadWebModel(url) {
+    var defer = $q.defer();
     $log.info("Loading remote model: " + url);
     var data = Object();
     data.url = url;
@@ -190,56 +144,70 @@ app.service('storageService',
         .post('/load', data)
         .then(function(response) {
           if (response.data.error) {
-            loadError(response.data.error);
+            defer.reject(response.data.error);
           } else if (response.data) {
-            modelLoaded(response.data);
+            defer.resolve(response.data);
           } else {
-            loadError("Server did not return any data");
+            defer.reject("Server did not return any data");
           }
         },
         function(response) {
-          loadError(response);
+          defer.reject(response);
         }
     );
+    return defer.promise;
   }
 
-  function loadModelStorageModel(key, modelLoaded, loadError) {
+  function loadModelStorageModel(key) {
+    var defer = $q.defer();
     $log.info("Loading model with key " + key + " from model storage");
     $http
         .get('/storage/read/' + key)
         .then(function(response) {
           if (response.data.error) {
-            loadError(response.data.error);
+            defer.reject(response.data.error);
           } else if (response.data) {
-            modelLoaded(response.data);
+            defer.resolve(response.data);
           } else {
-            loadError("Server did not return any data");
+            defer.reject("Server did not return any data");
           }
         },
         function(response) {
-          loadError(response);
+          defer.reject(response);
         }
     );
+    return defer.promise;
   }
 
-  function loadGoogleDriveModel(fileId, modelLoaded, loadError) {
+  function loadGoogleDriveModel(fileId) {
     $log.info("Loading model from Google Drive: " + fileId);
-    googleDriveService.loadFile(fileId, modelLoaded, loadError);
+    return googleDriveService.loadFile(fileId);
+  }
+
+  function saveModelToGoogleDrive(title, model, parent) {
+    var code = serializationService.serializeModel(model);
+    return googleDriveService.insertFile(title, code, parent)
+        .then(function (fileId) {
+          $location.search('model', 'gdrive:' + fileId);
+        })
   }
 
   return {
     readModel: function (url) {
       readModel(url);
     },
-    saveModelToModelStorage: function (contents) {
-      saveModelToModelStorage(contents);
+    saveModelToModelStorage: function (model) {
+      saveModelToModelStorage(model);
+    },
+    saveModelToGoogleDrive: function (title, model, parent) {
+      return saveModelToGoogleDrive(title, model, parent);
     },
     onModelLoaded: function (callback) {
       onModelLoaded.push(callback);
     },
     onModelSaved: function (callback) {
       onModelSaved.push(callback);
-    }
+    },
+    getSchemeAndLocation: getSchemeAndLocation
   }
 });
-
