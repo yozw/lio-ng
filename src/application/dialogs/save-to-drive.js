@@ -7,15 +7,15 @@ app.factory('saveToDriveDialog', function ($modal, $log) {
       <div class="modal-body">\
       <table class="input-table">\
       <tr>\
-      <td style="width: 12em;">File name:</td>\
+      <td style="width: 12em;">Name:</td>\
       <td>\
-      <input class="form-control" type="text" ng-model="target.title" autofocus>\
+      <input class="form-control" type="text" ng-disabled="disabled" ng-model="target.title" autofocus>\
       </td>\
       </tr>\
       <tr>\
       <td style="width: 12em;">Location:</td>\
       <td>\
-      <b>{{parent.title}}<button style="float: right;" class="btn" ng-click="changeLocation()">Change ...</button>\
+      <b>{{parent.title}}<button style="float: right;" class="btn" ng-disabled="disabled" ng-click="changeLocation()">Change ...</button>\
       </td>\
       </tr>\
       </table>\
@@ -52,11 +52,30 @@ app.controller("SaveToDriveDialogCtrl", function (
   "use strict";
 
   $scope.target = Object();
-  $scope.disabled = false;
-  $scope.target.title = "model.mod";
+  $scope.disabled = true;
+  $scope.target.title = "";
   $scope.parent = Object();
   $scope.parent.isRoot = true;
-  $scope.parent.title = "My Drive";
+  $scope.parent.title = "";
+
+  storageService.getModelInfo(storageService.getCurrentModelUrl())
+      .then(function(info) {
+        if (info.name !== undefined) {
+          $scope.target.title = info.name;
+        } else {
+          $scope.target.title = "model.mod";
+        }
+        if (info.info.parents && info.info.parents[0]) {
+          $scope.parent = info.info.parents[0];
+        } else {
+          $scope.parent.isRoot = true;
+          $scope.parent.title = "My Drive";
+        }
+      })
+      .catch(console.log)
+      .finally(function() {
+        $scope.disabled = false;
+      });
 
   $scope.save = function () {
     $scope.disabled = true;

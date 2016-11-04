@@ -47,7 +47,6 @@ app.service('googleDriveService', function ($q, $log, $compile, googleApiService
     if ((parent !== undefined) && (!parent.isRoot)) {
       metadata.parents = [parent];
     }
-    console.log(metadata);
 
     var base64Data = btoa(contents);
     var requestBody =

@@ -1,6 +1,6 @@
 'use strict';
 
-describe("storageService.getSchemeAndLocation", function () {
+describe("storageService.parseModelUrl", function () {
   var storageService;
 
   beforeEach(function () {
@@ -11,33 +11,33 @@ describe("storageService.getSchemeAndLocation", function () {
   it('works correctly for a full url',
       function () {
         var url = "gdrive:1/2";
-        var splitUrl = storageService.getSchemeAndLocation(url);
-        expect(splitUrl.scheme).toEqual("gdrive");
-        expect(splitUrl.location).toEqual("1/2");
+        var parsedUrl = storageService.parseModelUrl(url);
+        expect(parsedUrl.scheme).toEqual("gdrive");
+        expect(parsedUrl.location).toEqual("1/2");
       });
 
   it('works correctly for an empty url',
       function () {
         var url = "";
-        var splitUrl = storageService.getSchemeAndLocation(url);
-        expect(splitUrl.scheme).toEqual("");
-        expect(splitUrl.location).toEqual("");
+        var parsedUrl = storageService.parseModelUrl(url);
+        expect(parsedUrl.scheme).toEqual("");
+        expect(parsedUrl.location).toEqual("");
       });
 
   it('works correctly for a url with no location',
       function () {
         var url = "http:";
-        var splitUrl = storageService.getSchemeAndLocation(url);
-        expect(splitUrl.scheme).toEqual("http");
-        expect(splitUrl.location).toEqual("");
+        var parsedUrl = storageService.parseModelUrl(url);
+        expect(parsedUrl.scheme).toEqual("http");
+        expect(parsedUrl.location).toEqual("");
       });
 
   it('works correctly for a url with no scheme',
       function () {
         var url = "12";
-        var splitUrl = storageService.getSchemeAndLocation(url);
-        expect(splitUrl.scheme).toEqual("");
-        expect(splitUrl.location).toEqual("12");
+        var parsedUrl = storageService.parseModelUrl(url);
+        expect(parsedUrl.scheme).toEqual("");
+        expect(parsedUrl.location).toEqual("12");
       });
 });
 

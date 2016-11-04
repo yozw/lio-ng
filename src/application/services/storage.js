@@ -8,20 +8,68 @@ app.service('storageService',
   var onModelSaved = [];
 
   $rootScope.$on('$locationChangeSuccess', function (next, current) {
+    readModel(getCurrentModelUrl());
+  });
+
+  function parseModelUrl(modelUrl) {
+    var index = modelUrl.indexOf(":");
+    if (index < 0) {
+      return {scheme: "", location: modelUrl};
+    } else {
+      return {scheme: modelUrl.substring(0, index),
+              location: modelUrl.substring(index + 1)};
+    }
+  }
+
+  // Returns the current location as specified by the browser url.
+  function getCurrentModelUrl() {
     var url = $location.search().model;
     if (!url || url === "") {
       url = "builtin:default.mod";
     }
-    readModel(url);
-  });
+    return url;
+  }
 
-  function getSchemeAndLocation(url) {
-    var index = url.indexOf(":");
-    if (index < 0) {
-      return {scheme: "", location: url};
-    } else {
-      return {scheme: url.substring(0, index), location: url.substring(index + 1)};
+  function augmentWithParentInfo(info) {
+    if (!info || !info.parents || !info.parents[0]) {
+      return $q.when(info);
     }
+
+    if (info.parents[0].isRoot) {
+      info.parents[0].title = 'My Drive';
+      return $q.when(info);
+    }
+
+    return googleDriveService.getFileInfo(info.parents[0].id)
+        .then(function(parentInfo) {
+          info.parents[0].title = parentInfo.title;
+          return info;
+        })
+  }
+
+  function getModelInfo(modelUrl) {
+    var parsedUrl = parseModelUrl(modelUrl);
+    var defer = $q.defer();
+    if (parsedUrl.scheme === "builtin"
+        || parsedUrl.scheme === "http"
+        || parsedUrl.scheme === "https") {
+      parsedUrl.name = parsedUrl.location.split('/').pop();
+      defer.resolve(parsedUrl);
+    } else if (parsedUrl.scheme === "gdrive") {
+      parsedUrl.fileId = parsedUrl.location;
+      googleDriveService.getFileInfo(parsedUrl.location)
+          .then(augmentWithParentInfo)
+          .then(function(info) {
+            parsedUrl.name = info.title;
+            parsedUrl.info = info;
+            defer.resolve(parsedUrl);
+          })
+    } else if (parsedUrl.scheme === "ms") {
+      defer.resolve(parsedUrl);
+    } else {
+      defer.reject("Could not load specified model: the URL was not recognized.");
+    }
+    return defer.promise;
   }
 
   function saveModelWithKey(model, key) {
@@ -50,10 +98,9 @@ app.service('storageService',
   }
 
   function saveModelToModelStorage(model) {
-    var url = $location.search().model;
-    var splitUrl = getSchemeAndLocation(url);
-    if (splitUrl.scheme === "ms") {
-      saveModelWithKey(model, splitUrl.location);
+    var parsedUrl = parseModelUrl(getCurrentModelUrl());
+    if (parsedUrl.scheme === "ms") {
+      saveModelWithKey(model, parsedUrl.location);
     } else {
       // retrieve a new storage key
       $http
@@ -98,20 +145,20 @@ app.service('storageService',
       return;
     }
 
-    var splitUrl = getSchemeAndLocation(url);
+    var parsedUrl = parseModelUrl(url);
     var promise;
-    if (splitUrl.scheme === "builtin") {
+    if (parsedUrl.scheme === "builtin") {
       msgId = messageService.set("Loading example model ...");
-      promise = loadBuiltinModel(splitUrl.location);
-    } else if (splitUrl.scheme === "gdrive") {
+      promise = loadBuiltinModel(parsedUrl.location);
+    } else if (parsedUrl.scheme === "gdrive") {
       msgId = messageService.set("Loading model from Google Drive ...");
-      promise = loadGoogleDriveModel(splitUrl.location);
-    } else if (splitUrl.scheme === "http" || splitUrl.scheme === "https") {
+      promise = loadGoogleDriveModel(parsedUrl.location);
+    } else if (parsedUrl.scheme === "http" || parsedUrl.scheme === "https") {
       msgId = messageService.set("Loading model ...");
       promise = loadWebModel(url);
-    } else if (splitUrl.scheme === "ms") {
+    } else if (parsedUrl.scheme === "ms") {
       msgId = messageService.set("Loading model ...");
-      promise = loadModelStorageModel(splitUrl.location);
+      promise = loadModelStorageModel(parsedUrl.location);
     } else {
       loadError("Could not load specified model: the URL was not recognized.");
     }
@@ -208,6 +255,8 @@ app.service('storageService',
     onModelSaved: function (callback) {
       onModelSaved.push(callback);
     },
-    getSchemeAndLocation: getSchemeAndLocation
+    parseModelUrl: parseModelUrl,
+    getCurrentModelUrl: getCurrentModelUrl,
+    getModelInfo: getModelInfo
   }
 });
