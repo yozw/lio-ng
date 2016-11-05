@@ -1,7 +1,13 @@
-app.service('googleApiService', function ($q, $log, messageService, retryService) {
+app.service('googleApiService', function ($q, $log, $location, messageService, retryService) {
   "use strict";
 
-  var clientId = '114623879330-hq1gs8ficrvt0n3ipp5s8q7u4svertt3.apps.googleusercontent.com';
+  var clientId;
+
+  if ($location.host() == 'online-optimizer.appspot.com') {
+    clientId = '114623879330-hq1gs8ficrvt0n3ipp5s8q7u4svertt3.apps.googleusercontent.com';
+  } else {
+    clientId = '429686581584-mp64vmh614hhc03anb74emul7v6mou56.apps.googleusercontent.com';
+  }
   var scope = ['https://www.googleapis.com/auth/drive'];
   var developerKey = 'AIzaSyDci_n2EbZgchidWxuzkZPF9RIAzUgvw9k';
 
