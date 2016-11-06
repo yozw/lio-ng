@@ -2,14 +2,16 @@ app.service('googleApiService', function ($q, $log, $location, messageService, r
   "use strict";
 
   var clientId;
+  var developerKey;
 
   if ($location.host() == 'online-optimizer.appspot.com') {
     clientId = '114623879330-hq1gs8ficrvt0n3ipp5s8q7u4svertt3.apps.googleusercontent.com';
+    developerKey = 'AIzaSyDci_n2EbZgchidWxuzkZPF9RIAzUgvw9k';
   } else {
     clientId = '429686581584-mp64vmh614hhc03anb74emul7v6mou56.apps.googleusercontent.com';
+    developerKey = 'AIzaSyB7U57C-nZbQUOz50TnArZmkYIHXGg2VA4';
   }
   var scope = ['https://www.googleapis.com/auth/drive'];
-  var developerKey = 'AIzaSyDci_n2EbZgchidWxuzkZPF9RIAzUgvw9k';
 
   var oauthToken;
   var apiLoaders = {};
