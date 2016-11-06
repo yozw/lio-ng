@@ -65,7 +65,7 @@ app.controller("SaveToDriveDialogCtrl", function (
         } else {
           $scope.target.title = "model.mod";
         }
-        if (info.info.parents && info.info.parents[0]) {
+        if (info.info && info.info.parents && info.info.parents[0]) {
           $scope.parent = info.info.parents[0];
         } else {
           $scope.parent.isRoot = true;
