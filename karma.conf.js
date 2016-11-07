@@ -44,6 +44,7 @@ module.exports = function(config) {
       'src/application/directives/results/*.js',
       'src/application/jqplot/*.js',
       'src/application/services/*.js',
+      'src/application/services/storage/*.js',
       'src/application/workers/math/*.js',
       'src/application/workers/tables/*.js',
       'src/application/workers/*.js',

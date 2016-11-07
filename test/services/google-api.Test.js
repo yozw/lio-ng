@@ -3,13 +3,15 @@
 describe("googleApiService", function () {
 
   var googleApiService;
+  var $rootScope;
   var gapiModules = [];
   var gapiClientModules = [];
   var authorized;
 
   beforeEach(function () {
-    var $injector = angular.injector(['ng', 'lio-ng']);
+    var $injector = angular.injector(['ng', 'ngMock', 'lio-ng']);
     googleApiService = $injector.get('googleApiService');
+    $rootScope = $injector.get('$rootScope');
     gapiModules = [];
     gapiClientModules = [];
     authorized = false;
@@ -38,10 +40,14 @@ describe("googleApiService", function () {
   it("waits for auth API to be loaded before calling the callback function", function() {
     var callbackCalled = false;
 
-    runs(function() {
-      googleApiService.loadGoogleApis(["auth"]).then(function() {
-        callbackCalled = true;
-      });
+    runs(function () {
+      googleApiService.loadGoogleApis(["auth"])
+          .then(function () {
+            callbackCalled = true;
+          })
+          .catch(function (reason) {
+            throw new Error(reason);
+          });
 
       expect(gapiModules).toEqual([]);
       expect(gapiClientModules).toEqual([]);
@@ -50,6 +56,7 @@ describe("googleApiService", function () {
     });
 
     waitsFor(function() {
+      $rootScope.$digest();
       return callbackCalled;
     }, 3000);
 
@@ -64,9 +71,14 @@ describe("googleApiService", function () {
     var callbackCalled = false;
 
     runs(function() {
-      googleApiService.loadGoogleApis(["picker"]).then(function() {
-        callbackCalled = true;
-      });
+      googleApiService.loadGoogleApis(["picker"])
+          .then(function () {
+            callbackCalled = true;
+          })
+          .catch(function (reason) {
+            throw new Error(reason);
+          });
+
 
       expect(gapiModules).toEqual([]);
       expect(gapiClientModules).toEqual([]);
@@ -75,6 +87,7 @@ describe("googleApiService", function () {
     });
 
     waitsFor(function() {
+      $rootScope.$digest();
       return callbackCalled;
     }, 3000);
 
@@ -89,9 +102,14 @@ describe("googleApiService", function () {
     var callbackCalled = false;
 
     runs(function() {
-      googleApiService.loadGoogleApis(["auth", "drive"]).then(function() {
-        callbackCalled = true;
-      });
+      googleApiService.loadGoogleApis(["auth", "drive"])
+          .then(function () {
+            callbackCalled = true;
+          })
+          .catch(function (reason) {
+            throw new Error(reason);
+          });
+
 
       expect(gapiModules).toEqual([]);
       expect(gapiClientModules).toEqual([]);
@@ -100,6 +118,7 @@ describe("googleApiService", function () {
     });
 
     waitsFor(function() {
+      $rootScope.$digest();
       return callbackCalled;
     }, 3000);
 
