@@ -21,10 +21,10 @@ app.service('autosaveService', function (model, $interval, messageService, stora
   function autoSave() {
     if (modelHasChanged()) {
       $log.info("Model has changed. Autosaving.");
-      storageService.saveModelToModelStorage(model)
+      storageService.save(model)
           .catch(function (error) {
-            console.log(error);
-            messageService.set("An error occurred while auto-saving the model");
+            $log.error(error);
+            messageService.set("An error occurred while auto-saving the model: " + error);
           });
     }
   }

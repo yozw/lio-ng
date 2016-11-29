@@ -33,8 +33,15 @@ app.service('gdriveStorageBackend', function ($q, $log, googleDriveService) {
     return defer.promise;
   }
 
-  function save(code, title, parent) {
-    return googleDriveService.insertFile(title, code, parent)
+  function save(contents, title, parent) {
+    return googleDriveService.insertFile(contents, title, parent)
+        .then(function (fileId) {
+          return $q.when('gdrive:' + fileId);
+        });
+  }
+
+  function update(contents, fileId) {
+    return googleDriveService.updateFile(contents, fileId)
         .then(function (fileId) {
           return $q.when('gdrive:' + fileId);
         });
@@ -48,7 +55,8 @@ app.service('gdriveStorageBackend', function ($q, $log, googleDriveService) {
   return {
     getModelInfo: getModelInfo,
     load: load,
-    save: save
+    save: save,
+    update: update
   }
 });
 

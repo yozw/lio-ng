@@ -34,19 +34,12 @@ app.service('googleDriveService', function ($q, $log, $compile, googleApiService
     return getFileInfo(fileId).then(downloadFile);
   }
 
-  function insertFile(title, contents, parent) {
+  function uploadFile(contents, metadata, fileId) {
     const boundary = '-------314159265358979323846';
     const delimiter = "\r\n--" + boundary + "\r\n";
     const close_delim = "\r\n--" + boundary + "--";
 
-    var metadata = {
-      title: title,
-      mimeType: 'text/plain'
-    };
-
-    if ((parent !== undefined) && (!parent.isRoot)) {
-      metadata.parents = [parent];
-    }
+    metadata.mimeType = metadata.mimeType || 'text/plain';
 
     var base64Data = btoa(contents);
     var requestBody =
@@ -61,8 +54,8 @@ app.service('googleDriveService', function ($q, $log, $compile, googleApiService
         close_delim;
 
     var request = gapi.client.request({
-      path: '/upload/drive/v2/files',
-      method: 'POST',
+      path: '/upload/drive/v2/files' + (fileId ? ('/' + fileId) : ''),
+      method: fileId ? 'PUT' : 'POST',
       params: {
         uploadType: 'multipart'
       },
@@ -75,10 +68,24 @@ app.service('googleDriveService', function ($q, $log, $compile, googleApiService
     request.then(function(response) {
       var fileId = response.result.id;
       defer.resolve(fileId);
-    }, function(reason) {
-      defer.reject(reason);
+    }, function(response) {
+      defer.reject(response.body);
     });
     return defer.promise;
+  }
+
+  function insertFile(contents, title, parent) {
+    var metadata = {
+      title: title
+    };
+    if (parent && !parent.isRoot) {
+      metadata.parents = [parent];
+    }
+    return uploadFile(contents, metadata, null);
+  }
+
+  function updateFile(contents, fileId) {
+    return uploadFile(contents, {}, fileId);
   }
 
   function wrapApiCalls() {
@@ -92,8 +99,11 @@ app.service('googleDriveService', function ($q, $log, $compile, googleApiService
     loadFile: function (fileId) {
       return wrapApiCalls(loadFile, fileId);
     },
-    insertFile: function (title, contents, parent) {
-      return wrapApiCalls(insertFile, title, contents, parent);
+    insertFile: function (contents, title, parent) {
+      return wrapApiCalls(insertFile, contents, title, parent);
+    },
+    updateFile: function (contents, fileId) {
+      return wrapApiCalls(updateFile, contents, fileId);
     },
     getFileInfo: function (fileId) {
       return wrapApiCalls(getFileInfo, fileId);

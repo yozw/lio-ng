@@ -96,21 +96,58 @@ app.service('storageService', function ($q, $log, $rootScope, $location, message
         });
   }
 
+  /**
+   * Returns a function that saves the given model to model storage.
+   * @returns {Function}
+   */
   function getModelStorageSaver() {
     return function (serializedModel) {
       return modelStorageBackend.save(serializedModel, parseModelUrl(getCurrentModelUrl()));
     }
   }
 
+  /**
+   * Returns a function that saves the given model to Google Drive.
+   * @param {string} title Name of the model.
+   * @param {string} parent Parent directory.
+   * @returns {Function}
+   */
   function getGoogleDriveSaver(title, parent) {
     return function (serializedModel) {
       return gdriveStorageBackend.save(serializedModel, title, parent);
     }
   }
 
+  /**
+   * Returns a function that updates the given model on Google Drive.
+   * @param {string} fileId id of model.
+   * @returns {Function}
+   */
+  function getGoogleDriveUpdater(fileId) {
+    return function (serializedModel) {
+      return gdriveStorageBackend.update(serializedModel, fileId);
+    }
+  }
+
+  /**
+   * Returns a function that saves the given model to Google Drive if the current model is
+   * already on Google Drive and that saves to model storage otherwise.
+   */
+  function getDefaultSaver() {
+    const url = parseModelUrl(getCurrentModelUrl());
+    if (url.scheme === 'gdrive') {
+      return getGoogleDriveUpdater(url.location);
+    } else {
+      return getModelStorageSaver();
+    }
+  }
+
   return {
     readModel: function (url) {
       readModel(url);
+    },
+    save: function (model) {
+      return save(model, getDefaultSaver());
     },
     saveModelToModelStorage: function (model) {
       return save(model, getModelStorageSaver());
