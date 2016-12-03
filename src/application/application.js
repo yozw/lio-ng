@@ -232,6 +232,30 @@ app.controller('ButterBarCtrl', function ($scope, messageService) {
   });
 });
 
+app.controller('SaveStatusCtrl', function ($scope, $interval, storageService) {
+  "use strict";
+  function updateStatus() {
+    var lastSaveTime = $scope.status.lastSaveTime;
+    if (!lastSaveTime) {
+      $scope.message = "";
+      return;
+    }
+
+    var timeAgo = StringUtil.timeDifferenceStr(lastSaveTime, new Date().getTime());
+    var url = new StringUtil.URL(storageService.getCurrentModelUrl());
+    if (url.protocol == 'ms') {
+      $scope.message = "Draft saved " + timeAgo;
+    } else {
+      $scope.message = "Model saved " + timeAgo;
+    }
+  }
+
+  $scope.status = storageService.status;
+  $scope.message = "";
+  $scope.$watch('status.lastSaveTime', updateStatus);
+  $interval(updateStatus, 1000);
+});
+
 app.directive('autofocus', function ($timeout) {
   return {
     restrict: 'A',

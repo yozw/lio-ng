@@ -14,25 +14,20 @@ app.service('storageService', function ($q, $log, $rootScope, $location, message
   var cache = {};
   var onModelLoaded = [];
   var onModelSaved = [];
+  var currentModelUrl;
+  var status = {
+    lastSaveTime: null
+  };
 
   $rootScope.$on('$locationChangeSuccess', function (next, current) {
-    readModel(getCurrentModelUrl());
+    var urlString = getModelUrlFromLocation();
+    if (urlString !== currentModelUrl) {
+      readModel(urlString);
+    }
   });
 
-  function parseModelUrl(modelUrl) {
-    var index = modelUrl.indexOf(":");
-    if (index < 0) {
-      return {scheme: "", location: modelUrl};
-    } else {
-      return {
-        scheme: modelUrl.substring(0, index),
-        location: modelUrl.substring(index + 1)
-      };
-    }
-  }
-
   // Returns the current location as specified by the browser url.
-  function getCurrentModelUrl() {
+  function getModelUrlFromLocation() {
     var url = $location.search().model;
     if (!url || url === "") {
       url = "builtin:default.mod";
@@ -40,26 +35,42 @@ app.service('storageService', function ($q, $log, $rootScope, $location, message
     return url;
   }
 
-  function getBackendForScheme(scheme) {
-    var backend = backends[scheme];
+  function getBackendForProtocol(protocol) {
+    var backend = backends[protocol];
     if (backend === undefined) {
       throw new Error("Could not load specified model: the URL was not recognized.");
     }
     return backend;
   }
 
-  function getModelInfo(modelUrl) {
-    var parsedUrl = parseModelUrl(modelUrl);
-    var backend = getBackendForScheme(parsedUrl.scheme);
-    return backend.getModelInfo(parsedUrl.location, parsedUrl);
+  function getModelInfo(urlString) {
+    var url = new StringUtil.URL(urlString);
+    var backend = getBackendForProtocol(url.protocol);
+    return backend.getModelInfo(urlString);
   }
 
-  function readModel(modelUrl) {
-    var msgId = -1;
+  function clearSaveTime() {
+    status.lastSaveTime = null;
+    if (!$rootScope.$$phase) {
+      $rootScope.$apply();
+    }
+  }
+
+  function updateSaveTime() {
+    status.lastSaveTime = new Date().getTime();
+    if (!$rootScope.$$phase) {
+      $rootScope.$apply();
+    }
+  }
+
+  function readModel(urlString) {
+    var msgId;
 
     function modelLoaded(data) {
-      cache[modelUrl] = data;
-      $location.search('model', modelUrl);
+      cache[urlString] = data;
+      currentModelUrl = urlString;
+      clearSaveTime();
+      $location.search('model', urlString);
       messageService.dismiss(msgId);
       var model = serializationService.deserializeModel(data);
       for (var i = 0; i < onModelLoaded.length; i++) {
@@ -71,28 +82,30 @@ app.service('storageService', function ($q, $log, $rootScope, $location, message
       messageService.set(message);
     }
 
-    if (cache.hasOwnProperty(modelUrl)) {
-      modelLoaded(cache[modelUrl]);
+    if (cache.hasOwnProperty(urlString)) {
+      modelLoaded(cache[urlString]);
       return;
     }
 
-    var parsedUrl = parseModelUrl(modelUrl);
-    var backend = getBackendForScheme(parsedUrl.scheme);
+    var parsedUrl = new StringUtil.URL(urlString);
+    var backend = getBackendForProtocol(parsedUrl.protocol);
     msgId = messageService.set("Loading model ...");
-    backend.load(parsedUrl.location).then(modelLoaded).catch(loadError);
+    backend.load(urlString).then(modelLoaded).catch(loadError);
   }
 
   function save(model, saveFn) {
     var serializedModel = serializationService.serializeModel(model);
 
     return saveFn(serializedModel)
-        .then(function (modelUrl) {
-          cache[modelUrl] = serializedModel;
-          $location.search('model', modelUrl);
+        .then(function (urlString) {
+          cache[urlString] = serializedModel;
+          currentModelUrl = urlString;
+          updateSaveTime();
+          $location.search('model', urlString);
           for (var i = 0; i < onModelSaved.length; i++) {
             onModelSaved[i](model);
           }
-          return $q.when(modelUrl);
+          return $q.when(urlString);
         });
   }
 
@@ -102,7 +115,7 @@ app.service('storageService', function ($q, $log, $rootScope, $location, message
    */
   function getModelStorageSaver() {
     return function (serializedModel) {
-      return modelStorageBackend.save(serializedModel, parseModelUrl(getCurrentModelUrl()));
+      return modelStorageBackend.save(serializedModel, new StringUtil.URL(currentModelUrl));
     }
   }
 
@@ -134,17 +147,17 @@ app.service('storageService', function ($q, $log, $rootScope, $location, message
    * already on Google Drive and that saves to model storage otherwise.
    */
   function getDefaultSaver() {
-    const url = parseModelUrl(getCurrentModelUrl());
-    if (url.scheme === 'gdrive') {
-      return getGoogleDriveUpdater(url.location);
+    var url = new StringUtil.URL(currentModelUrl);
+    if (url.protocol === 'gdrive') {
+      return getGoogleDriveUpdater(url.path);
     } else {
       return getModelStorageSaver();
     }
   }
 
   return {
-    readModel: function (url) {
-      readModel(url);
+    readModel: function (urlString) {
+      readModel(urlString);
     },
     save: function (model) {
       return save(model, getDefaultSaver());
@@ -161,8 +174,8 @@ app.service('storageService', function ($q, $log, $rootScope, $location, message
     onModelSaved: function (callback) {
       onModelSaved.push(callback);
     },
-    parseModelUrl: parseModelUrl,
-    getCurrentModelUrl: getCurrentModelUrl,
-    getModelInfo: getModelInfo
+    getCurrentModelUrl: function() { return currentModelUrl; },
+    getModelInfo: getModelInfo,
+    status: status
   }
 });

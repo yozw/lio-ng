@@ -26,7 +26,9 @@ app.service('modelStorageBackend', function ($q, $log, $http) {
     return defer.promise;
   }
 
-  function load(key) {
+  function load(urlString) {
+    var url = new StringUtil.URL(urlString);
+    var key = url.path;
     var defer = $q.defer();
     $log.info("Loading model with key " + key + " from model storage");
     $http.get('/storage/read/' + key)
@@ -69,8 +71,8 @@ app.service('modelStorageBackend', function ($q, $log, $http) {
   }
 
   function save(model, currentParsedUrl) {
-    if (currentParsedUrl.scheme === "ms") {
-      return saveModelWithKey(model, currentParsedUrl.location);
+    if (currentParsedUrl.protocol === "ms") {
+      return saveModelWithKey(model, currentParsedUrl.path);
     } else {
       return getNewStorageKey().then(function (key) {
         return saveModelWithKey(model, key);
@@ -78,9 +80,9 @@ app.service('modelStorageBackend', function ($q, $log, $http) {
     }
   }
 
-  function getModelInfo(location, dict) {
+  function getModelInfo(urlString, dict) {
     if (dict === undefined) dict = {};
-    dict.name = location.split('/').pop();
+    dict.name = 'untitled.mod';
     return $q.when(dict);
   }
 

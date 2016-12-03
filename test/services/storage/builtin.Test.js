@@ -13,7 +13,7 @@ describe("builtinStorageBackend", function () {
     $rootScope = $injector.get('$rootScope');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
   });
@@ -35,7 +35,7 @@ describe("builtinStorageBackend", function () {
 
 
   it("correctly loads a builtin model", function () {
-    var result = catchPromise(backend.load('test.mod'));
+    var result = catchPromise(backend.load('builtin:test.mod'));
 
     $httpBackend.expectGET('/models/test.mod').respond(200, 'data');
     $httpBackend.flush();
@@ -45,7 +45,7 @@ describe("builtinStorageBackend", function () {
   });
 
   it("correctly fails on a non-existing model", function () {
-    var result = catchPromise(backend.load('test.mod'));
+    var result = catchPromise(backend.load('builtin:test.mod'));
 
     $httpBackend.expectGET('/models/test.mod').respond(404);
     $httpBackend.flush();
@@ -55,7 +55,7 @@ describe("builtinStorageBackend", function () {
   });
 
   it("correctly fails with a 403 error", function () {
-    var result = catchPromise(backend.load('test.mod'));
+    var result = catchPromise(backend.load('builtin:test.mod'));
 
     $httpBackend.expectGET('/models/test.mod').respond(403);
     $httpBackend.flush();
@@ -64,7 +64,7 @@ describe("builtinStorageBackend", function () {
     expect(result.error).toEqual('Could not load model (HTTP response 403)');
   });
 
-  it("correctly gets model information", function() {
+  it("correctly gets model information", function () {
     var dict = {file: 'bla.mod'};
     backend.getModelInfo('model/test.mod', dict);
     expect(dict.file).toEqual('bla.mod');

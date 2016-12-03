@@ -1,43 +1,184 @@
 'use strict';
 
-describe("storageService.parseModelUrl", function () {
-  var storageService;
+describe("storageService.readModel", function () {
+  function catchPromise(promise) {
+    var result = Object();
+    result.resolved = false;
+    promise
+        .then(function (response) {
+          result.response = response;
+          result.resolved = true;
+        })
+        .catch(function (error) {
+          result.error = error;
+          result.resolved = true;
+        });
+    return result;
+  }
+
+  beforeEach(angular.mock.module('lio-ng'));
 
   beforeEach(function () {
-    var $injector = angular.injector(['ng', 'ngMock', 'lio-ng']);
-    storageService = $injector.get('storageService');
+    angular.mock.module(function ($provide) {
+      // Create mock builtinStorageBackend.
+      $provide.factory('builtinStorageBackend', function ($q) {
+        return {
+          getModelInfo: jasmine.createSpy('getModelInfo').andCallFake(function (urlString, dict) {
+            dict = dict || {};
+            dict.urlString = urlString;
+            return $q.when(dict);
+          }),
+          load: jasmine.createSpy('load').andCallFake(function (url) {
+            return $q.when('Builtin model: ' + url);
+          })
+        }
+      });
+
+      // Create mock gdriveStorageBackend.
+      $provide.factory('gdriveStorageBackend', function ($q) {
+        return {
+          getModelInfo: jasmine.createSpy('getModelInfo').andCallFake(function (urlString, dict) {
+            dict = dict || {};
+            dict.urlString = urlString;
+            return $q.when(dict);
+          }),
+          load: jasmine.createSpy('load').andCallFake(function (id) {
+            return $q.when('Gdrive model: ' + id);
+          }),
+          save: jasmine.createSpy('save').andCallFake(function () {
+            return $q.when('Saved');
+          }),
+          update: jasmine.createSpy('update').andCallFake(function () {
+          })
+        }
+      });
+
+      // Create mock modelStorageBackend.
+      $provide.factory('modelStorageBackend', function ($q) {
+        return {
+          getModelInfo: jasmine.createSpy('getModelInfo').andCallFake(function (urlString, dict) {
+            dict = dict || {};
+            dict.urlString = urlString;
+            return $q.when(dict);
+          }),
+          load: jasmine.createSpy('load').andCallFake(function (id) {
+            return $q.when('Model storage model: ' + id);
+          }),
+          save: jasmine.createSpy('save').andCallFake(function () {
+            return $q.when('Saved');
+          })
+        }
+      });
+
+      // Create mock webStorageBackend.
+      $provide.factory('webStorageBackend', function ($q) {
+        return {
+          getModelInfo: jasmine.createSpy('getModelInfo').andCallFake(function (urlString, dict) {
+            dict = dict || {};
+            dict.urlString = urlString;
+            return $q.when(dict);
+          }),
+          load: jasmine.createSpy('load').andCallFake(function (url) {
+            return $q.when('Web model: ' + url);
+          })
+        }
+      });
+    });
   });
 
-  it('works correctly for a full url',
-      function () {
-        var url = "gdrive:1/2";
-        var parsedUrl = storageService.parseModelUrl(url);
-        expect(parsedUrl.scheme).toEqual("gdrive");
-        expect(parsedUrl.location).toEqual("1/2");
-      });
+  it('Correctly loads a built-in model', inject(function ($rootScope, storageService, builtinStorageBackend) {
+    var url = 'builtin:mymodel';
 
-  it('works correctly for an empty url',
-      function () {
-        var url = "";
-        var parsedUrl = storageService.parseModelUrl(url);
-        expect(parsedUrl.scheme).toEqual("");
-        expect(parsedUrl.location).toEqual("");
-      });
+    storageService.readModel(url);
+    $rootScope.$apply();
 
-  it('works correctly for a url with no location',
-      function () {
-        var url = "http:";
-        var parsedUrl = storageService.parseModelUrl(url);
-        expect(parsedUrl.scheme).toEqual("http");
-        expect(parsedUrl.location).toEqual("");
-      });
+    expect(builtinStorageBackend.load).toHaveBeenCalledWith(url);
+    expect(storageService.status.lastSaveTime).toBeNull();
+  }));
 
-  it('works correctly for a url with no scheme',
-      function () {
-        var url = "12";
-        var parsedUrl = storageService.parseModelUrl(url);
-        expect(parsedUrl.scheme).toEqual("");
-        expect(parsedUrl.location).toEqual("12");
-      });
+  it('Correctly retrieves info for a built-in model', inject(function ($rootScope, storageService,
+                                                                       builtinStorageBackend) {
+    var urlString = 'builtin:mymodel';
+    var info = catchPromise(storageService.getModelInfo(urlString));
+    $rootScope.$apply();
+
+    expect(info.response.urlString).toEqual(urlString);
+    expect(builtinStorageBackend.getModelInfo).toHaveBeenCalledWith(urlString);
+  }));
+
+  it('Correctly loads a Google Drive model', inject(function ($rootScope, storageService, builtinStorageBackend,
+                                                              modelStorageBackend, gdriveStorageBackend,
+                                                              webStorageBackend) {
+    var url = 'gdrive:1234';
+    storageService.readModel(url);
+    $rootScope.$apply();
+
+    expect(gdriveStorageBackend.load).toHaveBeenCalledWith(url);
+    expect(storageService.status.lastSaveTime).toBeNull();
+
+    expect(modelStorageBackend.load).not.toHaveBeenCalled();
+    expect(modelStorageBackend.save).not.toHaveBeenCalled();
+    expect(gdriveStorageBackend.save).not.toHaveBeenCalled();
+    expect(webStorageBackend.load).not.toHaveBeenCalled();
+  }));
+
+  it('Correctly retrieves info for a Google Drive model', inject(function ($rootScope, storageService, gdriveStorageBackend) {
+    var urlString = 'gdrive:1234';
+    var info = catchPromise(storageService.getModelInfo(urlString));
+    $rootScope.$apply();
+
+    expect(info.response.urlString).toEqual(urlString);
+    expect(gdriveStorageBackend.getModelInfo).toHaveBeenCalledWith(urlString);
+  }));
+
+  it('Correctly saves a Google Drive model', inject(function ($rootScope, storageService, builtinStorageBackend,
+                                                              modelStorageBackend, gdriveStorageBackend,
+                                                              webStorageBackend) {
+    var model = {code: 'code', doc: 'doc'};
+    expect(storageService.status.lastSaveTime).toBeNull();
+    storageService.saveModelToGoogleDrive('model.mod', model, 'parent');
+    $rootScope.$apply();
+
+    expect(gdriveStorageBackend.save).toHaveBeenCalledWith('/**doc*/\n\ncode\n', 'model.mod', 'parent');
+    expect(storageService.status.lastSaveTime).not.toBeNull();
+
+    expect(modelStorageBackend.load).not.toHaveBeenCalled();
+    expect(modelStorageBackend.save).not.toHaveBeenCalled();
+    expect(gdriveStorageBackend.load).not.toHaveBeenCalled();
+    expect(webStorageBackend.load).not.toHaveBeenCalled();
+  }));
+
+  it('Correctly loads a model storage model', inject(function ($rootScope, storageService, modelStorageBackend) {
+    storageService.readModel('ms:1234');
+    $rootScope.$apply();
+
+    expect(modelStorageBackend.load).toHaveBeenCalledWith('ms:1234');
+    expect(storageService.status.lastSaveTime).toBeNull();
+  }));
+
+  it('Correctly retrieves info for a storage model', inject(function ($rootScope, storageService, modelStorageBackend) {
+    var urlString = 'ms:1234';
+    var info = catchPromise(storageService.getModelInfo(urlString));
+    $rootScope.$apply();
+
+    expect(info.response.urlString).toEqual(urlString);
+    expect(modelStorageBackend.getModelInfo).toHaveBeenCalledWith(urlString);
+  }));
+
+  it('Correctly loads a web model', inject(function ($rootScope, storageService, webStorageBackend) {
+    storageService.readModel('http://url');
+    $rootScope.$apply();
+
+    expect(webStorageBackend.load).toHaveBeenCalledWith('http://url');
+    expect(storageService.status.lastSaveTime).toBeNull();
+  }));
+
+  it('Correctly retrieves info for a web model', inject(function ($rootScope, storageService, webStorageBackend) {
+    var urlString = 'http://url/filename.txt';
+    var info = catchPromise(storageService.getModelInfo(urlString));
+    $rootScope.$apply();
+
+    expect(info.response.urlString).toEqual(urlString);
+    expect(webStorageBackend.getModelInfo).toHaveBeenCalledWith(urlString);
+  }));
 });
-

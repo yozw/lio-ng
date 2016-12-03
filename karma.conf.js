@@ -49,7 +49,7 @@ module.exports = function(config) {
       'src/application/workers/tables/*.js',
       'src/application/workers/*.js',
       'test/**/*.Test.js',
-//      'test/workers/*.Test.js',
+      'test/workers/*.Test.js',
 
       { pattern: './src/**/*', included: false }
     ],

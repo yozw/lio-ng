@@ -2,9 +2,21 @@ body {
   overflow: hidden;
 }
 
+.navbar-nav {
+  width: 100%;
+}
+
 .navbar-nav > li > a {
   padding-top: 3px;
   padding-bottom: 3px;
+}
+
+.navbar-nav > div.save-status {
+  padding-top: 5px;
+  padding-bottom: 3px;
+  float: right;
+  color: #999;
+  font-size: 90%;
 }
 
 .nopadding {

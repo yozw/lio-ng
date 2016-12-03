@@ -1,10 +1,11 @@
 app.service('builtinStorageBackend', function ($q, $log, $http) {
   "use strict";
 
-  function load(location) {
+  function load(urlString) {
     var defer = $q.defer();
-    $log.info("Loading built-in model: " + location);
-    $http.get("/models/" + location)
+    var url = new StringUtil.URL(urlString);
+    $log.info("Loading built-in model: " + url.path);
+    $http.get("/models/" + url.path)
         .success(function (data, status) {
           if (data && status === 200) {
             defer.resolve(data);
@@ -20,9 +21,9 @@ app.service('builtinStorageBackend', function ($q, $log, $http) {
     return defer.promise;
   }
 
-  function getModelInfo(location, dict) {
+  function getModelInfo(urlString, dict) {
     if (dict === undefined) dict = {};
-    dict.name = location.split('/').pop();
+    dict.name = urlString.split('/').pop();
     return $q.when(dict);
   }
 

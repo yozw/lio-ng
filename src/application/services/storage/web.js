@@ -1,11 +1,11 @@
 app.service('webStorageBackend', function ($q, $log, $http) {
   "use strict";
 
-  function load(location) {
+  function load(urlString) {
     var defer = $q.defer();
-    $log.info("Loading remote model: " + location);
+    $log.info("Loading remote model: " + urlString);
     var data = Object();
-    data.url = location;
+    data.url = urlString;
 
     $http
         .post('/load', data)
@@ -29,9 +29,9 @@ app.service('webStorageBackend', function ($q, $log, $http) {
     return defer.promise;
   }
 
-  function getModelInfo(location, dict) {
+  function getModelInfo(urlString, dict) {
     if (dict === undefined) dict = {};
-    dict.name = location.split('/').pop();
+    dict.name = urlString.split('/').pop();
     return $q.when(dict);
   }
 

@@ -19,7 +19,9 @@ app.service('gdriveStorageBackend', function ($q, $log, googleDriveService) {
         })
   }
 
-  function getModelInfo(fileId, dict) {
+  function getModelInfo(urlString, dict) {
+    var url = new StringUtil.URL(urlString);
+    var fileId = url.path;
     if (dict === undefined) dict = {};
     var defer = $q.defer();
     dict.fileId = fileId;
@@ -47,7 +49,9 @@ app.service('gdriveStorageBackend', function ($q, $log, googleDriveService) {
         });
   }
 
-  function load(fileId) {
+  function load(urlString) {
+    var url = new StringUtil.URL(urlString);
+    var fileId = url.path;
     $log.info("Loading model from Google Drive: " + fileId);
     return googleDriveService.loadFile(fileId);
   }

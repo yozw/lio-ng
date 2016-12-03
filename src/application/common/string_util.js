@@ -49,3 +49,52 @@ StringUtil.formatNumberFixedWidth = function(x, width, decimals) {
     return StringUtil.lpad(x.toExponential(decimals), width)
   }
 };
+
+
+/**
+ * Returns a human-readable string representing how much time has elapsed
+ * between two time points.
+ *
+ * @param startTime
+ * @param endTime
+ * @returns {string}
+ */
+StringUtil.timeDifferenceStr = function(startTime, endTime) {
+  var delta_in_sec = Math.floor((endTime - startTime) / 1000);
+  var delta_in_minutes = Math.floor(delta_in_sec / 60);
+  var delta_in_hours = Math.floor(delta_in_sec / (60 * 60));
+  var delta_in_days = Math.floor(delta_in_sec / (24 * 60 * 60));
+  if (delta_in_minutes < 1) {
+    return "just now";
+  } else if (delta_in_minutes == 1) {
+    return "1 minute ago";
+  } else if (delta_in_minutes < 60) {
+    return delta_in_minutes + " minutes ago";
+  } else if (delta_in_hours == 1) {
+    return "1 hour ago";
+  } else if (delta_in_hours < 24) {
+    return delta_in_hours + " hours ago";
+  } else if (delta_in_days == 1) {
+    return "1 day ago";
+  } else {
+    return delta_in_days + " days ago";
+  }
+};
+
+/**
+ * Constructs a new URL object from the given url string.
+ *
+ * @param urlString
+ * @constructor
+ */
+StringUtil.URL = function(urlString) {
+  this.href = urlString;
+  var index = urlString.indexOf(":");
+  if (index < 0) {
+    this.protocol = "";
+    this.path = urlString;
+  } else {
+    this.protocol = urlString.substring(0, index);
+    this.path = urlString.substring(index + 1);
+  }
+};

@@ -34,10 +34,11 @@ describe("webStorageBackend", function () {
   }
 
 
-  it("correctly loads a builtin model", function () {
-    var result = catchPromise(backend.load('http://mydomain.com/test.mod'));
+  it("correctly loads a web model", function () {
+    var urlString = 'http://mydomain.com/test.mod';
+    var result = catchPromise(backend.load(urlString));
 
-    $httpBackend.expectPOST('/load', {url: 'http://mydomain.com/test.mod'}).respond(200, 'data');
+    $httpBackend.expectPOST('/load', {url: urlString}).respond(200, 'data');
     $httpBackend.flush();
 
     expect(result.response).toEqual('data');
@@ -45,9 +46,10 @@ describe("webStorageBackend", function () {
   });
 
   it("correctly fails on a non-existing model", function () {
-    var result = catchPromise(backend.load('http://mydomain.com/test.mod'));
+    var urlString = 'http://mydomain.com/test.mod';
+    var result = catchPromise(backend.load(urlString));
 
-    $httpBackend.expectPOST('/load', {url: 'http://mydomain.com/test.mod'}).respond(404);
+    $httpBackend.expectPOST('/load', {url: urlString}).respond(404);
     $httpBackend.flush();
 
     expect(result.response).toEqual(undefined);
@@ -55,9 +57,10 @@ describe("webStorageBackend", function () {
   });
 
   it("correctly fails with a 403 error", function () {
-    var result = catchPromise(backend.load('http://mydomain.com/test.mod'));
+    var urlString = 'http://mydomain.com/test.mod';
+    var result = catchPromise(backend.load(urlString));
 
-    $httpBackend.expectPOST('/load', {url: 'http://mydomain.com/test.mod'}).respond(403);
+    $httpBackend.expectPOST('/load', {url: urlString}).respond(403);
     $httpBackend.flush();
 
     expect(result.response).toEqual(undefined);

@@ -55,8 +55,9 @@
   <script type="text/javascript" src="/application/directives/mathjax.js"></script>
   <script type="text/javascript" src="/application/directives/tabs.js"></script>
   <script type="text/javascript" src="/application/application.js"></script>
-  <script type="text/javascript" src="/application/common/util.js"></script>
+  <script type="text/javascript" src="/application/common/string_util.js"></script>
   <script type="text/javascript" src="/application/common/math_util.js"></script>
+  <script type="text/javascript" src="/application/common/util.js"></script>
   <script type="text/javascript" src="/application/dialogs/about.js"></script>
   <script type="text/javascript" src="/application/dialogs/error.js"></script>
   <script type="text/javascript" src="/application/dialogs/export.js"></script>
@@ -143,6 +144,7 @@
         <li><a ng-click="showAbout()">About...</a></li>
       </ul>
     </li>
+    <div class="save-status" ng-controller="SaveStatusCtrl" >{{message}}</div>
   </ul>
 </div>
 
