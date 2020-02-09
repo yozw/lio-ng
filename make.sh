@@ -8,7 +8,7 @@ DEST="${ROOT}/appengine"
 
 log "Building binary version ${VERSION} ..."
 
-checkDeps python sed uglifyjs pip
+checkDeps python sed uglifyjs.terser pip makeinfo
 
 if [ ! -d ${DEST}/python ]; then
   log "Installing python requirements ..."

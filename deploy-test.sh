@@ -9,7 +9,7 @@ checkDeps gae
 
 ./make.sh || error "Make failed"
 
-~/google_appengine/appcfg.py \
+python $(get_appengine_path)/appcfg.py --noauth_local_webserver \
     --oauth2 -A online-optimizer-test update $ROOT/appengine \
     || error "Deployment failed"
 

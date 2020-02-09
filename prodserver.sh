@@ -15,4 +15,4 @@ if [ "$1" == "--build" ]; then
 fi
 
 log "Starting production server"
-~/google_appengine/dev_appserver.py appengine/app.yaml || error "Could not start production server locally"
+python $(get_appengine_path)/dev_appserver.py appengine/app.yaml || error "Could not start production server locally"

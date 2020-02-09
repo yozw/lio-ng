@@ -19,6 +19,10 @@ function log {
   echo "[`date`] ${COLOR_GREEN}$1${COLOR_DEFAULT}"
 }
 
+function appengine_path {
+  echo "~/google-cloud-sdk/platform/google_appengine"
+}
+
 function checkDeps {
   for package in "$@"; do
     if [ $package == "pip" ]; then
@@ -26,15 +30,19 @@ function checkDeps {
     elif [ $package == "wget" ]; then
       wget --version > /dev/null   || error "Please install wget."
     elif [ $package == "gae" ]; then
-      if [ ! -f ~/google_appengine/dev_appserver.py ]; then
-        error "Please install Google App Engine in ~/google_appengine/"
+      if [ ! -f $(get_appengine_path)/dev_appserver.py ]; then
+        error "Please install Google App Engine in $(get_appengine_path)."
       fi
     elif [ $package == "uglifyjs" ]; then
       uglifyjs --version > /dev/null  || error "Please install UglifyJS."
+    elif [ $package == "uglifyjs.terser" ]; then
+      uglifyjs.terser --version > /dev/null  || error "Please install UglifyJS Terser."
     elif [ $package == "python" ]; then
       python --version 2> /dev/null   || error "Please install Python."
     elif [ $package == "sed" ]; then
       sed --version > /dev/null   || error "Please install sed."
+    elif [ $package == "makeinfo" ]; then
+      makeinfo --version > /dev/null   || error "Please install makeinfo."
     else
       error "Unknown dependency: $package"
     fi

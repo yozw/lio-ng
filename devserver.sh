@@ -8,4 +8,4 @@ cd ${ROOT} || error "Could not change to directory $ROOT"
 checkDeps gae
 
 log "Starting development server"
-~/google_appengine/dev_appserver.py src/app.yaml || error "Could not start development server locally"
+python $(get_appengine_path)/dev_appserver.py src/app.yaml || error "Could not start development server locally"
