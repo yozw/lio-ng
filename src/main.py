@@ -1,5 +1,6 @@
 """Lio-ng backend"""
 
+import flask
 import logging
 import os
 import urllib2
@@ -129,5 +130,6 @@ def storageWrite(key, code):
   return "OK"
 
 
+logging.info("Running with Flask {}".format(flask.__version__))
 startApp()
 

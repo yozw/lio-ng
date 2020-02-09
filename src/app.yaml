@@ -32,3 +32,6 @@ handlers:
 - url: .*  # This regex directs all routes to main.app
   script: main.app
 
+libraries:
+- name: ssl
+  version: latest
