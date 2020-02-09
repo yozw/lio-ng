@@ -36,7 +36,7 @@ cd ..
 
 log "Generating documentation ..."
 pushd src/doc
-./make || error "Error generating documentation"
+./make.sh || error "Error generating documentation"
 popd
 pushd src/doc/gmpl
 ./make.sh || error "Error generating GMPL documentation"
