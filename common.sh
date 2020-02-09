@@ -19,8 +19,8 @@ function log {
   echo "[`date`] ${COLOR_GREEN}$1${COLOR_DEFAULT}"
 }
 
-function appengine_path {
-  echo "~/google-cloud-sdk/platform/google_appengine"
+function get_appengine_path {
+  echo "${HOME}/google-cloud-sdk/platform/google_appengine"
 }
 
 function checkDeps {
@@ -30,7 +30,7 @@ function checkDeps {
     elif [ $package == "wget" ]; then
       wget --version > /dev/null   || error "Please install wget."
     elif [ $package == "gae" ]; then
-      if [ ! -f $(get_appengine_path)/dev_appserver.py ]; then
+      if [ ! -f "$(get_appengine_path)/dev_appserver.py" ]; then
         error "Please install Google App Engine in $(get_appengine_path)."
       fi
     elif [ $package == "uglifyjs" ]; then

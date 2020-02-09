@@ -1,5 +1,5 @@
 body {
-  padding: 3.5em 0 0 0; 
+  padding: 3.5em 3.5em; 
 }
 
 table {
@@ -63,6 +63,10 @@ div.node hr {
   font-size: 100%;
 }
 
+.footnote h3 {
+  font-size: 14px;
+}
+
 p {
   text-align: justify;
 }
@@ -122,16 +126,15 @@ pre.smalldisplay pre {
 }  
 
 --></style>
-<script type="text/javascript"
-  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-<script type="text/javascript">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
     jax: ["input/TeX","output/HTML-CSS"],
     tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
     displayAlign: "left"
 });
 </script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 <meta name="viewport" content="width=device-width" />
 <style><--
