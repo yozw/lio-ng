@@ -1,5 +1,5 @@
 body {
-  padding: 3.5em 0 0 0; 
+  padding: 3.5em 3.5em; 
 }
 
 table {
@@ -61,6 +61,10 @@ div.node hr {
 .footnote-marker {
   vertical-align: super;
   font-size: 100%;
+}
+
+.footnote h3 {
+  font-size: 14px;
 }
 
 p {
