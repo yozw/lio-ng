@@ -40,7 +40,7 @@ function checkDeps {
     elif [ $package == "python" ]; then
       python --version 2> /dev/null   || error "Please install Python."
     elif [ $package == "sed" ]; then
-      echo | sed 2> /dev/null   || error "Please install sed."
+      which sed > /dev/null || error "Please install sed."
     elif [ $package == "makeinfo" ]; then
       makeinfo --version > /dev/null   || error "Please install makeinfo."
     else
