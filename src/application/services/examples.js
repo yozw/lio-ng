@@ -1,16 +1,42 @@
 app.factory('examples', function () {
+  const root = 'https://raw.githubusercontent.com/yozw/lio-files/master';
+
+  function url(path) {
+    return root + '/' + path;
+  }
+
   return [
     {name: 'Home', url: 'builtin:default.mod'},
     {name: 'From the book', subItems: [
-      {name: 'Dovetail', url: 'builtin:book/dovetail.mod'},
-      {name: 'Diet problem', url: 'builtin:book/diet.mod'},
-      {name: 'Knapsack problem', url: 'builtin:book/knapsack.mod'},
-      {name: 'Portfolio optimization', url: 'builtin:book/portfolio.mod'},
-      {name: 'Machine scheduling problem', url: 'builtin:book/scheduling.mod'},
-      {name: 'Decentralization problem', url: 'builtin:book/decentral.mod'}
+      {name: 'Dovetail', url: url('chapter01/dovetail.mod')},
+      {name: 'Diet problem', url: url('chapter01/diet.mod')},
+      {name: 'Portfolio optimization', url: url('chapter01/portfolio.mod')},
+      {name: 'Data envelopment analysis', url: url('chapter01/dea.mod')},
+      {name: 'Salmonnose', url: url('chapter04/salmonnose.mod')},
+      {name: 'Knapsack problem', url: url('chapter07/knapsack.mod')},
+      {name: 'Machine scheduling problem', url: url('chapter07/scheduling.mod')},
+      {name: 'Decentralization problem', url: url('chapter07/decentral.mod')},
+      {name: 'Project scheduling problem', url: url('chapter08/projectscheduling.mod')},
+      {name: 'Irrigation reservoir design', url: url('chapter10/reservoir.mod')},
+      {name: 'Document classification', url: url('chapter11/classification.mod')},
+      {name: 'Product planning model PP1', url: url('chapter12/PP1.mod')},
+      {name: 'Product planning model PP2', url: url('chapter12/PP2.mod')},
+      {name: 'Product planning model PP3', url: url('chapter12/PP3.mod')},
+      {name: 'Product planning model PP4', url: url('chapter12/PP4.mod')},
+      {name: 'Product planning model PP5', url: url('chapter12/PP5.mod')},
+      {name: 'Coffee machine production model 1', url: url('chapter13/coffee1.mod')},
+      {name: 'Coffee machine production model 2', url: url('chapter13/coffee2.mod')},
+      {name: 'Coffee machine production model 3', url: url('chapter13/coffee3.mod')},
+      {name: 'Conflicting objectives model O1', url: url('chapter14/conflobj-O1.mod')},
+      {name: 'Conflicting objectives model O2', url: url('chapter14/conflobj-O2.mod')},
+      {name: 'Conflicting objectives model O3', url: url('chapter14/conflobj-O3.mod')},
+      {name: 'Conflicting objectives model O4', url: url('chapter14/conflobj-O4.mod')},
+      {name: 'Conflicting objectives model O5', url: url('chapter14/conflobj-O5.mod')},
+      {name: 'Coalition formation and profit distribution', url: url('chapter15/coalition.mod')},
+      {name: 'The catering service problem', url: url('chapter18/napkin.mod')},
     ]},
     {name: 'Two-dimensional models', subItems: [
-      {name: 'Dovetail', url: 'builtin:book/dovetail.mod'},
+      {name: 'Dovetail', url: url('chapter01/dovetail.mod'},
       {name: 'Circle', url: 'builtin:circle.mod'}
     ]},
     {name: 'Scheduling', subItems: [
