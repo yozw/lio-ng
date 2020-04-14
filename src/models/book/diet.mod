@@ -12,7 +12,7 @@
 
  <div class="display">
  <table class="lo-model">
- <tr><td>$\max$</td><td>$40x_1$</td><td>$+$</td><td>$100x_2$</td><td>$+$</td><td>$150x_3$</td></tr>
+ <tr><td>$\min$</td><td>$40x_1$</td><td>$+$</td><td>$100x_2$</td><td>$+$</td><td>$150x_3$</td></tr>
  <tr><td>$\mbox{subject to}$</td><td>$x_1$</td><td>$+$</td><td>$2x_2$</td><td>$+$</td><td>$2x_3$</td><td>$=$</td><td>$3$</td></tr>
  <tr><td></td><td>$30x_1$</td><td>$+$</td><td>$10x_2$</td><td>$+$</td><td>$20x_3$</td><td>$=$</td><td>$75$</td></tr>
  <tr><td></td><td colspan="6">$x_1, x_2, x_3 \geq 0.$</td></tr>
