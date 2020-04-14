@@ -36,7 +36,7 @@ app.factory('examples', function () {
       {name: 'The catering service problem', url: url('chapter18/napkin.mod')},
     ]},
     {name: 'Two-dimensional models', subItems: [
-      {name: 'Dovetail', url: url('chapter01/dovetail.mod'},
+      {name: 'Dovetail', url: url('chapter01/dovetail.mod')},
       {name: 'Circle', url: 'builtin:circle.mod'}
     ]},
     {name: 'Scheduling', subItems: [
