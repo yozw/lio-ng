@@ -1,6 +1,9 @@
 <div class="scrollable">
   <h1>{{header}}</h1>
-  <div ng-if="entries == null || entries.length == 0"  class="bs-callout bs-callout-info">Nothing to display.</div>
+  <div ng-if="entries == null || entries.length == 0"  class="bs-callout bs-callout-info">
+    <p>Nothing to display.</p>
+    <p>This tab displays output from <tt>display</tt> and <tt>printf</tt> statements.
+    The solution of your model can be found (after solving) in the "Variables" and "Constraints" tabs.</p></div>
   <div ng-repeat="entry in entries">
     <div ng-switch on="entry.type">
       <results-table ng-switch-when="table" data="entry.table"></results-table>
