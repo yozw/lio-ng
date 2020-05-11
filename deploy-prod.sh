@@ -9,7 +9,4 @@ checkDeps gae
 
 ./make.sh || error "Make failed"
 
-python $(get_appengine_path)/appcfg.py --noauth_local_webserver \
-    --oauth2 -A online-optimizer update $ROOT/appengine \
-    || error "Deployment failed"
-
+gcloud app deploy --project online-optimizer appengine/app.yaml || error "Deployment failed"
