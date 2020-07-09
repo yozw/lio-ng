@@ -5,7 +5,7 @@
 This integer optimisation model finds a placement of red and green tokens so that neither red nor
 green forms a "square".
 
-The model code can be found under "Model" on the left. Click "Solve model" to solve the model. Once
+The model code can be found under "Model" on the left. Click "Solve" to solve the model. Once
 the model is solved, click on "Solution > Output" to see the solution.
 
 ## 5x5 example
@@ -38,7 +38,6 @@ the model is solved, click on "Solution > Output" to see the solution.
 }
 </style>
 
-<div align="center">
 <table border=0 class="mytable">
   <tr>
     <td><div class="red-dot"></div></td>
@@ -76,7 +75,6 @@ the model is solved, click on "Solution > Output" to see the solution.
     <td><div class="green-dot"></div></td>
   </tr>
 </table>
-</div>
 
 */
 
