@@ -12,55 +12,63 @@ neither red nor green forms a "square".
 }
 
 .mytable td {
-  width: 40px;
   border: 1px solid black;
+  padding: 4px;
 }
 
-.dot {
+.red-dot {
   height: 25px;
   width: 25px;
-  background-color: #bbb;
+  background-color: red;
   border-radius: 50%;
-  display: inline-block;
+  display: block;
+}
+
+.green-dot {
+  height: 25px;
+  width: 25px;
+  background-color: green;
+  border-radius: 50%;
+  display: block;
 }
 </style>
 
 <div align="center">
 <table border=0 class="mytable">
   <tr>
-    <td style=""><div class="dot"></div></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="green-dot"></div></td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="red-dot"></div></td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
   </tr>
 </table>
 </div>
