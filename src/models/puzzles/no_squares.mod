@@ -1,9 +1,11 @@
 /**
 
-No squares. This model finds a placement of red and green tokens so that
-neither red nor green forms a "square".
+# No squares
 
-5x5 example:
+This model finds a placement of red and green tokens so that neither red nor
+green forms a "square".
+
+## 5x5 example
 
 <style>
 .mytable {
@@ -19,7 +21,7 @@ neither red nor green forms a "square".
 .red-dot {
   height: 25px;
   width: 25px;
-  background-color: red;
+  background-color: #c44;
   border-radius: 50%;
   display: block;
 }
@@ -27,7 +29,7 @@ neither red nor green forms a "square".
 .green-dot {
   height: 25px;
   width: 25px;
-  background-color: green;
+  background-color: #4b4;
   border-radius: 50%;
   display: block;
 }
