@@ -3,10 +3,9 @@ ROOT=$(cd "$(dirname "$0")"; pwd)
 source ${ROOT}/common.sh || exit 1
 cd ${ROOT} || error "Could not change to directory $ROOT"
 
-VERSION=`date +%Y%m%d%H%M%S`
 DEST="${ROOT}/appengine"
 
-log "Building binary version ${VERSION} ..."
+log "Building binary ..."
 
 checkDeps python sed uglifyjs.terser pip makeinfo
 
@@ -41,9 +40,6 @@ popd
 pushd src/doc/gmpl
 ./make.sh || error "Error generating GMPL documentation"
 popd
-
-log "Updating version app.yaml ..."
-sed -i -e "s/^version: 1/version: ${VERSION}/g" ${DEST}/app.yaml || error "Error running sed"
 
 log "Minifying code ..."
 python minify.py || error "Could not minify code"
