@@ -1,3 +1,72 @@
+/**
+
+No squares. This model finds a placement of red and green tokens so that
+neither red nor green forms a "square".
+
+5x5 example:
+
+<style>
+.mytable {
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.mytable td {
+  width: 40px;
+  border: 1px solid black;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
+
+<div align="center">
+<table border=0 class="mytable">
+  <tr>
+    <td style=""><div class="dot"></div></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+</div>
+
+*/
+
 # Size of the board.
 param N >= 1;
 
