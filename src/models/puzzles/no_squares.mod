@@ -37,9 +37,9 @@ for some choices if $i, j, k, l$, the resulting corners are not on the board. It
 out under what conditions $i, j, k, l$ result in a valid square:
 $$
 \begin{align*}
-& i\in \{1, ..., N\},
-& j\in \{1, ..., N\},
-& k \in \{1, ..., N-i\},
+& i\in \{1, ..., N\}, \\
+& j\in \{1, ..., N\}, \\
+& k \in \{1, ..., N-i\}, \\
 & l \in \{0, ..., \min(N-j-k, i-1)\}.
 \end{align*}
 $$
