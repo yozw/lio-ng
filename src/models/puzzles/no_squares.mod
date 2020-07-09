@@ -85,8 +85,8 @@ Let $N$ be the length of one side of the board (e.g., $N = 5$).
 For $i\in\{1, ..., N\}$ and $j\in\{1, ..., N\}$, define the binary variable $x_{ij}$, with the following interpretation:
 $$
 x_{i,j} = \begin{cases}
-0 & \mbox{ if the cell in row $i$, column $j$ is occupied by a red token;} \\
-1 & \mbox{ if the cell in row $i$, column $j$ is occupied by a green token.}
+0 & \mbox{ if the cell with coordinates $(i, j)$ is occupied by a red token;} \\
+1 & \mbox{ if the cell with coordinates $(i, j)$ is occupied by a green token.}
 \end{cases}
 $$
 
@@ -99,15 +99,20 @@ $$
 This ensure that there are roughly as many green tokens as there are red tokens on the board; the difference
 is at most one.
 
-(2) **Neither red nor green creates a square.** To model this, we consider every possible square
-as follows. First, we pick a corner of the square. Let's say this corner has coordinate $(i, j)$. Next, we
-pick a "displacement vector" $(k, l)$. This displacement vector is the first picked corner and a
-corner adjacent to it. That second corner is $(i+k, j+l)$. Once this is chosen, the third and fourth
-corners are $(i+k-l)$ and $(i-l, j+k)$.
+(2) **Neither red nor green creates a square.** 
+Consider a particular square and let $(i, j)$ be its left-most corner, i.e., the corner with the smallest
+value of $j$. If the square has two left-most corners, pick the one with the smallest value of $i$.
+The corner we picked is adjacent to two other corners. Pick the one with coordinates $(i', j')$ such that
+$i' > i$. Write $k = i' - i$ and $l = j' - j$. Note that $k \geq 1$ and $l \geq 0$ by construction.
+The other corners of the square must be $(i+k-l, j+k+l)$ and $(i-l, j+k)$.
 
-Note that for some choices of $i, j, k, l$, one or more of the resulting corners are not actually on the board. 
-It is left as an exercise to show choosing $i, j, k, l$ under the following constraints captures all
-valid squares:
+This means that we capture all possible squares by picking values of $i, j, k, l$ 
+such that $1\leq i \leq N$, $1 \leq j \leq N$, $k\geq 1$, and $l\geq 0$.
+Note that for some choices of $i, j, k, l$, one or more of the resulting corners are not actually "valid" squares;
+for instance, choosing $l > i + k - l$ leaves us with a corner with negative coordinates.
+
+We leave it as an exercise to the reader to show that choosing $i, j, k, l$ under the following constraints captures all
+valid squares and no more than all valid squares:
 $$
 \begin{align*}
 & i\in \{1, ..., N\}, \\
@@ -117,7 +122,7 @@ $$
 \end{align*}
 $$
 
-For every such choice of $i, j, k, l$, we want to ensure that among the cells in positions
+Now, for every such choice of $i, j, k, l$, we want to ensure that among the cells in positions
 $(i,j)$, $(i+k, j+l)$, $(i+k-l, j+k+l)$, $(i-l, j+k)$,
 there is at least one red token and at least one green token. In other words, we want at least one but at most three
 green tokens in those cells. This translates to:
@@ -126,7 +131,7 @@ $$
 $$
 
 The problem is now reduced to: find a an assignment of zeros and ones to $x_{i, j}$ such that the above constraints are
-satisfied.
+satisfied. That is exactly what the code in this model does.
 
 
 */
