@@ -20,13 +20,14 @@ x_{i,j} = \begin{cases}
 $$
 
 We want to choose values for these $x_{ij}$'s such that following constraints are satisfied.
-First, we want that player 1 to puts exactly $\lfloor N^2/2\rfloor$ tokens on the board.
-Equivalently, player 2 puts exactly $\lceil N^2/2\rceil$ tokens on the board. That is,
+First, we want exactly $\lceil N^2/2\rceil$ green tokens on the board. That is,
 $$
 \sum_{i=1}^N \sum_{j=1}^N x_{i,j} = \left\lceil \frac{N^2}{2}\right\rceil.
 $$
+This ensure that there are
+roughly as many green tokens as there are red tokens on the board (give or take one).
 
-We now want to ensure that neither player creates a square. To do so, we consider every possible square
+Second, we want to ensure that neither red nor green creates a square. To do so, we consider every possible square
 as follows. First, we pick a corner of the square; let's say this corner has coordinate $(i, j)$. Next, we
 pick a displacement vector $(k, l)$ so that the next corner is $(i+k, j+l)$. Once this is chosen, the other two
 corners are $(i+k-l)$ and $(i-l, j+k)$.
@@ -129,30 +130,30 @@ Here is an example solution for the case $N=5$:
 # Size of the board.
 param N >= 1;
 
-# x[i, j] is equal to 0 if square (i, j) contains player 1's token and is
-# equal to 1 if it contains player 2's token.
+# x[i, j] is equal to 0 if square (i, j) contains a red token and is
+# equal to 1 if it contains a green token.
 var x{1..N, 1..N}, binary;
 
 # We don't want to optimise anything; we just want to find *a* solution.
 maximize z: 0;
 
-# We want player 2 to put exactly ceil(N^2/2) tokens on the board.
-# (And hence player 1 puts exactly floor(N^2/2) tokens on the board.)
+# We want exactly ceil(N^2/2) green tokens on the board.
+# (And hence exactly floor(N^2/2) red tokens on the board.)
 subject to total:
   sum{i in 1..N, j in 1..N} x[i, j] = ceil((N*N)/2);
 
-# Player 1 has no squares of the form:
+# Red has no squares of the form:
 #        (i-l, j+k)
 #      /     \
 # (i, j)      \
 #    \      (i+k-l, j+k+l)
 #     \      /
 #   (i+k, j+l)
-subject to no_square_player1 {i in 1..N, j in 1..N, k in 1..N-i, l in 0..min(N-j-k, i-1)}:
+subject to no_square_red {i in 1..N, j in 1..N, k in 1..N-i, l in 0..min(N-j-k, i-1)}:
   x[i, j] + x[i+k, j+l] + x[i+k-l, j+k+l] + x[i-l, j+k]  >= 1;
 
-# Same as above, for player 2.
-subject to no_square_player2 {i in 1..N, j in 1..N, k in 1..N-i, l in 0..min(N-j-k, i-1)}:
+# Same as above, for green.
+subject to no_square_green {i in 1..N, j in 1..N, k in 1..N-i, l in 0..min(N-j-k, i-1)}:
   x[i, j] + x[i+k, j+l] + x[i+k-l, j+k+l] + x[i-l, j+k] <= 3;
 
 # Solve this integer optimisation problem.  
