@@ -11,10 +11,10 @@ the model is solved, click on "Solution > Output" to see the solution.
 ## Model
 
 Let $N$ be the length of one side of the board (e.g., $N = 5$).
-For $i\in\{1, \hdots, N\}$ and $j\in\{1, \hdots, N\}$, define the variable $x_{ij}$ with the following interpretation:
+For $i\in\{1, ..., N\}$ and $j\in\{1, ..., N\}$, define the variable $x_{ij}$ with the following interpretation:
 $$
 x_{ij} = \begin{cases}
-0 & \mbox{ if the cell in row $i$, column $j$ is occupied by a red token;}
+0 & \mbox{ if the cell in row $i$, column $j$ is occupied by a red token;} \\
 1 & \mbox{ if the cell in row $i$, column $j$ is occupied by a green token.}
 \end{cases}
 $$
@@ -23,7 +23,7 @@ We want to choose values for these $x_{ij}$'s such that following constraints ar
 First, we want that player 1 to puts exactly $\lfloor N^2/2\rfloor$ tokens on the board.
 Equivalently, player 2 puts exactly $\lceil N^2/2\rceil$ tokens on the board. That is,
 $$
-\sum_{i,j} = \lceil N^2/2\rceil.
+\sum_{i,j} = \left\lceil \frac{N^2}{2}\right\rceil.
 $$
 
 
