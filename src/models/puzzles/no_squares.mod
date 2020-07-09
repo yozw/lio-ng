@@ -13,7 +13,7 @@ the model is solved, click on "Solution > Output" to see the solution.
 Let $N$ be the length of one side of the board (e.g., $N = 5$).
 For $i\in\{1, ..., N\}$ and $j\in\{1, ..., N\}$, define the variable $x_{ij}$ with the following interpretation:
 $$
-x_{ij} = \begin{cases}
+x_{i,j} = \begin{cases}
 0 & \mbox{ if the cell in row $i$, column $j$ is occupied by a red token;} \\
 1 & \mbox{ if the cell in row $i$, column $j$ is occupied by a green token.}
 \end{cases}
@@ -23,11 +23,40 @@ We want to choose values for these $x_{ij}$'s such that following constraints ar
 First, we want that player 1 to puts exactly $\lfloor N^2/2\rfloor$ tokens on the board.
 Equivalently, player 2 puts exactly $\lceil N^2/2\rceil$ tokens on the board. That is,
 $$
-\sum_{i,j} = \left\lceil \frac{N^2}{2}\right\rceil.
+\sum_{i=1}^N \sum_{j=1}^N x_{i,j} = \left\lceil \frac{N^2}{2}\right\rceil.
 $$
+
+We now want to ensure that neither player creates a square. To do so, we consider every possible square
+as follows. First, we pick a corner of the square; let's say this corner has coordinate $(i, j)$. Next, we
+pick a displacement vector $(k, l)$ so that the next corner is $(i+k, j+l)$. Once this is chosen, the other two
+corners are $(i+k-l)$ and $(i-l, j+k)$.
+
+Now we add a constraint for every possible choice of $i, j, k, l$ that results in a square on the board. Note that
+for some choices if $i, j, k, l$, the resulting corners are not on the board. It is a routine matter to work
+out under what conditions $i, j, k, l$ result in a valid square:
+$$
+\begin{align*}
+& i\in \{1, ..., N\},
+& j\in \{1, ..., N\},
+& k \in \{1, ..., N-i\},
+& l \in \{0, ..., \min(N-j-k, i-1)\}.
+\end{align*}
+$$
+
+For every such choice of $i, j, k, l$, we want that among the cells in positions $(i,j)$, $(i+k, j+l)$, $(i+k-l, j+k+l)$, $(i-l, j+k)$,
+there is at least one red token and at least one green token. In other words, we want at least one but at most three
+green tokens in those cells. This translates to:
+$$
+1 \leq x_{ij} + x_{i+k,j+l} + x_{i+k-l,j+k+l} + x_{i-l, j+k} \leq 3.
+$$
+
+The question is therefore: find a an assignment of zeros and ones to $x_{i, j}$ such that the above constraints are
+satisfied.
 
 
 ## 5x5 example
+
+Here is an example solution for the case $N=5$:
 
 <style>
 .mytable {
