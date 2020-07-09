@@ -115,10 +115,11 @@ We leave it as an exercise to the reader to show that choosing $i, j, k, l$ unde
 valid squares and no more than all valid squares:
 $$
 \begin{align*}
-& i\in \{1, ..., N\}, \\
-& j\in \{1, ..., N\}, \\
-& k \in \{1, ..., N-i\}, \\
-& l \in \{0, ..., \min(N-j-k, i-1)\}.
+& 1 \leq i \leq N, \\
+& 1 \leq j \leq N, \\
+& 1 \leq k \leq N-i, \\
+& 0 \leq l \leq N-j-k, \\
+& 0 \leq l \leq i - 1.
 \end{align*}
 $$
 
