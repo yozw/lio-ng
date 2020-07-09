@@ -107,7 +107,7 @@ var x{1..N, 1..N}, binary;
 # We don't want to optimise anything; we just want to find *a* solution.
 maximize z: 0;
 
-# We want exactly player 2 to put exactly ceil(N^2/2) tokens on the board.
+# We want player 2 to put exactly ceil(N^2/2) tokens on the board.
 # (And hence player 1 puts exactly floor(N^2/2) tokens on the board.)
 subject to total:
   sum{i in 1..N, j in 1..N} x[i, j] = ceil((N*N)/2);
