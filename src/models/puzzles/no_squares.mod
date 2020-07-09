@@ -43,23 +43,16 @@ Here is an example "square-free" 5 x 5 board:
 
 <table border=0 class="mytable">
   <tr>
-    <td><div class="red-dot"></div></td>
     <td><div class="green-dot"></div></td>
     <td><div class="red-dot"></div></td>
     <td><div class="green-dot"></div></td>
     <td><div class="red-dot"></div></td>
-  </tr>
-  <tr>
-    <td><div class="red-dot"></div></td>
-    <td><div class="red-dot"></div></td>
-    <td><div class="green-dot"></div></td>
-    <td><div class="green-dot"></div></td>
     <td><div class="green-dot"></div></td>
   </tr>
   <tr>
     <td><div class="green-dot"></div></td>
-    <td><div class="red-dot"></div></td>
     <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
     <td><div class="red-dot"></div></td>
     <td><div class="red-dot"></div></td>
   </tr>
@@ -67,15 +60,22 @@ Here is an example "square-free" 5 x 5 board:
     <td><div class="red-dot"></div></td>
     <td><div class="green-dot"></div></td>
     <td><div class="red-dot"></div></td>
-    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
     <td><div class="green-dot"></div></td>
   </tr>
   <tr>
-    <td><div class="red-dot"></div></td>
-    <td><div class="green-dot"></div></td>
     <td><div class="green-dot"></div></td>
     <td><div class="red-dot"></div></td>
     <td><div class="green-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+  </tr>
+  <tr>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="red-dot"></div></td>
+    <td><div class="green-dot"></div></td>
+    <td><div class="red-dot"></div></td>
   </tr>
 </table>
 
