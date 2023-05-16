@@ -37,9 +37,7 @@ def index():
   """Returns the optimizer IDE."""
 
   init_js = []
-  init_js.append("<script type='text/javascript'>")
   init_js.append(config.GA_CODE)
-  init_js.append("</script>")
 
   index_html = readSourceFile('index.html')
   index_html = index_html.replace("<!-- PLACEHOLDER -->", "\n".join(init_js))
